@@ -1,0 +1,492 @@
+{
+  "milestones": [
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [],
+      "evidence": [],
+      "expected_artifacts": [
+        "contracts/permissions.json",
+        "backend/app/core/security.py",
+        "backend/app/main.py",
+        "frontend/src/App.jsx",
+        "tests/test_contracts.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 1",
+        "H",
+        "J.4",
+        "J.7",
+        "J.8 RNF-01/RNF-02"
+      ],
+      "milestone_id": "HITO-001",
+      "name": "Fundamentos",
+      "objective": "Establecer Auth JWT, usuarios, roles, permisos, auditoria y estructura base del proyecto.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Fundamentos",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-001"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "backend/app/domain/catalog.py",
+        "backend/app/services/inventory.py",
+        "contracts/domain-model.json",
+        "frontend/src/screens/catalog.js",
+        "docs/architecture.md"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 2",
+        "UC-INS-*",
+        "UC-REC-*",
+        "P-04..P-13",
+        "J.5"
+      ],
+      "milestone_id": "HITO-002",
+      "name": "Maestros",
+      "objective": "Implementar proveedores, insumos, bodegas, recetas y tipos de presentacion como maestros operativos.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Maestros",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-002"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "backend/app/services/inventory.py",
+        "backend/app/services/notifications.py",
+        "backend/app/domain/rules.py",
+        "contracts/permissions.json",
+        "tests/test_domain_rules.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 3",
+        "UC-INS-02",
+        "UC-INS-03",
+        "UC-ALT-01",
+        "J.6",
+        "J.13"
+      ],
+      "milestone_id": "HITO-003",
+      "name": "Inventario",
+      "objective": "Implementar entradas de insumos, Kardex, notificaciones por email y configuracion SMTP.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Inventario",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-003"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "backend/app/services/production.py",
+        "backend/app/domain/rules.py",
+        "contracts/coverage.json",
+        "docs/api-contract.md",
+        "tests/test_domain_rules.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 4",
+        "UC-PROD-*",
+        "UC-PRO-*",
+        "P-14..P-19",
+        "J.6"
+      ],
+      "milestone_id": "HITO-004",
+      "name": "Produccion",
+      "objective": "Construir lotes, control de calidad, mermas e inventario de productos terminados.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Produccion",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-004"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "backend/app/services/sales.py",
+        "backend/app/services/purchasing.py",
+        "backend/app/services/inventory.py",
+        "docs/traceability.md",
+        "tests/test_domain_rules.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 5",
+        "UC-VTA-*",
+        "UC-COM-*",
+        "P-20..P-25",
+        "J.6",
+        "J.14"
+      ],
+      "milestone_id": "HITO-005",
+      "name": "Ventas",
+      "objective": "Cerrar clientes, ventas, reservas de stock, precios por tipo de cliente y ordenes de compra.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Ventas",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-005"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "frontend/src/App.jsx",
+        "frontend/src/screens/catalog.js",
+        "backend/app/jobs/scheduler.py",
+        "docs/api-contract.md",
+        "tests/test_domain_rules.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 6",
+        "UC-REP-*",
+        "P-03",
+        "P-29",
+        "J.13"
+      ],
+      "milestone_id": "HITO-006",
+      "name": "Dashboard",
+      "objective": "Implementar KPIs reales, graficos, alertas operacionales y reportes exportables.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Dashboard",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    },
+    {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "agents": [
+        "agent.intake",
+        "agent.architect_planner",
+        "agent.implementer",
+        "agent.qa",
+        "agent.security",
+        "agent.close"
+      ],
+      "allowed_tools": [
+        "tool.sandbox.dev_materialize",
+        "tool.policy.static",
+        "tool.validation.artifacts",
+        "tool.security.secrets",
+        "tool.security.deps",
+        "tool.sbom.generate"
+      ],
+      "dependencies": [
+        "HITO-006"
+      ],
+      "evidence": [],
+      "expected_artifacts": [
+        "backend/app/services/purchasing.py",
+        "backend/app/jobs/scheduler.py",
+        "docs/architecture.md",
+        "docs/traceability.md",
+        "docs/test-strategy.md",
+        "tests/test_contracts.py"
+      ],
+      "gates": [
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "inputs": [
+        "J.12 Hito 7",
+        "UC-EQU-*",
+        "UC-FIN-*",
+        "UC-ALT-*",
+        "J.10",
+        "J.15"
+      ],
+      "milestone_id": "HITO-007",
+      "name": "Cierre",
+      "objective": "Completar equipos, finanzas, metas, respaldos automaticos, documentacion y pruebas.",
+      "outputs": [
+        "DEV implementation bundle",
+        "QA promotion report",
+        "milestone evidence"
+      ],
+      "risks": [
+        "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+      ],
+      "scope": "J.12 Cierre",
+      "state": "pending",
+      "traceability": [
+        "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+      ],
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    }
+  ],
+  "project_id": "brewmaster",
+  "selected_milestone": "HITO-001",
+  "version": "roadmap.webforge.incremental.v1"
+}

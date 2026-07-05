@@ -275,7 +275,7 @@ class FactorySupportMixin:
 
     def _implementation_bundle(self) -> list[dict[str, Any]]:
         if self._is_brewmaster():
-            return brewmaster_bundle()
+            return brewmaster_bundle(self.work_order.milestone_id)
         raw_bundle = self.work_order.metadata.get("implementation_bundle")
         if isinstance(raw_bundle, dict):
             files = raw_bundle.get("files", [])

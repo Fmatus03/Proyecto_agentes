@@ -1,0 +1,265 @@
+{
+  "brewmaster": {
+    "acceptance_gate": {
+      "defers_future_modules": true,
+      "has_api_v1": true,
+      "has_foundation_screens": true,
+      "has_hito1_endpoints": true,
+      "has_hito1_permissions": true,
+      "has_only_foundation_module": true,
+      "has_security_entities": true,
+      "has_v001_v024": true,
+      "is_hito_001_scope": true,
+      "no_future_endpoint_paths": true
+    },
+    "action_endpoints": [
+      {
+        "action_endpoint": true,
+        "api_id": "API-001",
+        "description": "iniciar sesion, retorna token JWT.",
+        "handler": "auth.login",
+        "method": "POST",
+        "path": "/api/v1/auth/login",
+        "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+        "transactional": true
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-002",
+        "description": "cerrar sesion autenticada y auditar salida.",
+        "handler": "auth.logout",
+        "method": "POST",
+        "path": "/api/v1/auth/logout",
+        "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+        "transactional": true
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-003",
+        "description": "obtener usuario autenticado.",
+        "handler": "auth.me",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+        "transactional": false
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-004",
+        "description": "cambiar contrasena validando la actual.",
+        "handler": "auth.change_password",
+        "method": "POST",
+        "path": "/api/v1/auth/change-password",
+        "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+        "transactional": true
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-009",
+        "description": "activar o desactivar usuario.",
+        "handler": "users.toggle_status",
+        "method": "PATCH",
+        "path": "/api/v1/users/{id}/toggle-status",
+        "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+        "transactional": true
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-085",
+        "description": "solicitar restablecimiento sin filtrar existencia de usuario.",
+        "handler": "auth.password_reset_request",
+        "method": "POST",
+        "path": "/api/v1/auth/password-reset/request",
+        "source": "brewmaster_especificacion_completa.md#K.6",
+        "transactional": true
+      },
+      {
+        "action_endpoint": true,
+        "api_id": "API-086",
+        "description": "confirmar token valido y guardar hash nuevo.",
+        "handler": "auth.password_reset_confirm",
+        "method": "POST",
+        "path": "/api/v1/auth/password-reset/confirm",
+        "source": "brewmaster_especificacion_completa.md#K.6",
+        "transactional": true
+      }
+    ],
+    "critical_transaction_count": 6,
+    "endpoint_count": 12,
+    "entity_count": 7,
+    "milestone_id": "HITO-001",
+    "module_count": 1,
+    "module_coverage": {
+      "MOD-001": "login JWT, recuperacion de contrasena, CRUD usuarios, RBAC y auditoria funcional"
+    },
+    "permission_count": 2,
+    "screen_count": 3,
+    "screen_ids": [
+      "P-01",
+      "P-02",
+      "P-30"
+    ],
+    "status": "pass",
+    "validation_count": 24
+  },
+  "deploys": 0,
+  "dev_materialization": {
+    "api": "webforge.isolation.p12_inv.v1",
+    "status": "pass",
+    "writes": [
+      {
+        "action": "updated",
+        "bytes": 478,
+        "path": "README.md",
+        "sha256": "sha256:5df55b5ebc80b8c7e053ff897cc998a5e0edcfabbcaeb0c40cc165c7432f988f"
+      },
+      {
+        "action": "updated",
+        "bytes": 792,
+        "path": "docs/architecture.md",
+        "sha256": "sha256:998431ef684c8f381ff50fe50b0db3cdc1574043d244753a5155a3ee5446e416"
+      },
+      {
+        "action": "updated",
+        "bytes": 797,
+        "path": "docs/api-contract.md",
+        "sha256": "sha256:6d341c7f722389c85fdcedf3561d9ffcd5cc40fd837c1ef62978caa078e0a9c6"
+      },
+      {
+        "action": "updated",
+        "bytes": 751,
+        "path": "docs/traceability.md",
+        "sha256": "sha256:8510726109493116fdc56d293def573c08e741f3ec3992ccf79ec8defc5d3f83"
+      },
+      {
+        "action": "updated",
+        "bytes": 686,
+        "path": "docs/test-strategy.md",
+        "sha256": "sha256:c54655a294cf98d229cbcc988dce88709a8a45f39e484a03070f09a772082130"
+      },
+      {
+        "action": "updated",
+        "bytes": 15070,
+        "path": "contracts/brewmaster-blueprint.json",
+        "sha256": "sha256:482d9e2b88540dd490b1a3c61a2bfda5f539edffc0ffb61844941ee6eca09694"
+      },
+      {
+        "action": "updated",
+        "bytes": 3172,
+        "path": "contracts/coverage.json",
+        "sha256": "sha256:a5f5c5ed8aac447df7abcb988c6baad95a2fa69b3977d47826bb9c40bf78f2a0"
+      },
+      {
+        "action": "updated",
+        "bytes": 1263,
+        "path": "contracts/permissions.json",
+        "sha256": "sha256:62270f9cc93f4959e86382d19f9ddfb662604212cf1d15b66a8682eb0000c438"
+      },
+      {
+        "action": "updated",
+        "bytes": 690,
+        "path": "contracts/domain-model.json",
+        "sha256": "sha256:c709a3d4b816b54066574db975d36079b5f6737c857048c374fbc2a54f543898"
+      },
+      {
+        "action": "updated",
+        "bytes": 263,
+        "path": "backend/pyproject.toml",
+        "sha256": "sha256:87e7767400fcc8ae55fba224c36eda2958b0ff98f963c0568bf5051a4742ee07"
+      },
+      {
+        "action": "updated",
+        "bytes": 13063,
+        "path": "backend/app/main.py",
+        "sha256": "sha256:1836c61830fa0969f5f55d3d3e9019c8a0d8eb7126f088dc120824165b508b82"
+      },
+      {
+        "action": "updated",
+        "bytes": 499,
+        "path": "backend/app/core/responses.py",
+        "sha256": "sha256:aeedece7e81cdefae18ca59cda69e73a27238ab2d8e9d4eaeb98e2a27c7708f6"
+      },
+      {
+        "action": "updated",
+        "bytes": 3514,
+        "path": "backend/app/core/security.py",
+        "sha256": "sha256:99f293e6558a5ef2543d4ce9f4d099d1deecae4443ba17fa18d892532467c0f9"
+      },
+      {
+        "action": "updated",
+        "bytes": 4012,
+        "path": "backend/app/domain/catalog.py",
+        "sha256": "sha256:0b258d2a9373de9b58a80536b857c6391ec5760546b8b6dc4932a15413eb6605"
+      },
+      {
+        "action": "updated",
+        "bytes": 2813,
+        "path": "backend/app/db/models.py",
+        "sha256": "sha256:c70d6c44a4a9f0b430a321ecd45fd5a2044f45852507b3eaa80ff74750c5f541"
+      },
+      {
+        "action": "updated",
+        "bytes": 278,
+        "path": "backend/app/db/session.py",
+        "sha256": "sha256:9727157cc6245445bfe7282d389dbc70181e182a029f90a2a4ae55d9ff6b784e"
+      },
+      {
+        "action": "updated",
+        "bytes": 64,
+        "path": "backend/alembic/env.py",
+        "sha256": "sha256:c6a8d9eb5ce3e0d22e64ca165761c6bd37eed6b389f16fd0a869b8c6276d1bbe"
+      },
+      {
+        "action": "updated",
+        "bytes": 4821,
+        "path": "backend/alembic/versions/0001_brewmaster_schema.py",
+        "sha256": "sha256:eeeeb8453d2013f44fc6c53f9663fab595ac63bc49568fcc28623518d84f714d"
+      },
+      {
+        "action": "updated",
+        "bytes": 333,
+        "path": "frontend/package.json",
+        "sha256": "sha256:1819f271440d658bd041f6a335a9c957d003bb2c29d8a74316453f4c9d1a3d2a"
+      },
+      {
+        "action": "updated",
+        "bytes": 2288,
+        "path": "frontend/src/App.jsx",
+        "sha256": "sha256:f0000acddb8fe7d9f1d89f245a9a8421f55a884136318de10a42cf154559233a"
+      },
+      {
+        "action": "updated",
+        "bytes": 334,
+        "path": "frontend/src/api/client.js",
+        "sha256": "sha256:6aded50cb32ee62bf5ce2e3001c14e1a9d627e25a856eb59b479c3aaac231c1f"
+      },
+      {
+        "action": "updated",
+        "bytes": 127,
+        "path": "frontend/src/routes.js",
+        "sha256": "sha256:618240d705b57dddb0805c28002a234e6e6b8e581c98a7180a2956b42e58dfc9"
+      },
+      {
+        "action": "updated",
+        "bytes": 394,
+        "path": "frontend/src/screens/catalog.js",
+        "sha256": "sha256:159e0db7ca8fa89d91f7984912b35339d784c85af1176bd792362afdea3c5659"
+      },
+      {
+        "action": "updated",
+        "bytes": 1051,
+        "path": "tests/test_contracts.py",
+        "sha256": "sha256:77c3590a13991be831acc5c17c525a39ddfcc9644495f110fe9d860ee8f4127c"
+      },
+      {
+        "action": "updated",
+        "bytes": 3826,
+        "path": "tests/test_auth_foundation.py",
+        "sha256": "sha256:df5a42c9d2c7cabf2e80da08b8e8e4e5ca77fc602f29e4947b270e9b6a7f7559"
+      }
+    ]
+  },
+  "external_writes": 0,
+  "out_of_scope_changes": 0,
+  "scope": "webforge runtime local artifacts plus isolated DEV workspace"
+}

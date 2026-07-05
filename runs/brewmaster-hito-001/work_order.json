@@ -1,0 +1,26 @@
+{
+  "acceptance_criteria": [
+    "P01-P12 pass at 100 percent",
+    "Required artifacts are generated"
+  ],
+  "approvals": {},
+  "authorized_sources": [
+    "Diseno_detallado_agentes_y_skills_software-2.md",
+    "Diseno_detallado_arnes_dev_legacy-2.md",
+    "Diseno_detallado_fabrica_software_SDD-2.md",
+    "Diseno_detallado_orquestador_maestro_SDD-2.md"
+  ],
+  "budget": {
+    "cost_usd": 0,
+    "mcp_calls": 0,
+    "tool_calls": 200
+  },
+  "metadata": {},
+  "milestone_id": "HITO-001",
+  "objective": "Implementar BrewMaster Hito 1 - Fundamentos: Auth JWT, usuarios, roles, auditoria y estructura de proyecto",
+  "project_id": "brewmaster",
+  "project_version": "v0001",
+  "scope": "local_artifacts_only",
+  "side_effects": "no_external_writes_no_deploy",
+  "type": "factory_runtime"
+}

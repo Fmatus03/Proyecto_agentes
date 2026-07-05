@@ -9,7 +9,25 @@ from .brewmaster_spec import BREWMASTER_MODULES, load_brewmaster_spec
 def _json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=True, indent=2, sort_keys=True)
 
-def _readme() -> str:
+def _is_hito_001(blueprint: dict[str, Any] | None = None) -> bool:
+    return bool(blueprint and blueprint.get("milestone_id") == "HITO-001")
+
+
+def _readme(blueprint: dict[str, Any] | None = None) -> str:
+    if _is_hito_001(blueprint):
+        return dedent(
+            """
+            # BrewMaster HITO-001 Fundamentos
+
+            Implementacion incremental generada por WEBFORGE para el primer hito de BrewMaster.
+
+            Alcance implementado: autenticacion JWT local, usuarios, roles, permisos, recuperacion/cambio de
+            contrasena, auditoria funcional y estructura base React + Bootstrap / FastAPI bajo `/api/v1`.
+
+            Alcance diferido: proveedores, insumos, bodegas, recetas, inventario, produccion, ventas, compras,
+            dashboard, finanzas, reportes exportables, SMTP y jobs operativos.
+            """
+        ).strip()
     return dedent(
         """
         # BrewMaster MVP
@@ -25,7 +43,27 @@ def _readme() -> str:
         """
     ).strip()
 
-def _architecture_md() -> str:
+def _architecture_md(blueprint: dict[str, Any] | None = None) -> str:
+    if _is_hito_001(blueprint):
+        return dedent(
+            """
+            # Arquitectura BrewMaster HITO-001
+
+            Capas:
+
+            - Frontend React + Bootstrap limitado a login, recuperacion de contrasena y panel de usuarios/auditoria.
+            - API REST FastAPI bajo `/api/v1` con respuesta JSON uniforme y `request_id`.
+            - Seguridad local con hash PBKDF2, JWT HS256 expirable y RBAC por rol.
+            - Persistencia contractual SQLAlchemy/Alembic acotada a usuarios, roles, permisos, auditoria y tokens de restablecimiento.
+            - Auditoria funcional en memoria para el MVP local del hito, sin datos reales ni escrituras externas.
+
+            Controles de fabrica:
+
+            - El bundle se materializa solo por el arnes P12/INV en el sandbox DEV.
+            - La promocion a QA ocurre despues de validadores y gate incremental.
+            - Los modulos de hitos posteriores quedan explicitamente diferidos y no exponen endpoints ejecutables.
+            """
+        ).strip()
     return dedent(
         """
         # Arquitectura BrewMaster
@@ -54,13 +92,49 @@ def _api_contract_md(blueprint: dict[str, Any]) -> str:
         rows.append(f"| {endpoint['method']} | `{endpoint['path']}` | `{endpoint['handler']}` |")
     return "\n".join(rows)
 
-def _traceability_md() -> str:
+def _traceability_md(blueprint: dict[str, Any] | None = None) -> str:
+    if _is_hito_001(blueprint):
+        return "\n".join(
+            [
+                "# Trazabilidad HITO-001",
+                "",
+                "| requisito | evidencia generada | prueba |",
+                "|---|---|---|",
+                "| J.12 Hito 1 Fundamentos | backend/app/main.py, backend/app/core/security.py, contracts/permissions.json | tests/test_auth_foundation.py |",
+                "| FUN-001 Autenticar usuario | /api/v1/auth/login, /api/v1/auth/me | login valido, invalido e inactivo |",
+                "| FUN-002 Recuperar contrasena | /api/v1/auth/password-reset/request, /api/v1/auth/password-reset/confirm | token local de un uso |",
+                "| FUN-003 Gestionar usuarios roles permisos | /api/v1/users* | admin requerido, correo unico, rol activo |",
+                "| FUN-004 Registrar auditoria funcional | /api/v1/audit-logs | eventos de login, usuarios y contrasena |",
+                "| FUN-038 RBAC por endpoint | core/security.py | 401/403 sin datos parciales |",
+            ]
+        )
     rows = ["# Trazabilidad macro", "", "| requisito | evidencia generada | prueba |", "|---|---|---|"]
     for module in BREWMASTER_MODULES:
         rows.append(f"| {module['id']} {module['name']} | contracts/coverage.json, app/domain/catalog.py | unit + integration + E2E |")
     return "\n".join(rows)
 
-def _test_strategy_md() -> str:
+def _test_strategy_md(blueprint: dict[str, Any] | None = None) -> str:
+    if _is_hito_001(blueprint):
+        return dedent(
+            """
+            # Estrategia de pruebas HITO-001
+
+            Unitarias:
+
+            - Hash de contrasena PBKDF2 no almacena texto plano.
+            - JWT HS256 expirable rechaza firma alterada o vencida.
+            - `require_permission` acepta comodin admin y bloquea permiso ausente.
+
+            Integracion local:
+
+            - Login exitoso retorna JWT y `auth/me` responde con usuario activo.
+            - Credenciales invalidas o usuario inactivo retornan HTTP 401 y generan auditoria.
+            - Usuario no admin recibe HTTP 403 al listar usuarios.
+            - Admin crea usuario con correo unico y rol activo; duplicado se rechaza.
+            - Cambio y restablecimiento de contrasena actualizan hash y auditan.
+            - Auditor o admin consulta `/api/v1/audit-logs`; otros roles no reciben datos parciales.
+            """
+        ).strip()
     return dedent(
         """
         # Estrategia de pruebas
@@ -91,8 +165,24 @@ def _test_strategy_md() -> str:
         """
     ).strip()
 
-def _permissions() -> dict[str, Any]:
-    declared_permissions = load_brewmaster_spec().permissions
+def _permissions(blueprint: dict[str, Any] | None = None) -> dict[str, Any]:
+    declared_permissions = blueprint.get("permissions", []) if blueprint else load_brewmaster_spec().permissions
+    if _is_hito_001(blueprint):
+        return {
+            "milestone_id": "HITO-001",
+            "declared_permissions": declared_permissions,
+            "roles": {
+                "admin": ["*"],
+                "auditor": ["audit.read"],
+                "operador": [],
+            },
+            "sensitive_permissions": ["admin.users", "audit.read"],
+            "deferred_permissions": [
+                permission
+                for permission in load_brewmaster_spec().permissions
+                if permission not in set(declared_permissions)
+            ],
+        }
     return {
         "declared_permissions": declared_permissions,
         "roles": {

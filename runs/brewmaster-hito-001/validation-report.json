@@ -1,0 +1,362 @@
+{
+  "artifact_check": {
+    "blocking_findings": 0,
+    "missing": [],
+    "required": [
+      "work_order.json",
+      "constitution.md",
+      "spec.md",
+      "clarifications.md",
+      "checklist.md",
+      "context-pack.json",
+      "plan.md",
+      "tasks.md",
+      "analyze-report.md",
+      "implementation-report.md",
+      "factory-skill-manifest.json",
+      "factory-tool-manifest.json",
+      "frontend-template-policy.md",
+      "frontend-template-manifest.json",
+      "project-isolation-policy.md",
+      "project-manifest.json",
+      "project-memory-policy.json",
+      "project-sandboxes.json",
+      "roadmap.md",
+      "roadmap.json",
+      "milestone-plan.json",
+      "milestone-state.json",
+      "milestone-evidence.md",
+      "incremental-traceability.md",
+      "dev-materialization-manifest.json",
+      "brewmaster-blueprint.json",
+      "brewmaster-coverage.json"
+    ]
+  },
+  "brewmaster": {
+    "acceptance_gate": {
+      "defers_future_modules": true,
+      "does_not_force_plantilla_frontend": true,
+      "has_api_v1": true,
+      "has_foundation_screens": true,
+      "has_hito1_endpoints": true,
+      "has_hito1_permissions": true,
+      "has_only_foundation_module": true,
+      "has_security_entities": true,
+      "has_v001_v024": true,
+      "is_hito_001_scope": true,
+      "materialized_react_bootstrap_files": true,
+      "no_future_endpoint_paths": true,
+      "uses_react_bootstrap_contract": true
+    },
+    "coverage_artifact": "brewmaster-coverage.json",
+    "missing_frontend_files": [],
+    "status": "pass",
+    "validator": {
+      "message": "BrewMaster acceptance gate passed",
+      "observed": {
+        "alembic_has_operations": {
+          "message": "Alembic migration creates tables",
+          "observed": {
+            "empty_upgrade": false,
+            "has_create_table": true,
+            "path": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\sandboxes\\DEV\\workspace\\backend\\alembic\\versions\\0001_brewmaster_schema.py"
+          },
+          "passed": true,
+          "validator_id": "alembic.operations"
+        },
+        "defers_future_modules": true,
+        "does_not_force_plantilla_frontend": true,
+        "expected_endpoint_count": 12,
+        "has_api_v1": true,
+        "has_foundation_screens": true,
+        "has_hito1_endpoints": true,
+        "has_hito1_permissions": true,
+        "has_only_foundation_module": true,
+        "has_security_entities": true,
+        "has_v001_v024": true,
+        "is_hito_001_scope": true,
+        "materialized_react_bootstrap_files": true,
+        "no_catch_all_routes": {
+          "message": "no catch-all API routes found",
+          "observed": {
+            "findings": [],
+            "path": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\sandboxes\\DEV\\workspace\\backend\\app\\main.py"
+          },
+          "passed": true,
+          "validator_id": "api.no_catch_all_routes"
+        },
+        "no_future_endpoint_paths": true,
+        "uses_react_bootstrap_contract": true
+      },
+      "passed": true,
+      "validator_id": "brewmaster.acceptance_gate"
+    }
+  },
+  "coverage_gate": "principle_coverage_100_percent",
+  "dev_materialization": {
+    "manifest": "dev-materialization-manifest.json",
+    "status": "pass"
+  },
+  "factory_skills": {
+    "errors": [],
+    "status": "pass"
+  },
+  "frontend_template": {
+    "errors": [],
+    "status": "pass"
+  },
+  "milestone": {
+    "gate": {
+      "decision": "advance",
+      "evidence": [
+        "milestone-validation-report.json",
+        "qa-promotion-report.json",
+        "regression-report.json"
+      ],
+      "gates": {
+        "milestone_validation": "pass",
+        "qa_promotion": "pass",
+        "regression": "pass"
+      },
+      "milestone_id": "HITO-001",
+      "status": "pass"
+    },
+    "id": "HITO-001",
+    "validation": {
+      "acceptance_criteria": [
+        "Expected artifacts exist in the run output or DEV workspace.",
+        "Milestone validators pass with evidence.",
+        "DEV workspace is promoted to QA only after validation passes.",
+        "Regression evidence for accepted dependencies is present."
+      ],
+      "dependencies": [],
+      "errors": [],
+      "expected_artifacts": [
+        "contracts/permissions.json",
+        "backend/app/core/security.py",
+        "backend/app/main.py",
+        "frontend/src/App.jsx",
+        "tests/test_contracts.py"
+      ],
+      "milestone_id": "HITO-001",
+      "missing_artifacts": [],
+      "observed_hash": "sha256:e3de6c3173985a081567b06d0ff00d23f674e8f29edd290d2ac848a67f027232",
+      "present_artifacts": [
+        "contracts/permissions.json",
+        "backend/app/core/security.py",
+        "backend/app/main.py",
+        "frontend/src/App.jsx",
+        "tests/test_contracts.py"
+      ],
+      "status": "pass",
+      "validators": [
+        "milestone.expected_artifacts",
+        "milestone.dependencies",
+        "milestone.qa_promotion",
+        "milestone.regression"
+      ]
+    }
+  },
+  "project_isolation": {
+    "errors": [],
+    "status": "pass"
+  },
+  "qa_promotion": {
+    "blocking_findings": 0,
+    "deletions": [
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/alembic/versions/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/core/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/db/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/domain/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/jobs/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/services/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/alembic/__pycache__"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/jobs"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/services"
+      },
+      {
+        "action": "deleted_empty_dir",
+        "path": "backend/app/__pycache__"
+      }
+    ],
+    "errors": [],
+    "flow": "DEV->QA",
+    "policy": {
+      "external_writes": 0,
+      "promote_only_after_validation": true,
+      "reserved_root_files_skipped": [
+        "FRONTEND_CONTRACT.md",
+        "PLANTILLA_FRONTEND.md"
+      ]
+    },
+    "source": "project/brewmaster/sandboxes/DEV/workspace",
+    "status": "pass",
+    "target": "project/brewmaster/sandboxes/QA/workspace",
+    "writes": [
+      {
+        "action": "unchanged",
+        "path": "backend/alembic/env.py",
+        "sha256": "sha256:e38af744f386706486037729d0d12a92a1b1e8a9ab064d13c5ffdfced15e766a"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/alembic/versions/0001_brewmaster_schema.py",
+        "sha256": "sha256:c0fa050bc545f8a032ada5f0c6ddfe384387ef13f725f5c5f58d79ddc283edb9"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/core/responses.py",
+        "sha256": "sha256:b2fe80fd1c65b2edecbc8e08bc4c17ced960ad0f4b686f2871a50f46fec235a5"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/core/security.py",
+        "sha256": "sha256:db6a2cfc959987d297265aadb5f3ba20ce8602fe52dd7ae92b4e4970d4037569"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/db/models.py",
+        "sha256": "sha256:2dc501fd0dcd457f2b885e40f195c8056bf30d734f3a6b5a6288771025800806"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/db/session.py",
+        "sha256": "sha256:62501f939e03cbf3b72a3d981c542c7d8b686b81e6914e4ae140b3a01a051618"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/domain/catalog.py",
+        "sha256": "sha256:dbef57af5cab005976e2ab29410c242b5632cbce928ee2acd5700a387b411db2"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/app/main.py",
+        "sha256": "sha256:f7e9a98171ceadaacbb55bc5d4aefeb0467386bd4d03b51db8091ad18a4b87fe"
+      },
+      {
+        "action": "unchanged",
+        "path": "backend/pyproject.toml",
+        "sha256": "sha256:d28b8dd05b68884d6408ede40df29dbc73a97cd75b4db0cb87268b455f984ce2"
+      },
+      {
+        "action": "unchanged",
+        "path": "contracts/brewmaster-blueprint.json",
+        "sha256": "sha256:b7fe805ecdfbc62d59ab4d5adb1adcaf171fdce494e271337ff2cfc07d52bceb"
+      },
+      {
+        "action": "unchanged",
+        "path": "contracts/coverage.json",
+        "sha256": "sha256:3c54a39ac3051e329ed00d8c858f5d85950b280e95bc5f603e26e115814d7067"
+      },
+      {
+        "action": "unchanged",
+        "path": "contracts/domain-model.json",
+        "sha256": "sha256:a4bbcfa7dbc6b033e06156b4bd1688581742382b44b4abd8e66c6c6df3486e39"
+      },
+      {
+        "action": "unchanged",
+        "path": "contracts/permissions.json",
+        "sha256": "sha256:46e9caa43756d6c7c30d82252e0f82ed22ce53f7278144f222d13100bdbb3ddb"
+      },
+      {
+        "action": "unchanged",
+        "path": "docs/api-contract.md",
+        "sha256": "sha256:84aa32f17447c573c03b3bbc3ac8f78c913ebf3cedcb1c5129c892c7a837cc52"
+      },
+      {
+        "action": "unchanged",
+        "path": "docs/architecture.md",
+        "sha256": "sha256:15456d7449e281ab72fb99c707e830aaedd898544fea41edb2cc40db6cb60f9a"
+      },
+      {
+        "action": "unchanged",
+        "path": "docs/test-strategy.md",
+        "sha256": "sha256:93f341d39be2b332ff5f74d6b72a12da6d8f17fb6d45feebf1018a59950e6a2e"
+      },
+      {
+        "action": "unchanged",
+        "path": "docs/traceability.md",
+        "sha256": "sha256:248a207c323ab58a915b250cf2ab9c643087129eae40f71c1956e2779098cf6d"
+      },
+      {
+        "action": "unchanged",
+        "path": "frontend/package.json",
+        "sha256": "sha256:6a201c776cf48ad774a45c33e6ebf2796e7ac6b39a7de06221b83caedae4b6b4"
+      },
+      {
+        "action": "unchanged",
+        "path": "frontend/src/api/client.js",
+        "sha256": "sha256:d0642d0320d97b14a23508ccc3e51dd576456b02572a2b60001eb195190ffb36"
+      },
+      {
+        "action": "unchanged",
+        "path": "frontend/src/App.jsx",
+        "sha256": "sha256:62a71647216804e26ac4ab8610097990f11381fe2870c908645f0e7d8c2cd0dd"
+      },
+      {
+        "action": "unchanged",
+        "path": "frontend/src/routes.js",
+        "sha256": "sha256:e3deeed110c32c070016406b2f5a1bb3da73be83704ef5414ff01035bdf6ec5b"
+      },
+      {
+        "action": "unchanged",
+        "path": "frontend/src/screens/catalog.js",
+        "sha256": "sha256:2246668756f3edcc1c31524291bc9751f4c956066d98710d63d672f2ed380910"
+      },
+      {
+        "action": "unchanged",
+        "path": "README.md",
+        "sha256": "sha256:332a630a2ffa5f1f0845655325f214a21721f5cde17ad41529514f5cc1fbd562"
+      },
+      {
+        "action": "unchanged",
+        "path": "tests/test_auth_foundation.py",
+        "sha256": "sha256:66f9913c1cdf951a19ccd7e31cd74ee90c6e03240673f569ac2dcaa20e3e70e2"
+      },
+      {
+        "action": "unchanged",
+        "path": "tests/test_contracts.py",
+        "sha256": "sha256:e1ff84e76a37bcc11f286126d824942bc97d425b72fb60ec08625ead19f0ac94"
+      }
+    ]
+  },
+  "regression": {
+    "checked_dependencies": [],
+    "milestone_id": "HITO-001",
+    "missing_qa_artifacts": [],
+    "status": "pass",
+    "strategy": "accepted dependency milestones must remain validated or approved"
+  },
+  "static_policy": {
+    "blocking_findings": 0,
+    "findings": []
+  },
+  "status": "pass",
+  "tests": "see pytest/unittest evidence from repository run"
+}

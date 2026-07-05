@@ -6,6 +6,7 @@ Esta politica es obligatoria para todos los proyectos WEBFORGE.
 - Ningun proyecto lee memoria ni aprendizaje persistente de la fabrica.
 - Ningun aprendizaje de proyecto se escribe en la memoria de la fabrica.
 - Cada proyecto tiene `sandboxes/DEV` y `sandboxes/QA` autonomos.
+- Cada proyecto tiene `ROADMAP.md` y estados de hito bajo `milestones/`.
 - DEV y QA son clones independientes de `versions/<version>`.
 - Todo proyecto y sandbox declara su contrato frontend obligatorio.
 - Las pruebas incrementales salen de versiones `v0001`, `v0002`, ... dentro del proyecto.

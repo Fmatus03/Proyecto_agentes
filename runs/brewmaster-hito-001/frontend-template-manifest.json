@@ -1,0 +1,14 @@
+{
+  "applies_to": "all_projects_all_versions_all_sandboxes",
+  "contract_file": "FRONTEND_CONTRACT.md",
+  "hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+  "mandatory": true,
+  "required_files": [
+    "frontend/package.json",
+    "frontend/src/App.jsx",
+    "frontend/src/routes.js",
+    "frontend/src/screens/catalog.js"
+  ],
+  "source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+  "template_name": "BREWMASTER_REACT_BOOTSTRAP"
+}

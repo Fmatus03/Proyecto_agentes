@@ -47,6 +47,7 @@ class BudgetManager:
             "cost_usd": budget.get("cost_usd", 0),
             "latency_ms": budget.get("latency_ms", 0),
         }
+        self.initial = dict(self.remaining)
         self.usage: list[dict[str, Any]] = []
 
     def assert_tool_available(self, tool_id: str) -> PolicyDecision:
@@ -59,10 +60,18 @@ class BudgetManager:
         self.usage.append({"tool_id": tool_id, "status": status, "cost_usd": 0, "tokens": 0})
 
     def write(self, output_dir: Path) -> None:
+        consumed_tool_calls = max(0, int(self.initial.get("tool_calls", 0)) - int(self.remaining.get("tool_calls", 0)))
         write_json(
             output_dir / "billing-ledger.json",
             {
                 "version": self.version,
+                "estimated_consumption": {
+                    "basis": "deterministic local WEBFORGE run; no LLM, MCP or external billing is invoked by the harness",
+                    "tool_calls": consumed_tool_calls or len(self.usage),
+                    "mcp_calls": 0,
+                    "tokens": 0,
+                    "cost_usd": 0,
+                },
                 "remaining": self.remaining,
                 "usage": self.usage,
                 "budget_exceeded": False,

@@ -22,15 +22,21 @@ class DevSandboxMaterializer:
         self.dev_sandbox = self._sandbox("DEV")
         self.workspace_root = (self.dev_sandbox.path / "workspace").resolve()
 
-    def materialize_bundle(self, bundle: list[dict[str, Any]], manifest_path: Path) -> dict[str, Any]:
+    def materialize_bundle(
+        self,
+        bundle: list[dict[str, Any]],
+        manifest_path: Path,
+        prune_unlisted: bool = False,
+    ) -> dict[str, Any]:
         errors: list[dict[str, Any]] = []
         normalized = self._normalize_bundle(bundle, errors)
         if errors:
-            report = self._report("error", [], errors)
+            report = self._report("error", [], [], errors)
             write_json(manifest_path, report)
             return report
 
         writes: list[dict[str, Any]] = []
+        desired_paths = {item["path"] for item in normalized}
         for item in normalized:
             target = item["target"]
             content = item["content"]
@@ -50,7 +56,8 @@ class DevSandboxMaterializer:
                 }
             )
 
-        report = self._report("pass", writes, [])
+        deletions = self._prune_unlisted(desired_paths) if prune_unlisted else []
+        report = self._report("pass", writes, deletions, [])
         write_json(manifest_path, report)
         return report
 
@@ -148,7 +155,41 @@ class DevSandboxMaterializer:
                 return sandbox
         raise ValueError(f"missing sandbox {name}")
 
-    def _report(self, status: str, writes: list[dict[str, Any]], errors: list[dict[str, Any]]) -> dict[str, Any]:
+    def _prune_unlisted(self, desired_paths: set[str]) -> list[dict[str, Any]]:
+        deletions: list[dict[str, Any]] = []
+        if not self.workspace_root.exists():
+            return deletions
+        for source in sorted(path for path in self.workspace_root.rglob("*") if path.is_file()):
+            rel = source.relative_to(self.workspace_root)
+            rel_path = rel.as_posix()
+            if rel_path in desired_paths:
+                continue
+            if len(rel.parts) == 1 and rel.parts[0] in RESERVED_WORKSPACE_FILES:
+                continue
+            old_hash = sha256_file(source)
+            source.unlink()
+            deletions.append({"path": rel_path, "sha256": old_hash, "action": "deleted"})
+        for directory in sorted(
+            (path for path in self.workspace_root.rglob("*") if path.is_dir()),
+            key=lambda item: len(item.parts),
+            reverse=True,
+        ):
+            if directory == self.workspace_root:
+                continue
+            if any(directory.iterdir()):
+                continue
+            rel_path = directory.relative_to(self.workspace_root).as_posix()
+            directory.rmdir()
+            deletions.append({"path": rel_path, "action": "deleted_empty_dir"})
+        return deletions
+
+    def _report(
+        self,
+        status: str,
+        writes: list[dict[str, Any]],
+        deletions: list[dict[str, Any]],
+        errors: list[dict[str, Any]],
+    ) -> dict[str, Any]:
         return {
             "api": MATERIALIZER_API_VERSION,
             "status": status,
@@ -163,12 +204,15 @@ class DevSandboxMaterializer:
                 "secrets_denied": True,
                 "external_writes": 0,
                 "production_data": False,
+                "prune_unlisted_supported": True,
             },
             "bundle": {
                 "file_count": len(writes),
                 "total_bytes": sum(int(item["bytes"]) for item in writes),
+                "pruned_file_count": len(deletions),
             },
             "writes": writes,
+            "deletions": deletions,
             "errors": errors,
             "blocking_findings": len(errors),
         }

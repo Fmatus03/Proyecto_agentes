@@ -376,17 +376,22 @@ class FactoryPhaseHandlersMixin:
     def _phase_implement(self, _: dict[str, Any]) -> PhaseResult:
         bundle = self._implementation_bundle()
         if self._is_brewmaster():
-            self._write_json_artifact("brewmaster-blueprint.json", brewmaster_blueprint())
-            self._write_json_artifact("brewmaster-coverage.json", brewmaster_coverage())
+            self._write_json_artifact("brewmaster-blueprint.json", brewmaster_blueprint(self.work_order.milestone_id))
+            self._write_json_artifact("brewmaster-coverage.json", brewmaster_coverage(self.work_order.milestone_id))
             self._add_claim(
                 "BrewMaster MVP blueprint covers modules, screens, entities, API v1 endpoints and critical transactional rules.",
                 ["EV-SRC-001"],
                 "brewmaster-coverage.json",
             )
         materializer = DevSandboxMaterializer(self.project_root, self.project_workspace)
+        prune_dev_workspace = self._is_brewmaster() and self.work_order.milestone_id.upper().startswith("HITO-")
         materialize_result = self.tools.run(
             "tool.sandbox.dev_materialize",
-            lambda: materializer.materialize_bundle(bundle, self._artifact("dev-materialization-manifest.json")),
+            lambda: materializer.materialize_bundle(
+                bundle,
+                self._artifact("dev-materialization-manifest.json"),
+                prune_unlisted=prune_dev_workspace,
+            ),
         )
         self.artifacts.add("dev-materialization-manifest.json")
         self._write_text_artifact(
@@ -425,7 +430,7 @@ class FactoryPhaseHandlersMixin:
                     "api": materialize_result.output.get("api"),
                     "writes": writes,
                 },
-                "brewmaster": brewmaster_coverage() if self._is_brewmaster() else None,
+                "brewmaster": brewmaster_coverage(self.work_order.milestone_id) if self._is_brewmaster() else None,
             },
         )
         self._add_claim(
@@ -525,7 +530,8 @@ class FactoryPhaseHandlersMixin:
         skill_errors = validate_skill_package(self.project_root)
         materialization_manifest = self._read_json_artifact("dev-materialization-manifest.json", {})
         materialization_status = materialization_manifest.get("status", "missing")
-        brewmaster_gate = brewmaster_coverage()["acceptance_gate"] if self._is_brewmaster() else {}
+        brewmaster_coverage_report = brewmaster_coverage(self.work_order.milestone_id) if self._is_brewmaster() else {}
+        brewmaster_gate = brewmaster_coverage_report.get("acceptance_gate", {}) if self._is_brewmaster() else {}
         brewmaster_frontend_missing: list[str] = []
         brewmaster_workspace: Path | None = None
         if self._is_brewmaster():
@@ -541,7 +547,11 @@ class FactoryPhaseHandlersMixin:
                 "does_not_force_plantilla_frontend": self.project_workspace.frontend_template_name != "PLANTILLA_FRONTEND",
                 "materialized_react_bootstrap_files": not brewmaster_frontend_missing,
             }
-            brewmaster_validation = brewmaster_acceptance_gate(brewmaster_gate, 40, brewmaster_workspace)
+            brewmaster_validation = brewmaster_acceptance_gate(
+                brewmaster_gate,
+                int(brewmaster_coverage_report.get("endpoint_count", 40)),
+                brewmaster_workspace,
+            )
         else:
             brewmaster_validation = ValidationOutcome(
                 "brewmaster.not_applicable",

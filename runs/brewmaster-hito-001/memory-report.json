@@ -1,0 +1,12 @@
+{
+  "activated_items": [],
+  "factory_learning_write_allowed": false,
+  "factory_memory_read_allowed": false,
+  "persistent_memory_mode": "project_scoped_propose_only",
+  "project_id": "brewmaster",
+  "project_learning_root": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\learning",
+  "project_memory_root": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\memory",
+  "project_proposals_count": 1,
+  "shared_with_factory": false,
+  "tainted_items": []
+}

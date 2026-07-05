@@ -443,6 +443,66 @@ class WebForgeRuntimeTests(unittest.TestCase):
                 env=env,
             )
 
+    def test_brewmaster_hito1_materializes_foundation_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            wo = {
+                "objective": "Implementar BrewMaster Hito 1 Fundamentos.",
+                "project_id": "BrewMaster",
+                "project_version": "v0001",
+                "milestone_id": "HITO-001",
+                "type": "brewmaster_mvp",
+                "scope": "local_artifacts_only",
+                "side_effects": "no_external_writes_no_deploy",
+                "authorized_sources": [
+                    "fabricas_agentes_ia.md",
+                    "projects/BrewMaster/brewmaster_especificacion_completa.md",
+                ],
+                "acceptance_criteria": [
+                    "HITO-001 implementa solo auth JWT, usuarios, roles, permisos y auditoria.",
+                    "HITO-001 no expone endpoints de hitos posteriores.",
+                    "HITO-001 genera evidencia incremental DEV, QA y regresion.",
+                ],
+                "budget": {"tool_calls": 200, "mcp_calls": 0, "cost_usd": 0},
+                "metadata": {"blueprint": "brewmaster"},
+            }
+            tmp_root = Path(tmp) / "factory"
+            tmp_root.mkdir()
+            write_minimal_skill_package(tmp_root)
+            report = WebForgeFactory(tmp_root).run(
+                wo,
+                Path(tmp) / "run",
+                sources=[
+                    ROOT / "fabricas_agentes_ia.md",
+                    ROOT / "projects" / "BrewMaster" / "brewmaster_especificacion_completa.md",
+                ],
+            )
+            self.assertEqual("complete", report["status"])
+            coverage = json.loads((Path(tmp) / "run" / "brewmaster-coverage.json").read_text(encoding="utf-8"))
+            self.assertEqual("HITO-001", coverage["milestone_id"])
+            self.assertEqual(1, coverage["module_count"])
+            self.assertEqual(3, coverage["screen_count"])
+            self.assertEqual(12, coverage["endpoint_count"])
+            self.assertTrue(coverage["acceptance_gate"]["no_future_endpoint_paths"])
+            dev = next(item for item in report["project_sandboxes"]["sandboxes"] if item["name"] == "DEV")
+            qa = next(item for item in report["project_sandboxes"]["sandboxes"] if item["name"] == "QA")
+            workspace = tmp_root / dev["path"] / "workspace"
+            qa_workspace = tmp_root / qa["path"] / "workspace"
+            main_py = (workspace / "backend" / "app" / "main.py").read_text(encoding="utf-8")
+            self.assertIn('@app.post("/api/v1/auth/login")', main_py)
+            self.assertIn('@app.get("/api/v1/audit-logs")', main_py)
+            self.assertNotIn("/api/v1/supplies", main_py)
+            self.assertNotIn("/api/v1/batches", main_py)
+            self.assertFalse((workspace / "backend" / "app" / "services" / "sales.py").exists())
+            self.assertFalse((qa_workspace / "backend" / "app" / "services" / "sales.py").exists())
+            env = dict(os.environ)
+            env["PYTHONPATH"] = str(workspace / "backend")
+            env["PYTHONDONTWRITEBYTECODE"] = "1"
+            subprocess.check_call(
+                [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", str(workspace / "tests")],
+                cwd=workspace,
+                env=env,
+            )
+
     def test_brewmaster_default_milestones_match_j12(self) -> None:
         wo = work_order()
         wo["objective"] = "Implementar BrewMaster por hitos J.12."

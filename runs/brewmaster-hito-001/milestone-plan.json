@@ -1,0 +1,67 @@
+{
+  "acceptance_criteria": [
+    "Expected artifacts exist in the run output or DEV workspace.",
+    "Milestone validators pass with evidence.",
+    "DEV workspace is promoted to QA only after validation passes.",
+    "Regression evidence for accepted dependencies is present."
+  ],
+  "agents": [
+    "agent.intake",
+    "agent.architect_planner",
+    "agent.implementer",
+    "agent.qa",
+    "agent.security",
+    "agent.close"
+  ],
+  "allowed_tools": [
+    "tool.sandbox.dev_materialize",
+    "tool.policy.static",
+    "tool.validation.artifacts",
+    "tool.security.secrets",
+    "tool.security.deps",
+    "tool.sbom.generate"
+  ],
+  "dependencies": [],
+  "evidence": [],
+  "expected_artifacts": [
+    "contracts/permissions.json",
+    "backend/app/core/security.py",
+    "backend/app/main.py",
+    "frontend/src/App.jsx",
+    "tests/test_contracts.py"
+  ],
+  "gates": [
+    "milestone_validation",
+    "qa_promotion",
+    "regression"
+  ],
+  "inputs": [
+    "J.12 Hito 1",
+    "H",
+    "J.4",
+    "J.7",
+    "J.8 RNF-01/RNF-02"
+  ],
+  "milestone_id": "HITO-001",
+  "name": "Fundamentos",
+  "objective": "Establecer Auth JWT, usuarios, roles, permisos, auditoria y estructura base del proyecto.",
+  "outputs": [
+    "DEV implementation bundle",
+    "QA promotion report",
+    "milestone evidence"
+  ],
+  "risks": [
+    "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+  ],
+  "scope": "J.12 Fundamentos",
+  "state": "pending",
+  "traceability": [
+    "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+  ],
+  "validators": [
+    "milestone.expected_artifacts",
+    "milestone.dependencies",
+    "milestone.qa_promotion",
+    "milestone.regression"
+  ]
+}

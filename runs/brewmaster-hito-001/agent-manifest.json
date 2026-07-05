@@ -1,0 +1,123 @@
+{
+  "analyze": {
+    "agent_id": "agent.consistency_reviewer",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "AnalyzeReport"
+  },
+  "checklist": {
+    "agent_id": "agent.requirements_qa",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Checklist"
+  },
+  "clarify": {
+    "agent_id": "agent.clarifier",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Clarifications"
+  },
+  "close": {
+    "agent_id": "agent.close",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "FinalReport"
+  },
+  "constitution": {
+    "agent_id": "agent.constitution",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Constitution"
+  },
+  "context": {
+    "agent_id": "agent.context_rag",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "ContextPack"
+  },
+  "deploy_checkpoint": {
+    "agent_id": "agent.release_sre",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "DeployCheckpoint"
+  },
+  "implement": {
+    "agent_id": "agent.implementer",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [
+      "tool.sandbox.dev_materialize"
+    ],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "ImplementationReport"
+  },
+  "intake": {
+    "agent_id": "agent.intake",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "WorkOrder"
+  },
+  "observe": {
+    "agent_id": "agent.observability_cost",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "ObservabilityReport"
+  },
+  "plan": {
+    "agent_id": "agent.architect_planner",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Plan"
+  },
+  "pr_handoff": {
+    "agent_id": "agent.integrator_pr",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "PRBundle"
+  },
+  "security": {
+    "agent_id": "agent.security",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [
+      "tool.security.secrets",
+      "tool.security.deps",
+      "tool.sbom.generate"
+    ],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "SecurityReview"
+  },
+  "specify": {
+    "agent_id": "agent.spec_parser",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Spec"
+  },
+  "tasks": {
+    "agent_id": "agent.task_planner",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "Tasks"
+  },
+  "validate": {
+    "agent_id": "agent.qa",
+    "allowed_mcp_servers": [],
+    "allowed_tools": [
+      "tool.policy.static",
+      "tool.validation.artifacts"
+    ],
+    "entrypoint": "harness.run_agent",
+    "output_schema_ref": "ValidationReport"
+  }
+}

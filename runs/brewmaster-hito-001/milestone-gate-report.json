@@ -1,0 +1,15 @@
+{
+  "decision": "advance",
+  "evidence": [
+    "milestone-validation-report.json",
+    "qa-promotion-report.json",
+    "regression-report.json"
+  ],
+  "gates": {
+    "milestone_validation": "pass",
+    "qa_promotion": "pass",
+    "regression": "pass"
+  },
+  "milestone_id": "HITO-001",
+  "status": "pass"
+}

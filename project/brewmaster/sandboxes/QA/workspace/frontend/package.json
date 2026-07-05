@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "bootstrap": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  },
+  "name": "brewmaster-frontend",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "version": "0.1.0"
+}

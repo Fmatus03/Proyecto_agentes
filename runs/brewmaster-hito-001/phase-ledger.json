@@ -1,0 +1,1267 @@
+[
+  {
+    "agent_id": "agent.intake",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "work_order.json"
+        ],
+        "message": "schema pass",
+        "name": "schema",
+        "observed": {},
+        "phase": "intake",
+        "principles": [
+          "P01",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "billing-ledger.json"
+        ],
+        "message": "budget counters are non-negative",
+        "name": "budget",
+        "observed": {
+          "remaining": {
+            "cost_usd": 0,
+            "latency_ms": 0,
+            "mcp_calls": 0,
+            "tokens": 0,
+            "tool_calls": 194
+          }
+        },
+        "phase": "intake",
+        "principles": [
+          "P01",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "budget.remaining_non_negative"
+      },
+      {
+        "evidence": [
+          "project-isolation-policy.md",
+          "project-manifest.json",
+          "project-sandboxes.json"
+        ],
+        "message": "project root, DEV sandbox and QA sandbox are isolated",
+        "name": "project_isolation",
+        "observed": {},
+        "phase": "intake",
+        "principles": [
+          "P03",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "frontend-template-policy.md",
+          "frontend-template-manifest.json"
+        ],
+        "message": "frontend contract is mandatory and present",
+        "name": "frontend_template",
+        "observed": {},
+        "phase": "intake",
+        "principles": [
+          "P02",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "factory-skill-manifest.json",
+          "factory-tool-manifest.json"
+        ],
+        "message": "Codex skill and tool catalog are present",
+        "name": "factory_skills",
+        "observed": {},
+        "phase": "intake",
+        "principles": [
+          "P05",
+          "P06",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "roadmap.md",
+          "milestone-plan.json",
+          "milestone-state.json"
+        ],
+        "message": "milestone HITO-001 is ready",
+        "name": "milestone",
+        "observed": {},
+        "phase": "intake",
+        "principles": [
+          "P02",
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      }
+    ],
+    "outputs": {
+      "work_order.json": "Work order normalized."
+    },
+    "phase": "intake",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.constitution",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "constitution.md"
+        ],
+        "message": "12P complete",
+        "name": "constitution",
+        "observed": {},
+        "phase": "constitution",
+        "principles": [
+          "P05",
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      }
+    ],
+    "outputs": {
+      "constitution.md": "P01-P12 instantiated."
+    },
+    "phase": "constitution",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.spec_parser",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "spec.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "spec",
+        "observed": {
+          "chars": 1468,
+          "missing_terms": [],
+          "path": "spec.md"
+        },
+        "phase": "specify",
+        "principles": [
+          "P02",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "spec.md": "Spec generated."
+    },
+    "phase": "specify",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.clarifier",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "clarifications.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "clarification",
+        "observed": {
+          "chars": 714,
+          "missing_terms": [],
+          "path": "clarifications.md"
+        },
+        "phase": "clarify",
+        "principles": [
+          "P02",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "clarifications.md": "Critical runtime decisions closed."
+    },
+    "phase": "clarify",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.requirements_qa",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "checklist.md"
+        ],
+        "message": "markdown table statuses are acceptable",
+        "name": "checklist",
+        "observed": {
+          "path": "checklist.md",
+          "statuses": [
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass",
+            "pass"
+          ],
+          "unexpected": []
+        },
+        "phase": "checklist",
+        "principles": [
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "markdown.table_status"
+      }
+    ],
+    "outputs": {
+      "checklist.md": "Critical checklist passed."
+    },
+    "phase": "checklist",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.context_rag",
+    "evidence_ids": [
+      "EV-SRC-001",
+      "EV-SRC-002",
+      "EV-SRC-003",
+      "EV-SRC-004"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "context-pack.json"
+        ],
+        "message": "authorized context available",
+        "name": "context",
+        "observed": {},
+        "phase": "context",
+        "principles": [
+          "P03",
+          "P04",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "evidence-register.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "evidence",
+        "observed": {
+          "chars": 783,
+          "missing_terms": [],
+          "path": "evidence-register.md"
+        },
+        "phase": "context",
+        "principles": [
+          "P02",
+          "P04"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "context-pack.json": "Minimal context pack generated.",
+      "rag-index-manifest.json": "RAG cache manifest generated."
+    },
+    "phase": "context",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.architect_planner",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "plan.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "plan_validation",
+        "observed": {
+          "chars": 978,
+          "missing_terms": [],
+          "path": "plan.md"
+        },
+        "phase": "plan",
+        "principles": [
+          "P02",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      },
+      {
+        "evidence": [
+          "billing-policy.yaml"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "dependency",
+        "observed": {
+          "chars": 91,
+          "missing_terms": [],
+          "path": "billing-policy.yaml"
+        },
+        "phase": "plan",
+        "principles": [
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      },
+      {
+        "evidence": [
+          "sandbox-policy.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "sandbox",
+        "observed": {
+          "chars": 326,
+          "missing_terms": [],
+          "path": "sandbox-policy.md"
+        },
+        "phase": "plan",
+        "principles": [
+          "P06",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      },
+      {
+        "evidence": [
+          "frontend-template-policy.md",
+          "frontend-template-manifest.json"
+        ],
+        "message": "frontend contract policy defined",
+        "name": "frontend_template",
+        "observed": {},
+        "phase": "plan",
+        "principles": [
+          "P02",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "factory-skill-manifest.json",
+          "factory-tool-manifest.json"
+        ],
+        "message": "WEBFORGE skill/tool interface defined",
+        "name": "factory_skills",
+        "observed": {},
+        "phase": "plan",
+        "principles": [
+          "P05",
+          "P06",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      }
+    ],
+    "outputs": {
+      "billing-policy.yaml": "Budget policy generated.",
+      "plan.md": "Plan generated."
+    },
+    "phase": "plan",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.task_planner",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "tasks.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "tasks",
+        "observed": {
+          "chars": 1993,
+          "missing_terms": [],
+          "path": "tasks.md"
+        },
+        "phase": "tasks",
+        "principles": [
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "tasks.md": "Atomic tasks generated."
+    },
+    "phase": "tasks",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.consistency_reviewer",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "analyze-report.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "analyze",
+        "observed": {
+          "chars": 474,
+          "missing_terms": [],
+          "path": "analyze-report.md"
+        },
+        "phase": "analyze",
+        "principles": [
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "analyze-report.md": "No critical drift."
+    },
+    "phase": "analyze",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.implementer",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "dev-materialization-manifest.json",
+          "tool-logs.jsonl"
+        ],
+        "message": "DEV bundle materialized through P12/INV isolation API",
+        "name": "sandbox",
+        "observed": {},
+        "phase": "implement",
+        "principles": [
+          "P06",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "diff-report.json"
+        ],
+        "message": "json artifact has required keys",
+        "name": "policy",
+        "observed": {
+          "missing_keys": [],
+          "path": "diff-report.json"
+        },
+        "phase": "implement",
+        "principles": [
+          "P05",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.json_keys"
+      },
+      {
+        "evidence": [
+          "project-manifest.json",
+          "project-memory-policy.json",
+          "project-sandboxes.json"
+        ],
+        "message": "project workspace is isolated and ready",
+        "name": "project_isolation",
+        "observed": {},
+        "phase": "implement",
+        "principles": [
+          "P03",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "frontend-template-manifest.json"
+        ],
+        "message": "frontend contract manifests are present",
+        "name": "frontend_template",
+        "observed": {},
+        "phase": "implement",
+        "principles": [
+          "P02",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "factory-skill-manifest.json",
+          "factory-tool-manifest.json"
+        ],
+        "message": "WEBFORGE Skill and deterministic tools are present",
+        "name": "factory_skills",
+        "observed": {},
+        "phase": "implement",
+        "principles": [
+          "P05",
+          "P06",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      }
+    ],
+    "outputs": {
+      "brewmaster-blueprint.json": "Canonical BrewMaster architecture and functional blueprint.",
+      "brewmaster-coverage.json": "BrewMaster coverage gates.",
+      "dev-materialization-manifest.json": "DEV bundle materialized through isolation API.",
+      "diff-report.json": "Diff scoped.",
+      "implementation-report.md": "Runtime controls active."
+    },
+    "phase": "implement",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.qa",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "validation-report.json"
+        ],
+        "message": "validation tools pass",
+        "name": "tests",
+        "observed": {},
+        "phase": "validate",
+        "principles": [
+          "P06",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "dev-materialization-manifest.json",
+          "tool-logs.jsonl"
+        ],
+        "message": "DEV materialization manifest pass",
+        "name": "sandbox",
+        "observed": {},
+        "phase": "validate",
+        "principles": [
+          "P06",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "principle-ledger.json"
+        ],
+        "message": "json artifact has required keys",
+        "name": "coverage",
+        "observed": {
+          "missing_keys": [],
+          "path": "principle-ledger.json"
+        },
+        "phase": "validate",
+        "principles": [
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.json_keys"
+      },
+      {
+        "evidence": [
+          "validation-report.json",
+          "project-sandboxes.json"
+        ],
+        "message": "project isolation validation pass",
+        "name": "project_isolation",
+        "observed": {},
+        "phase": "validate",
+        "principles": [
+          "P03",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "frontend-template-manifest.json",
+          "project-sandboxes.json"
+        ],
+        "message": "frontend contract validation pass",
+        "name": "frontend_template",
+        "observed": {},
+        "phase": "validate",
+        "principles": [
+          "P02",
+          "P05",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "factory-skill-manifest.json",
+          "factory-tool-manifest.json"
+        ],
+        "message": "WEBFORGE Skill and tool registry validation pass",
+        "name": "factory_skills",
+        "observed": {},
+        "phase": "validate",
+        "principles": [
+          "P05",
+          "P06",
+          "P08"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "brewmaster-blueprint.json",
+          "brewmaster-coverage.json"
+        ],
+        "message": "BrewMaster acceptance gate passed",
+        "name": "brewmaster_functional_coverage",
+        "observed": {
+          "alembic_has_operations": {
+            "message": "Alembic migration creates tables",
+            "observed": {
+              "empty_upgrade": false,
+              "has_create_table": true,
+              "path": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\sandboxes\\DEV\\workspace\\backend\\alembic\\versions\\0001_brewmaster_schema.py"
+            },
+            "passed": true,
+            "validator_id": "alembic.operations"
+          },
+          "defers_future_modules": true,
+          "does_not_force_plantilla_frontend": true,
+          "expected_endpoint_count": 12,
+          "has_api_v1": true,
+          "has_foundation_screens": true,
+          "has_hito1_endpoints": true,
+          "has_hito1_permissions": true,
+          "has_only_foundation_module": true,
+          "has_security_entities": true,
+          "has_v001_v024": true,
+          "is_hito_001_scope": true,
+          "materialized_react_bootstrap_files": true,
+          "no_catch_all_routes": {
+            "message": "no catch-all API routes found",
+            "observed": {
+              "findings": [],
+              "path": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\project\\brewmaster\\sandboxes\\DEV\\workspace\\backend\\app\\main.py"
+            },
+            "passed": true,
+            "validator_id": "api.no_catch_all_routes"
+          },
+          "no_future_endpoint_paths": true,
+          "uses_react_bootstrap_contract": true
+        },
+        "phase": "validate",
+        "principles": [
+          "P02",
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "brewmaster.acceptance_gate"
+      },
+      {
+        "evidence": [
+          "milestone-validation-report.json",
+          "milestone-evidence.md"
+        ],
+        "message": "milestone validators pass",
+        "name": "milestone_validation",
+        "observed": {
+          "acceptance_criteria": [
+            "Expected artifacts exist in the run output or DEV workspace.",
+            "Milestone validators pass with evidence.",
+            "DEV workspace is promoted to QA only after validation passes.",
+            "Regression evidence for accepted dependencies is present."
+          ],
+          "dependencies": [],
+          "errors": [],
+          "expected_artifacts": [
+            "contracts/permissions.json",
+            "backend/app/core/security.py",
+            "backend/app/main.py",
+            "frontend/src/App.jsx",
+            "tests/test_contracts.py"
+          ],
+          "milestone_id": "HITO-001",
+          "missing_artifacts": [],
+          "observed_hash": "sha256:e3de6c3173985a081567b06d0ff00d23f674e8f29edd290d2ac848a67f027232",
+          "present_artifacts": [
+            "contracts/permissions.json",
+            "backend/app/core/security.py",
+            "backend/app/main.py",
+            "frontend/src/App.jsx",
+            "tests/test_contracts.py"
+          ],
+          "status": "pass",
+          "validators": [
+            "milestone.expected_artifacts",
+            "milestone.dependencies",
+            "milestone.qa_promotion",
+            "milestone.regression"
+          ]
+        },
+        "phase": "validate",
+        "principles": [
+          "P02",
+          "P08",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "milestone.expected_artifacts"
+      },
+      {
+        "evidence": [
+          "qa-promotion-report.json"
+        ],
+        "message": "DEV promoted to QA after validation",
+        "name": "qa_promotion",
+        "observed": {
+          "blocking_findings": 0,
+          "deletions": [
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/alembic/versions/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/core/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/db/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/domain/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/jobs/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/services/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/alembic/__pycache__"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/jobs"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/services"
+            },
+            {
+              "action": "deleted_empty_dir",
+              "path": "backend/app/__pycache__"
+            }
+          ],
+          "errors": [],
+          "flow": "DEV->QA",
+          "policy": {
+            "external_writes": 0,
+            "promote_only_after_validation": true,
+            "reserved_root_files_skipped": [
+              "FRONTEND_CONTRACT.md",
+              "PLANTILLA_FRONTEND.md"
+            ]
+          },
+          "source": "project/brewmaster/sandboxes/DEV/workspace",
+          "status": "pass",
+          "target": "project/brewmaster/sandboxes/QA/workspace",
+          "writes": [
+            {
+              "action": "unchanged",
+              "path": "backend/alembic/env.py",
+              "sha256": "sha256:e38af744f386706486037729d0d12a92a1b1e8a9ab064d13c5ffdfced15e766a"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/alembic/versions/0001_brewmaster_schema.py",
+              "sha256": "sha256:c0fa050bc545f8a032ada5f0c6ddfe384387ef13f725f5c5f58d79ddc283edb9"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/core/responses.py",
+              "sha256": "sha256:b2fe80fd1c65b2edecbc8e08bc4c17ced960ad0f4b686f2871a50f46fec235a5"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/core/security.py",
+              "sha256": "sha256:db6a2cfc959987d297265aadb5f3ba20ce8602fe52dd7ae92b4e4970d4037569"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/db/models.py",
+              "sha256": "sha256:2dc501fd0dcd457f2b885e40f195c8056bf30d734f3a6b5a6288771025800806"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/db/session.py",
+              "sha256": "sha256:62501f939e03cbf3b72a3d981c542c7d8b686b81e6914e4ae140b3a01a051618"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/domain/catalog.py",
+              "sha256": "sha256:dbef57af5cab005976e2ab29410c242b5632cbce928ee2acd5700a387b411db2"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/app/main.py",
+              "sha256": "sha256:f7e9a98171ceadaacbb55bc5d4aefeb0467386bd4d03b51db8091ad18a4b87fe"
+            },
+            {
+              "action": "unchanged",
+              "path": "backend/pyproject.toml",
+              "sha256": "sha256:d28b8dd05b68884d6408ede40df29dbc73a97cd75b4db0cb87268b455f984ce2"
+            },
+            {
+              "action": "unchanged",
+              "path": "contracts/brewmaster-blueprint.json",
+              "sha256": "sha256:b7fe805ecdfbc62d59ab4d5adb1adcaf171fdce494e271337ff2cfc07d52bceb"
+            },
+            {
+              "action": "unchanged",
+              "path": "contracts/coverage.json",
+              "sha256": "sha256:3c54a39ac3051e329ed00d8c858f5d85950b280e95bc5f603e26e115814d7067"
+            },
+            {
+              "action": "unchanged",
+              "path": "contracts/domain-model.json",
+              "sha256": "sha256:a4bbcfa7dbc6b033e06156b4bd1688581742382b44b4abd8e66c6c6df3486e39"
+            },
+            {
+              "action": "unchanged",
+              "path": "contracts/permissions.json",
+              "sha256": "sha256:46e9caa43756d6c7c30d82252e0f82ed22ce53f7278144f222d13100bdbb3ddb"
+            },
+            {
+              "action": "unchanged",
+              "path": "docs/api-contract.md",
+              "sha256": "sha256:84aa32f17447c573c03b3bbc3ac8f78c913ebf3cedcb1c5129c892c7a837cc52"
+            },
+            {
+              "action": "unchanged",
+              "path": "docs/architecture.md",
+              "sha256": "sha256:15456d7449e281ab72fb99c707e830aaedd898544fea41edb2cc40db6cb60f9a"
+            },
+            {
+              "action": "unchanged",
+              "path": "docs/test-strategy.md",
+              "sha256": "sha256:93f341d39be2b332ff5f74d6b72a12da6d8f17fb6d45feebf1018a59950e6a2e"
+            },
+            {
+              "action": "unchanged",
+              "path": "docs/traceability.md",
+              "sha256": "sha256:248a207c323ab58a915b250cf2ab9c643087129eae40f71c1956e2779098cf6d"
+            },
+            {
+              "action": "unchanged",
+              "path": "frontend/package.json",
+              "sha256": "sha256:6a201c776cf48ad774a45c33e6ebf2796e7ac6b39a7de06221b83caedae4b6b4"
+            },
+            {
+              "action": "unchanged",
+              "path": "frontend/src/api/client.js",
+              "sha256": "sha256:d0642d0320d97b14a23508ccc3e51dd576456b02572a2b60001eb195190ffb36"
+            },
+            {
+              "action": "unchanged",
+              "path": "frontend/src/App.jsx",
+              "sha256": "sha256:62a71647216804e26ac4ab8610097990f11381fe2870c908645f0e7d8c2cd0dd"
+            },
+            {
+              "action": "unchanged",
+              "path": "frontend/src/routes.js",
+              "sha256": "sha256:e3deeed110c32c070016406b2f5a1bb3da73be83704ef5414ff01035bdf6ec5b"
+            },
+            {
+              "action": "unchanged",
+              "path": "frontend/src/screens/catalog.js",
+              "sha256": "sha256:2246668756f3edcc1c31524291bc9751f4c956066d98710d63d672f2ed380910"
+            },
+            {
+              "action": "unchanged",
+              "path": "README.md",
+              "sha256": "sha256:332a630a2ffa5f1f0845655325f214a21721f5cde17ad41529514f5cc1fbd562"
+            },
+            {
+              "action": "unchanged",
+              "path": "tests/test_auth_foundation.py",
+              "sha256": "sha256:66f9913c1cdf951a19ccd7e31cd74ee90c6e03240673f569ac2dcaa20e3e70e2"
+            },
+            {
+              "action": "unchanged",
+              "path": "tests/test_contracts.py",
+              "sha256": "sha256:e1ff84e76a37bcc11f286126d824942bc97d425b72fb60ec08625ead19f0ac94"
+            }
+          ]
+        },
+        "phase": "validate",
+        "principles": [
+          "P06",
+          "P08",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "milestone.qa_promotion"
+      },
+      {
+        "evidence": [
+          "regression-report.json",
+          "incremental-traceability.md"
+        ],
+        "message": "accepted dependencies remain valid",
+        "name": "regression",
+        "observed": {
+          "checked_dependencies": [],
+          "milestone_id": "HITO-001",
+          "missing_qa_artifacts": [],
+          "status": "pass",
+          "strategy": "accepted dependency milestones must remain validated or approved"
+        },
+        "phase": "validate",
+        "principles": [
+          "P08",
+          "P09",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "milestone.regression"
+      }
+    ],
+    "outputs": {
+      "milestone-gate-report.json": "Milestone gate decision generated.",
+      "milestone-validation-report.json": "Milestone validators generated.",
+      "qa-promotion-report.json": "DEV to QA promotion report generated.",
+      "regression-report.json": "Milestone regression report generated.",
+      "validation-report.json": "Validation report generated."
+    },
+    "phase": "validate",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.security",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "secrets-report.json"
+        ],
+        "message": "secret scan pass",
+        "name": "secrets",
+        "observed": {},
+        "phase": "security",
+        "principles": [
+          "P03",
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "dependency-report.json"
+        ],
+        "message": "dependency scan pass",
+        "name": "dependency",
+        "observed": {},
+        "phase": "security",
+        "principles": [
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "sbom.json"
+        ],
+        "message": "SBOM generated",
+        "name": "sbom",
+        "observed": {},
+        "phase": "security",
+        "principles": [
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "manual"
+      },
+      {
+        "evidence": [
+          "mcp-policy.yaml",
+          "mcp-policy.json",
+          "mcp-invocations.jsonl"
+        ],
+        "message": "MCP default deny active",
+        "name": "mcp_policy",
+        "observed": {
+          "allowlist": [],
+          "default": "deny"
+        },
+        "phase": "security",
+        "principles": [
+          "P11"
+        ],
+        "status": "pass",
+        "validator_id": "mcp.default_deny"
+      }
+    ],
+    "outputs": {
+      "sbom.json": "SBOM generated.",
+      "security-review.md": "Security review generated."
+    },
+    "phase": "security",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.integrator_pr",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "approval-matrix.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "human_approval",
+        "observed": {
+          "chars": 316,
+          "missing_terms": [],
+          "path": "approval-matrix.md"
+        },
+        "phase": "pr_handoff",
+        "principles": [
+          "P07",
+          "P11"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "PRBundle.md": "PR handoff bundle prepared."
+    },
+    "phase": "pr_handoff",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.release_sre",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "rollback-plan.md",
+          "deploy-plan.md"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "rollback",
+        "observed": {
+          "chars": 140,
+          "missing_terms": [],
+          "path": "deploy-plan.md"
+        },
+        "phase": "deploy_checkpoint",
+        "principles": [
+          "P12"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "deploy-plan.md": "Deploy checkpoint recorded."
+    },
+    "phase": "deploy_checkpoint",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.observability_cost",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "billing-ledger.json",
+          "log.jsonl",
+          "tool-logs.jsonl",
+          "mcp-invocations.jsonl",
+          "log-completeness-report.json"
+        ],
+        "message": "all required artifacts exist",
+        "name": "observability",
+        "observed": {
+          "missing": [],
+          "required": [
+            "billing-ledger.json",
+            "log.jsonl",
+            "tool-logs.jsonl",
+            "mcp-invocations.jsonl",
+            "log-completeness-report.json"
+          ]
+        },
+        "phase": "observe",
+        "principles": [
+          "P09"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.exists"
+      }
+    ],
+    "outputs": {
+      "billing-ledger.json": "Billing ledger written.",
+      "metrics.json": "Metrics written."
+    },
+    "phase": "observe",
+    "status": "pass"
+  },
+  {
+    "agent_id": "agent.close",
+    "evidence_ids": [
+      "EV-SRC-001"
+    ],
+    "gates": [
+      {
+        "evidence": [
+          "claim-map.md",
+          "traceability-matrix.md",
+          "phase-ledger.json"
+        ],
+        "message": "all required artifacts exist",
+        "name": "final_format",
+        "observed": {
+          "missing": [],
+          "required": [
+            "claim-map.md",
+            "traceability-matrix.md",
+            "phase-ledger.json"
+          ]
+        },
+        "phase": "close",
+        "principles": [
+          "P01",
+          "P10"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.exists"
+      },
+      {
+        "evidence": [
+          "memory-report.json",
+          "Aprendizaje.md",
+          "project-memory-policy.json"
+        ],
+        "message": "text artifact contains required terms",
+        "name": "learning",
+        "observed": {
+          "chars": 553,
+          "missing_terms": [],
+          "path": "memory-report.json"
+        },
+        "phase": "close",
+        "principles": [
+          "P07"
+        ],
+        "status": "pass",
+        "validator_id": "artifact.text_contains"
+      }
+    ],
+    "outputs": {
+      "claim-map.md": "Claim map written.",
+      "traceability-matrix.md": "Traceability written."
+    },
+    "phase": "close",
+    "status": "pass"
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "acceptance_criteria": [
+    "Expected artifacts exist in the run output or DEV workspace.",
+    "Milestone validators pass with evidence.",
+    "DEV workspace is promoted to QA only after validation passes.",
+    "Regression evidence for accepted dependencies is present."
+  ],
+  "dependencies": [],
+  "errors": [],
+  "expected_artifacts": [
+    "contracts/permissions.json",
+    "backend/app/core/security.py",
+    "backend/app/main.py",
+    "frontend/src/App.jsx",
+    "tests/test_contracts.py"
+  ],
+  "milestone_id": "HITO-001",
+  "missing_artifacts": [],
+  "observed_hash": "sha256:e3de6c3173985a081567b06d0ff00d23f674e8f29edd290d2ac848a67f027232",
+  "present_artifacts": [
+    "contracts/permissions.json",
+    "backend/app/core/security.py",
+    "backend/app/main.py",
+    "frontend/src/App.jsx",
+    "tests/test_contracts.py"
+  ],
+  "status": "pass",
+  "validators": [
+    "milestone.expected_artifacts",
+    "milestone.dependencies",
+    "milestone.qa_promotion",
+    "milestone.regression"
+  ]
+}

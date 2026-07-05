@@ -1,0 +1,1301 @@
+{
+  "budget_exceeded": false,
+  "critical_checks_passed_pct": 100,
+  "evidence_coverage_critical_claims": 100,
+  "factory_skills": {
+    "codex_skill_path": "skills\\webforge-factory\\SKILL.md",
+    "codex_skill_present": true,
+    "skills": [
+      {
+        "evidence": [
+          "skills/webforge-factory/SKILL.md",
+          "factory-skill-manifest.json"
+        ],
+        "gates": [
+          "schema",
+          "final_format"
+        ],
+        "name": "Codex WEBFORGE Skill",
+        "phases": [
+          "intake",
+          "plan",
+          "validate",
+          "close"
+        ],
+        "purpose": "Expose the WEBFORGE SDD factory as a reusable Codex skill.",
+        "skill_id": "skill.webforge.codex"
+      },
+      {
+        "evidence": [
+          "constitution.md",
+          "principle-ledger.json"
+        ],
+        "gates": [
+          "constitution"
+        ],
+        "name": "Constitution P01-P12",
+        "phases": [
+          "constitution"
+        ],
+        "purpose": "Instantiate and verify the 12 operating principles.",
+        "skill_id": "skill.constitution_12p"
+      },
+      {
+        "evidence": [
+          "project-isolation-policy.md",
+          "project-manifest.json",
+          "project-sandboxes.json"
+        ],
+        "gates": [
+          "project_isolation"
+        ],
+        "name": "Project Isolation",
+        "phases": [
+          "intake",
+          "implement",
+          "validate"
+        ],
+        "purpose": "Create project/<project_id> with private memory, learning, versions, DEV and QA.",
+        "skill_id": "skill.project_isolation"
+      },
+      {
+        "evidence": [
+          "dev-materialization-manifest.json",
+          "tool-logs.jsonl"
+        ],
+        "gates": [
+          "sandbox",
+          "tool-output"
+        ],
+        "name": "DEV Bundle Materializer",
+        "phases": [
+          "implement",
+          "validate"
+        ],
+        "purpose": "Write implementation bundles only through the P12/INV isolation API into the DEV workspace.",
+        "skill_id": "skill.dev_materializer"
+      },
+      {
+        "evidence": [
+          "frontend-template-policy.md",
+          "frontend-template-manifest.json"
+        ],
+        "gates": [
+          "frontend_template"
+        ],
+        "name": "Mandatory frontend contract",
+        "phases": [
+          "intake",
+          "plan",
+          "implement",
+          "validate"
+        ],
+        "purpose": "Bind the declared project frontend contract to every project, version and sandbox.",
+        "skill_id": "skill.frontend_template"
+      },
+      {
+        "evidence": [
+          "context-pack.json",
+          "rag-index-manifest.json",
+          "evidence-register.md"
+        ],
+        "gates": [
+          "context",
+          "evidence"
+        ],
+        "name": "Evidence Context Pack",
+        "phases": [
+          "context"
+        ],
+        "purpose": "Build minimal context packs from authorized hashed evidence.",
+        "skill_id": "skill.context_rag"
+      },
+      {
+        "evidence": [
+          "validation-report.json",
+          "tool-registry.json",
+          "tool-logs.jsonl"
+        ],
+        "gates": [
+          "tests",
+          "coverage"
+        ],
+        "name": "Deterministic Validation Tools",
+        "phases": [
+          "validate"
+        ],
+        "purpose": "Run allowlisted validators and artifact completeness checks.",
+        "skill_id": "skill.validation_tools"
+      },
+      {
+        "evidence": [
+          "security-review.md",
+          "secrets-report.json",
+          "dependency-report.json",
+          "sbom.json"
+        ],
+        "gates": [
+          "secrets",
+          "dependency",
+          "sbom"
+        ],
+        "name": "Security and Supply Chain",
+        "phases": [
+          "security"
+        ],
+        "purpose": "Run secret/dependency/SBOM controls before closing.",
+        "skill_id": "skill.security_supply_chain"
+      },
+      {
+        "evidence": [
+          "deploy-plan.md",
+          "rollback-plan.md",
+          "billing-ledger.json",
+          "log.jsonl"
+        ],
+        "gates": [
+          "rollback",
+          "observability",
+          "learning"
+        ],
+        "name": "Release and Observability",
+        "phases": [
+          "deploy_checkpoint",
+          "observe",
+          "close"
+        ],
+        "purpose": "Block deploy without approval and emit logs, metrics and billing ledger.",
+        "skill_id": "skill.release_observability"
+      }
+    ],
+    "version": "skills.webforge.v1"
+  },
+  "factory_tools": {
+    "default": "deny_unregistered_tools",
+    "tools": [
+      {
+        "gate": "sandbox",
+        "purpose": "DEV sandbox bundle materialization through P12/INV isolation API",
+        "timeout_seconds": 30,
+        "tool_id": "tool.sandbox.dev_materialize",
+        "writes": true
+      },
+      {
+        "gate": "secrets",
+        "purpose": "Secret scan",
+        "timeout_seconds": 30,
+        "tool_id": "tool.security.secrets",
+        "writes": true
+      },
+      {
+        "gate": "dependency",
+        "purpose": "Dependency manifest scan",
+        "timeout_seconds": 30,
+        "tool_id": "tool.security.deps",
+        "writes": true
+      },
+      {
+        "gate": "sbom",
+        "purpose": "SBOM generation",
+        "timeout_seconds": 30,
+        "tool_id": "tool.sbom.generate",
+        "writes": true
+      },
+      {
+        "gate": "policy",
+        "purpose": "Static policy scan",
+        "timeout_seconds": 30,
+        "tool_id": "tool.policy.static",
+        "writes": true
+      },
+      {
+        "gate": "final_format",
+        "purpose": "Artifact completeness",
+        "timeout_seconds": 30,
+        "tool_id": "tool.validation.artifacts",
+        "writes": true
+      }
+    ],
+    "version": "toolreg.webforge.v1"
+  },
+  "final_artifacts": [
+    "state.json",
+    "log.jsonl",
+    "evidence-register.md",
+    "context-pack.json",
+    "validation-report.json",
+    "security-review.md",
+    "traceability-matrix.md",
+    "billing-ledger.json",
+    "factory-skill-manifest.json",
+    "factory-tool-manifest.json",
+    "roadmap.md",
+    "roadmap.json",
+    "milestone-plan.json",
+    "milestone-state.json",
+    "milestone-validation-report.json",
+    "milestone-gate-report.json",
+    "milestone-evidence.md",
+    "regression-report.json",
+    "incremental-traceability.md",
+    "qa-promotion-report.json",
+    "frontend-template-manifest.json",
+    "frontend-template-policy.md",
+    "project-isolation-policy.md",
+    "project-manifest.json",
+    "project-memory-policy.json",
+    "project-sandboxes.json",
+    "dev-materialization-manifest.json",
+    "final-report.json"
+  ],
+  "frontend_template": {
+    "applies_to": "all_projects_all_versions_all_sandboxes",
+    "contract_file": "FRONTEND_CONTRACT.md",
+    "hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+    "mandatory": true,
+    "required_files": [
+      "frontend/package.json",
+      "frontend/src/App.jsx",
+      "frontend/src/routes.js",
+      "frontend/src/screens/catalog.js"
+    ],
+    "source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+    "template_name": "BREWMASTER_REACT_BOOTSTRAP"
+  },
+  "milestone": {
+    "acceptance_criteria": [
+      "Expected artifacts exist in the run output or DEV workspace.",
+      "Milestone validators pass with evidence.",
+      "DEV workspace is promoted to QA only after validation passes.",
+      "Regression evidence for accepted dependencies is present."
+    ],
+    "agents": [
+      "agent.intake",
+      "agent.architect_planner",
+      "agent.implementer",
+      "agent.qa",
+      "agent.security",
+      "agent.close"
+    ],
+    "allowed_tools": [
+      "tool.sandbox.dev_materialize",
+      "tool.policy.static",
+      "tool.validation.artifacts",
+      "tool.security.secrets",
+      "tool.security.deps",
+      "tool.sbom.generate"
+    ],
+    "dependencies": [],
+    "evidence": [],
+    "expected_artifacts": [
+      "contracts/permissions.json",
+      "backend/app/core/security.py",
+      "backend/app/main.py",
+      "frontend/src/App.jsx",
+      "tests/test_contracts.py"
+    ],
+    "gates": [
+      "milestone_validation",
+      "qa_promotion",
+      "regression"
+    ],
+    "inputs": [
+      "J.12 Hito 1",
+      "H",
+      "J.4",
+      "J.7",
+      "J.8 RNF-01/RNF-02"
+    ],
+    "milestone_id": "HITO-001",
+    "name": "Fundamentos",
+    "objective": "Establecer Auth JWT, usuarios, roles, permisos, auditoria y estructura base del proyecto.",
+    "outputs": [
+      "DEV implementation bundle",
+      "QA promotion report",
+      "milestone evidence"
+    ],
+    "risks": [
+      "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+    ],
+    "scope": "J.12 Fundamentos",
+    "state": "pending",
+    "traceability": [
+      "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+    ],
+    "validators": [
+      "milestone.expected_artifacts",
+      "milestone.dependencies",
+      "milestone.qa_promotion",
+      "milestone.regression"
+    ]
+  },
+  "missing_final_artifacts": [],
+  "phase_count": 16,
+  "phase_status": {
+    "analyze": "pass",
+    "checklist": "pass",
+    "clarify": "pass",
+    "close": "pass",
+    "constitution": "pass",
+    "context": "pass",
+    "deploy_checkpoint": "pass",
+    "implement": "pass",
+    "intake": "pass",
+    "observe": "pass",
+    "plan": "pass",
+    "pr_handoff": "pass",
+    "security": "pass",
+    "specify": "pass",
+    "tasks": "pass",
+    "validate": "pass"
+  },
+  "policy_denied_open": 0,
+  "principle_coverage": {
+    "P01": {
+      "evidence": [
+        "billing-ledger.json",
+        "claim-map.md",
+        "phase-ledger.json",
+        "traceability-matrix.md",
+        "work_order.json"
+      ],
+      "gates": [
+        "schema",
+        "budget",
+        "final_format"
+      ],
+      "principle": "Maxima reproducibilidad practica",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P02": {
+      "evidence": [
+        "brewmaster-blueprint.json",
+        "brewmaster-coverage.json",
+        "clarifications.md",
+        "evidence-register.md",
+        "frontend-template-manifest.json",
+        "frontend-template-policy.md",
+        "milestone-evidence.md",
+        "milestone-plan.json",
+        "milestone-state.json",
+        "milestone-validation-report.json",
+        "plan.md",
+        "project-sandboxes.json",
+        "roadmap.md",
+        "spec.md"
+      ],
+      "gates": [
+        "frontend_template",
+        "milestone",
+        "spec",
+        "clarification",
+        "evidence",
+        "plan_validation",
+        "frontend_template",
+        "frontend_template",
+        "frontend_template",
+        "brewmaster_functional_coverage",
+        "milestone_validation"
+      ],
+      "principle": "No invencion",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P03": {
+      "evidence": [
+        "context-pack.json",
+        "project-isolation-policy.md",
+        "project-manifest.json",
+        "project-memory-policy.json",
+        "project-sandboxes.json",
+        "secrets-report.json",
+        "validation-report.json"
+      ],
+      "gates": [
+        "project_isolation",
+        "context",
+        "project_isolation",
+        "project_isolation",
+        "secrets"
+      ],
+      "principle": "Memoria/contexto limpio",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P04": {
+      "evidence": [
+        "context-pack.json",
+        "evidence-register.md"
+      ],
+      "gates": [
+        "context",
+        "evidence"
+      ],
+      "principle": "RAG/index/cache",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P05": {
+      "evidence": [
+        "constitution.md",
+        "diff-report.json",
+        "factory-skill-manifest.json",
+        "factory-tool-manifest.json",
+        "frontend-template-manifest.json",
+        "frontend-template-policy.md",
+        "project-isolation-policy.md",
+        "project-manifest.json",
+        "project-memory-policy.json",
+        "project-sandboxes.json",
+        "validation-report.json"
+      ],
+      "gates": [
+        "project_isolation",
+        "frontend_template",
+        "factory_skills",
+        "constitution",
+        "frontend_template",
+        "factory_skills",
+        "policy",
+        "project_isolation",
+        "frontend_template",
+        "factory_skills",
+        "project_isolation",
+        "frontend_template",
+        "factory_skills"
+      ],
+      "principle": "ARNES/orquestador/agentes/skills",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P06": {
+      "evidence": [
+        "dev-materialization-manifest.json",
+        "factory-skill-manifest.json",
+        "factory-tool-manifest.json",
+        "qa-promotion-report.json",
+        "sandbox-policy.md",
+        "tool-logs.jsonl",
+        "validation-report.json"
+      ],
+      "gates": [
+        "factory_skills",
+        "sandbox",
+        "factory_skills",
+        "sandbox",
+        "factory_skills",
+        "tests",
+        "sandbox",
+        "factory_skills",
+        "qa_promotion"
+      ],
+      "principle": "Tools deterministas",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P07": {
+      "evidence": [
+        "Aprendizaje.md",
+        "approval-matrix.md",
+        "memory-report.json",
+        "project-memory-policy.json"
+      ],
+      "gates": [
+        "human_approval",
+        "learning"
+      ],
+      "principle": "Aprendizaje gobernado",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P08": {
+      "evidence": [
+        "analyze-report.md",
+        "brewmaster-blueprint.json",
+        "brewmaster-coverage.json",
+        "checklist.md",
+        "clarifications.md",
+        "constitution.md",
+        "context-pack.json",
+        "diff-report.json",
+        "factory-skill-manifest.json",
+        "factory-tool-manifest.json",
+        "frontend-template-manifest.json",
+        "frontend-template-policy.md",
+        "incremental-traceability.md",
+        "milestone-evidence.md",
+        "milestone-plan.json",
+        "milestone-state.json",
+        "milestone-validation-report.json",
+        "plan.md",
+        "principle-ledger.json",
+        "project-isolation-policy.md",
+        "project-manifest.json",
+        "project-memory-policy.json",
+        "project-sandboxes.json",
+        "qa-promotion-report.json",
+        "regression-report.json",
+        "roadmap.md",
+        "spec.md",
+        "tasks.md",
+        "validation-report.json",
+        "work_order.json"
+      ],
+      "gates": [
+        "schema",
+        "project_isolation",
+        "frontend_template",
+        "factory_skills",
+        "milestone",
+        "constitution",
+        "spec",
+        "clarification",
+        "checklist",
+        "context",
+        "plan_validation",
+        "frontend_template",
+        "factory_skills",
+        "tasks",
+        "analyze",
+        "policy",
+        "project_isolation",
+        "frontend_template",
+        "factory_skills",
+        "tests",
+        "coverage",
+        "project_isolation",
+        "frontend_template",
+        "factory_skills",
+        "brewmaster_functional_coverage",
+        "milestone_validation",
+        "qa_promotion",
+        "regression"
+      ],
+      "principle": "Gates por fase",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P09": {
+      "evidence": [
+        "billing-ledger.json",
+        "incremental-traceability.md",
+        "log-completeness-report.json",
+        "log.jsonl",
+        "mcp-invocations.jsonl",
+        "regression-report.json",
+        "tool-logs.jsonl"
+      ],
+      "gates": [
+        "regression",
+        "observability"
+      ],
+      "principle": "Logs/trazas",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P10": {
+      "evidence": [
+        "analyze-report.md",
+        "brewmaster-blueprint.json",
+        "brewmaster-coverage.json",
+        "claim-map.md",
+        "constitution.md",
+        "incremental-traceability.md",
+        "milestone-evidence.md",
+        "milestone-plan.json",
+        "milestone-state.json",
+        "milestone-validation-report.json",
+        "phase-ledger.json",
+        "regression-report.json",
+        "roadmap.md",
+        "tasks.md",
+        "traceability-matrix.md"
+      ],
+      "gates": [
+        "milestone",
+        "constitution",
+        "tasks",
+        "analyze",
+        "brewmaster_functional_coverage",
+        "milestone_validation",
+        "regression",
+        "final_format"
+      ],
+      "principle": "Workflows SDD",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P11": {
+      "evidence": [
+        "approval-matrix.md",
+        "mcp-invocations.jsonl",
+        "mcp-policy.json",
+        "mcp-policy.yaml"
+      ],
+      "gates": [
+        "mcp_policy",
+        "human_approval"
+      ],
+      "principle": "MCP gobernado",
+      "required_evidence_present": true,
+      "status": "pass"
+    },
+    "P12": {
+      "evidence": [
+        "billing-ledger.json",
+        "billing-policy.yaml",
+        "dependency-report.json",
+        "deploy-plan.md",
+        "dev-materialization-manifest.json",
+        "frontend-template-manifest.json",
+        "frontend-template-policy.md",
+        "project-isolation-policy.md",
+        "project-manifest.json",
+        "project-memory-policy.json",
+        "project-sandboxes.json",
+        "qa-promotion-report.json",
+        "rollback-plan.md",
+        "sandbox-policy.md",
+        "sbom.json",
+        "secrets-report.json",
+        "tool-logs.jsonl",
+        "validation-report.json"
+      ],
+      "gates": [
+        "budget",
+        "project_isolation",
+        "frontend_template",
+        "dependency",
+        "sandbox",
+        "frontend_template",
+        "sandbox",
+        "project_isolation",
+        "frontend_template",
+        "sandbox",
+        "project_isolation",
+        "frontend_template",
+        "qa_promotion",
+        "secrets",
+        "dependency",
+        "sbom",
+        "rollback"
+      ],
+      "principle": "Seguridad/escalabilidad",
+      "required_evidence_present": true,
+      "status": "pass"
+    }
+  },
+  "project_isolation": {
+    "policy_id": "webforge.project_isolation.v1",
+    "project_id": "brewmaster",
+    "project_root": "project/brewmaster",
+    "project_root_name": "project",
+    "rules": {
+      "all_project_work_must_stay_under_project_root": true,
+      "factory_learning_write_allowed": false,
+      "factory_memory_read_allowed": false,
+      "frontend_contract": "FRONTEND_CONTRACT.md",
+      "frontend_required_files": [
+        "frontend/package.json",
+        "frontend/src/App.jsx",
+        "frontend/src/routes.js",
+        "frontend/src/screens/catalog.js"
+      ],
+      "frontend_template_hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+      "frontend_template_name": "BREWMASTER_REACT_BOOTSTRAP",
+      "frontend_template_required": true,
+      "frontend_template_source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+      "incremental_versions_root": "project/brewmaster/versions",
+      "project_memory_shared_with_factory": false,
+      "sandbox_clone_source": "project/brewmaster/versions/v0001",
+      "sandbox_dev_and_qa_must_be_independent": true,
+      "sandbox_dev_required": true,
+      "sandbox_qa_required": true
+    },
+    "version": "v0001"
+  },
+  "project_sandboxes": {
+    "clone_source_hash": "sha256:4e808f23be90081500131f5e8e5ed36197f7bb45eb9ebafdad48fc14180868ba",
+    "current_version": "v0001",
+    "project_id": "brewmaster",
+    "sandboxes": [
+      {
+        "autonomous": "true",
+        "clone_source": "project/brewmaster/versions/v0001",
+        "frontend_contract": "FRONTEND_CONTRACT.md",
+        "frontend_required_files": "frontend/package.json,frontend/src/App.jsx,frontend/src/routes.js,frontend/src/screens/catalog.js",
+        "frontend_template": "BREWMASTER_REACT_BOOTSTRAP",
+        "frontend_template_hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+        "frontend_template_required": "true",
+        "frontend_template_source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+        "learning_path": "project/brewmaster/sandboxes/DEV/learning",
+        "memory_path": "project/brewmaster/sandboxes/DEV/memory",
+        "name": "DEV",
+        "path": "project/brewmaster/sandboxes/DEV",
+        "sandbox_id": "brewmaster-dev-v0001",
+        "shared_with_factory": "false",
+        "version": "v0001"
+      },
+      {
+        "autonomous": "true",
+        "clone_source": "project/brewmaster/versions/v0001",
+        "frontend_contract": "FRONTEND_CONTRACT.md",
+        "frontend_required_files": "frontend/package.json,frontend/src/App.jsx,frontend/src/routes.js,frontend/src/screens/catalog.js",
+        "frontend_template": "BREWMASTER_REACT_BOOTSTRAP",
+        "frontend_template_hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+        "frontend_template_required": "true",
+        "frontend_template_source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+        "learning_path": "project/brewmaster/sandboxes/QA/learning",
+        "memory_path": "project/brewmaster/sandboxes/QA/memory",
+        "name": "QA",
+        "path": "project/brewmaster/sandboxes/QA",
+        "sandbox_id": "brewmaster-qa-v0001",
+        "shared_with_factory": "false",
+        "version": "v0001"
+      }
+    ]
+  },
+  "project_workspace": {
+    "current_version": "v0001",
+    "frontend_template": {
+      "applies_to": "all_projects_all_versions_all_sandboxes",
+      "contract_file": "FRONTEND_CONTRACT.md",
+      "hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+      "mandatory": true,
+      "required_files": [
+        "frontend/package.json",
+        "frontend/src/App.jsx",
+        "frontend/src/routes.js",
+        "frontend/src/screens/catalog.js"
+      ],
+      "source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+      "template_name": "BREWMASTER_REACT_BOOTSTRAP"
+    },
+    "learning_root": "project/brewmaster/learning",
+    "memory_root": "project/brewmaster/memory",
+    "milestones_root": "project/brewmaster/milestones",
+    "project_id": "brewmaster",
+    "project_root": "project/brewmaster",
+    "sandboxes_root": "project/brewmaster/sandboxes",
+    "shared_with_factory": false,
+    "versions_root": "project/brewmaster/versions"
+  },
+  "roadmap": {
+    "milestones": [
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [],
+        "evidence": [],
+        "expected_artifacts": [
+          "contracts/permissions.json",
+          "backend/app/core/security.py",
+          "backend/app/main.py",
+          "frontend/src/App.jsx",
+          "tests/test_contracts.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 1",
+          "H",
+          "J.4",
+          "J.7",
+          "J.8 RNF-01/RNF-02"
+        ],
+        "milestone_id": "HITO-001",
+        "name": "Fundamentos",
+        "objective": "Establecer Auth JWT, usuarios, roles, permisos, auditoria y estructura base del proyecto.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Fundamentos",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-001"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "backend/app/domain/catalog.py",
+          "backend/app/services/inventory.py",
+          "contracts/domain-model.json",
+          "frontend/src/screens/catalog.js",
+          "docs/architecture.md"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 2",
+          "UC-INS-*",
+          "UC-REC-*",
+          "P-04..P-13",
+          "J.5"
+        ],
+        "milestone_id": "HITO-002",
+        "name": "Maestros",
+        "objective": "Implementar proveedores, insumos, bodegas, recetas y tipos de presentacion como maestros operativos.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Maestros",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-002"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "backend/app/services/inventory.py",
+          "backend/app/services/notifications.py",
+          "backend/app/domain/rules.py",
+          "contracts/permissions.json",
+          "tests/test_domain_rules.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 3",
+          "UC-INS-02",
+          "UC-INS-03",
+          "UC-ALT-01",
+          "J.6",
+          "J.13"
+        ],
+        "milestone_id": "HITO-003",
+        "name": "Inventario",
+        "objective": "Implementar entradas de insumos, Kardex, notificaciones por email y configuracion SMTP.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Inventario",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-003"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "backend/app/services/production.py",
+          "backend/app/domain/rules.py",
+          "contracts/coverage.json",
+          "docs/api-contract.md",
+          "tests/test_domain_rules.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 4",
+          "UC-PROD-*",
+          "UC-PRO-*",
+          "P-14..P-19",
+          "J.6"
+        ],
+        "milestone_id": "HITO-004",
+        "name": "Produccion",
+        "objective": "Construir lotes, control de calidad, mermas e inventario de productos terminados.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Produccion",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-004"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "backend/app/services/sales.py",
+          "backend/app/services/purchasing.py",
+          "backend/app/services/inventory.py",
+          "docs/traceability.md",
+          "tests/test_domain_rules.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 5",
+          "UC-VTA-*",
+          "UC-COM-*",
+          "P-20..P-25",
+          "J.6",
+          "J.14"
+        ],
+        "milestone_id": "HITO-005",
+        "name": "Ventas",
+        "objective": "Cerrar clientes, ventas, reservas de stock, precios por tipo de cliente y ordenes de compra.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Ventas",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-005"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "frontend/src/App.jsx",
+          "frontend/src/screens/catalog.js",
+          "backend/app/jobs/scheduler.py",
+          "docs/api-contract.md",
+          "tests/test_domain_rules.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 6",
+          "UC-REP-*",
+          "P-03",
+          "P-29",
+          "J.13"
+        ],
+        "milestone_id": "HITO-006",
+        "name": "Dashboard",
+        "objective": "Implementar KPIs reales, graficos, alertas operacionales y reportes exportables.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Dashboard",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      },
+      {
+        "acceptance_criteria": [
+          "Expected artifacts exist in the run output or DEV workspace.",
+          "Milestone validators pass with evidence.",
+          "DEV workspace is promoted to QA only after validation passes.",
+          "Regression evidence for accepted dependencies is present."
+        ],
+        "agents": [
+          "agent.intake",
+          "agent.architect_planner",
+          "agent.implementer",
+          "agent.qa",
+          "agent.security",
+          "agent.close"
+        ],
+        "allowed_tools": [
+          "tool.sandbox.dev_materialize",
+          "tool.policy.static",
+          "tool.validation.artifacts",
+          "tool.security.secrets",
+          "tool.security.deps",
+          "tool.sbom.generate"
+        ],
+        "dependencies": [
+          "HITO-006"
+        ],
+        "evidence": [],
+        "expected_artifacts": [
+          "backend/app/services/purchasing.py",
+          "backend/app/jobs/scheduler.py",
+          "docs/architecture.md",
+          "docs/traceability.md",
+          "docs/test-strategy.md",
+          "tests/test_contracts.py"
+        ],
+        "gates": [
+          "milestone_validation",
+          "qa_promotion",
+          "regression"
+        ],
+        "inputs": [
+          "J.12 Hito 7",
+          "UC-EQU-*",
+          "UC-FIN-*",
+          "UC-ALT-*",
+          "J.10",
+          "J.15"
+        ],
+        "milestone_id": "HITO-007",
+        "name": "Cierre",
+        "objective": "Completar equipos, finanzas, metas, respaldos automaticos, documentacion y pruebas.",
+        "outputs": [
+          "DEV implementation bundle",
+          "QA promotion report",
+          "milestone evidence"
+        ],
+        "risks": [
+          "Milestone scope can drift if expected artifacts are not updated with implementation reality."
+        ],
+        "scope": "J.12 Cierre",
+        "state": "pending",
+        "traceability": [
+          "requirement -> use_case -> milestone -> agent -> tool -> artifact -> validator -> gate -> report"
+        ],
+        "validators": [
+          "milestone.expected_artifacts",
+          "milestone.dependencies",
+          "milestone.qa_promotion",
+          "milestone.regression"
+        ]
+      }
+    ],
+    "project_id": "brewmaster",
+    "selected_milestone": "HITO-001",
+    "version": "roadmap.webforge.incremental.v1"
+  },
+  "run_id": "RUN-WEBFORGE-9e292522ea84",
+  "secrets_detected": 0,
+  "security_high_critical_open": 0,
+  "status": "complete",
+  "unapproved_mcp_invocations": 0,
+  "unsafe_action_without_approval": 0,
+  "workflow_phases": [
+    "intake",
+    "constitution",
+    "specify",
+    "clarify",
+    "checklist",
+    "context",
+    "plan",
+    "tasks",
+    "analyze",
+    "implement",
+    "validate",
+    "security",
+    "pr_handoff",
+    "deploy_checkpoint",
+    "observe",
+    "close"
+  ],
+  "workflow_version": "wf.webforge.sdd.v1"
+}
