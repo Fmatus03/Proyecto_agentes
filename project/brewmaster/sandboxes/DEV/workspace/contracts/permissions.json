@@ -1,0 +1,85 @@
+{
+  "declared_permissions": [
+    "supplies.read",
+    "supplies.create",
+    "supplies.update",
+    "supplies.toggle-status",
+    "supply-entries.create",
+    "recipes.read",
+    "recipes.create",
+    "recipes.update",
+    "recipes.clone",
+    "batches.read",
+    "batches.create",
+    "batches.complete",
+    "batches.cancel",
+    "batches.quality-check",
+    "waste.create",
+    "waste.read",
+    "products.read",
+    "products.update-price",
+    "sales.read",
+    "sales.create",
+    "customers.read",
+    "customers.create",
+    "customers.update",
+    "reservations.create",
+    "reservations.manage",
+    "purchase-orders.read",
+    "purchase-orders.create",
+    "purchase-orders.receive",
+    "purchase-orders.cancel",
+    "suppliers.read",
+    "suppliers.create",
+    "suppliers.update",
+    "equipment.read",
+    "equipment.create",
+    "equipment.movement",
+    "expenses.read",
+    "expenses.create",
+    "reports.read",
+    "reports.export",
+    "admin.users",
+    "admin.settings",
+    "audit.read"
+  ],
+  "roles": {
+    "admin": [
+      "*"
+    ],
+    "auditor": [
+      "audit:read",
+      "reports:audit"
+    ],
+    "compras": [
+      "supplies:*",
+      "suppliers:*",
+      "purchase-orders:*",
+      "reports:inventory"
+    ],
+    "finanzas": [
+      "expenses:*",
+      "reports:financial",
+      "monthly-goals:read"
+    ],
+    "produccion": [
+      "recipes:*",
+      "batches:*",
+      "quality:*",
+      "waste:*",
+      "equipment:*"
+    ],
+    "ventas": [
+      "customers:*",
+      "sales:*",
+      "reservations:*",
+      "finished-products:read"
+    ]
+  },
+  "sensitive_permissions": [
+    "costs:read",
+    "financial:read",
+    "smtp:update",
+    "users:write"
+  ]
+}

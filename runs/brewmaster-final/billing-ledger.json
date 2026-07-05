@@ -1,0 +1,49 @@
+{
+  "budget_exceeded": false,
+  "remaining": {
+    "cost_usd": 0,
+    "latency_ms": 0,
+    "mcp_calls": 0,
+    "tokens": 0,
+    "tool_calls": 194
+  },
+  "usage": [
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.sandbox.dev_materialize"
+    },
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.policy.static"
+    },
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.validation.artifacts"
+    },
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.security.secrets"
+    },
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.security.deps"
+    },
+    {
+      "cost_usd": 0,
+      "status": "pass",
+      "tokens": 0,
+      "tool_id": "tool.sbom.generate"
+    }
+  ],
+  "version": "budget.webforge.v1"
+}

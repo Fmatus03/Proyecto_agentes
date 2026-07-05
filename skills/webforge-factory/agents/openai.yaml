@@ -1,0 +1,4 @@
+interface:
+  display_name: "WEBFORGE Factory"
+  short_description: "Run and govern the WEBFORGE SDD software factory."
+  default_prompt: "Run WEBFORGE for this project with isolated project workspace, DEV/QA sandboxes, the project-specific frontend contract, gates, tools, and final evidence."

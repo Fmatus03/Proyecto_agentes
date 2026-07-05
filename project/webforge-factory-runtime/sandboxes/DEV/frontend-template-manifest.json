@@ -1,0 +1,11 @@
+{
+  "applies_to": "all_projects_all_versions_all_sandboxes",
+  "contract_file": "FRONTEND_CONTRACT.md",
+  "hash": "sha256:06c7e113d607e05c01391483466349d431275676cc7d2251b534b1e236cf1542",
+  "mandatory": true,
+  "required_files": [
+    "FRONTEND_CONTRACT.md"
+  ],
+  "source": "work_order.frontend_contract",
+  "template_name": "WEBFORGE_FRONTEND_CONTRACT"
+}

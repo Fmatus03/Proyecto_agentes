@@ -1,0 +1,48 @@
+{
+  "default": "deny_unregistered_tools",
+  "tools": [
+    {
+      "gate": "sandbox",
+      "purpose": "DEV sandbox bundle materialization through P12/INV isolation API",
+      "timeout_seconds": 30,
+      "tool_id": "tool.sandbox.dev_materialize",
+      "writes": true
+    },
+    {
+      "gate": "secrets",
+      "purpose": "Secret scan",
+      "timeout_seconds": 30,
+      "tool_id": "tool.security.secrets",
+      "writes": true
+    },
+    {
+      "gate": "dependency",
+      "purpose": "Dependency manifest scan",
+      "timeout_seconds": 30,
+      "tool_id": "tool.security.deps",
+      "writes": true
+    },
+    {
+      "gate": "sbom",
+      "purpose": "SBOM generation",
+      "timeout_seconds": 30,
+      "tool_id": "tool.sbom.generate",
+      "writes": true
+    },
+    {
+      "gate": "policy",
+      "purpose": "Static policy scan",
+      "timeout_seconds": 30,
+      "tool_id": "tool.policy.static",
+      "writes": true
+    },
+    {
+      "gate": "final_format",
+      "purpose": "Artifact completeness",
+      "timeout_seconds": 30,
+      "tool_id": "tool.validation.artifacts",
+      "writes": true
+    }
+  ],
+  "version": "toolreg.webforge.v1"
+}

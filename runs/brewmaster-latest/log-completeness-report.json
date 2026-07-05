@@ -1,0 +1,7 @@
+{
+  "billing_ledger": true,
+  "log_jsonl": true,
+  "mcp_logs": true,
+  "state_json": true,
+  "tool_logs": true
+}

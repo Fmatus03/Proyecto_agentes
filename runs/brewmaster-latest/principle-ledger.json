@@ -1,0 +1,177 @@
+{
+  "P01": {
+    "evidence": [
+      "state.json",
+      "validation-report.json"
+    ],
+    "gates": [
+      "schema",
+      "stability",
+      "budget",
+      "final_format"
+    ],
+    "id": "P01",
+    "name": "Maxima reproducibilidad practica",
+    "operational_control": "Workflow fijo, versiones, hashes y rutas cerradas de retry."
+  },
+  "P02": {
+    "evidence": [
+      "evidence-register.md",
+      "claim-map.md"
+    ],
+    "gates": [
+      "evidence",
+      "context",
+      "plan_validation"
+    ],
+    "id": "P02",
+    "name": "No invencion",
+    "operational_control": "Todo claim critico requiere evidence_id o queda bloqueado."
+  },
+  "P03": {
+    "evidence": [
+      "memory-report.json",
+      "Aprendizaje.md"
+    ],
+    "gates": [
+      "memory",
+      "safety",
+      "secrets"
+    ],
+    "id": "P03",
+    "name": "Memoria/contexto limpio",
+    "operational_control": "Contexto minimo, redaccion, taint tracking y memoria propose_only."
+  },
+  "P04": {
+    "evidence": [
+      "context-pack.json",
+      "rag-index-manifest.json"
+    ],
+    "gates": [
+      "context",
+      "budget",
+      "evidence"
+    ],
+    "id": "P04",
+    "name": "RAG/index/cache",
+    "operational_control": "Context-pack con evidencia, hashes, snippets y cache por hash."
+  },
+  "P05": {
+    "evidence": [
+      "agent-manifest.json",
+      "validation-report.json"
+    ],
+    "gates": [
+      "policy",
+      "schema",
+      "constitution"
+    ],
+    "id": "P05",
+    "name": "ARNES/orquestador/agentes/skills",
+    "operational_control": "Unica puerta harness.run_agent; agentes aislados por policy."
+  },
+  "P06": {
+    "evidence": [
+      "tool-logs.jsonl",
+      "tool-registry.json"
+    ],
+    "gates": [
+      "tool-output",
+      "sandbox",
+      "tests",
+      "security"
+    ],
+    "id": "P06",
+    "name": "Tools deterministas",
+    "operational_control": "ToolRegistry allowlisted con schemas, timeouts y logs."
+  },
+  "P07": {
+    "evidence": [
+      "ERRORS.md",
+      "Aprendizaje.md"
+    ],
+    "gates": [
+      "learning",
+      "human_approval",
+      "regression_eval"
+    ],
+    "id": "P07",
+    "name": "Aprendizaje gobernado",
+    "operational_control": "Errores producen MemoryProposal pendiente; nunca activacion automatica."
+  },
+  "P08": {
+    "evidence": [
+      "validation-report.json",
+      "phase-ledger.json"
+    ],
+    "gates": [
+      "spec",
+      "context",
+      "plan_validation",
+      "tests",
+      "coverage"
+    ],
+    "id": "P08",
+    "name": "Gates por fase",
+    "operational_control": "Cada fase declara gates criticos y no avanza si alguno falla."
+  },
+  "P09": {
+    "evidence": [
+      "state.json",
+      "log.jsonl",
+      "billing-ledger.json",
+      "traceability-matrix.md"
+    ],
+    "gates": [
+      "observability"
+    ],
+    "id": "P09",
+    "name": "Logs/trazas",
+    "operational_control": "State, log JSONL, billing ledger y matriz req-task-test-evidence."
+  },
+  "P10": {
+    "evidence": [
+      "workflow.yaml",
+      "final-report.json"
+    ],
+    "gates": [
+      "tasks",
+      "analyze",
+      "final_format"
+    ],
+    "id": "P10",
+    "name": "Workflows SDD",
+    "operational_control": "Constitution -> Specify -> Clarify -> Checklist -> Context -> Plan -> Tasks -> Analyze -> Implement -> Validate -> PR/Deploy -> Observe -> Close."
+  },
+  "P11": {
+    "evidence": [
+      "mcp-policy.yaml",
+      "mcp-invocations.jsonl"
+    ],
+    "gates": [
+      "mcp_policy",
+      "tool-output",
+      "human_approval"
+    ],
+    "id": "P11",
+    "name": "MCP gobernado",
+    "operational_control": "MCP default-deny, allowlist explicita, pre/post gates y logs."
+  },
+  "P12": {
+    "evidence": [
+      "security-review.md",
+      "rollback-plan.md",
+      "sbom.json"
+    ],
+    "gates": [
+      "security",
+      "dependency",
+      "secrets",
+      "budget",
+      "rollback"
+    ],
+    "id": "P12",
+    "name": "Seguridad/escalabilidad",
+    "operational_control": "Sandbox, dry-run, secret/dependency scans, SBOM, SLOs y rollback."
+  }
+}

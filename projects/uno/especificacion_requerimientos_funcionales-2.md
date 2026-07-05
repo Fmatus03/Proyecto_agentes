@@ -1,0 +1,1646 @@
+# Especificación de Requerimientos Funcionales
+
+## Control de generación
+
+* status: complete
+* documentos_analizados: 7 documentos cargados por el usuario, inventariados como S01-S07.
+* ciclos_ejecutados: 4 ciclos de identificación/especificación; C1 inventario y extracción inicial; C2 clasificación CU/FUN/FT/RN/CH/EX/OT y deduplicación; C3 recuperación complementaria desde bases técnicas, anexos e imágenes; C4 revisión final sin candidatos nuevos recuperables.
+* criterios_de_exclusion: stack tecnológico omitido
+* convenciones_id: CU_### caso de uso; FUN_### funcionalidad; FT_### flujo/procedimiento; RN_### regla de negocio; CH_### validación/chequeo; EX_### restricción/excepción; OT_### otra especificación útil; ACT_### actor; IMG_### imagen/anexo visual; source_id S##; chunk_id E##.
+
+| source_id | Documento | Tipo | Páginas/secciones legibles | Uso en la especificación |
+|---|---|---|---|---|
+| S01 | Rex._N°997-2023_aprueba_bases-mp.pdf | PDF escaneado/OCR | 64 páginas; legibilidad funcional alta en bases técnicas p.34-p.43 y anexos p.55-p.62; páginas administrativas no funcionales parcialmente OCR. | Contexto, objeto de contratación, requerimientos específicos, alcance, beneficios, lineamientos funcionales, garantía. |
+| S02 | ANEXO_N°3.docx | DOCX | Sección Oferta Económica; tabla de valores; legible. | No genera requisitos funcionales del sistema; usado para exclusión trazable. |
+| S03 | ANEXO_N°4.docx | DOCX | Sección Presentación Equipo de Trabajo; tabla de perfiles; legible. | No genera requisitos funcionales del sistema; usado para exclusión trazable. |
+| S04 | ANEXO_N°5.docx | DOCX | Sección Experiencia del oferente; tabla de proyectos; legible. | No genera requisitos funcionales del sistema; se omitieron campos tecnológicos por exclusión de stack. |
+| S05 | ANEXO_N°6.docx | DOCX | Contenido de oferta técnica; legible. | Antecedentes, alcance, metodología, entregables, aseguramiento de calidad y garantía. |
+| S06 | ANEXO_N°7.pdf | PDF texto + imágenes | 7 páginas; tabla de historias de usuario referenciales legible. | Historias HU01-HU16: portal público, datos personales, 2FA, sesiones, DDU, notificaciones, autorizaciones. |
+| S07 | ANEXO_N°8.pdf | PDF texto + diagrama | 1 página; flujo e imagen legibles. | Flujo referencial de integración entre ClaveÚnica y Plataforma de Notificaciones/CasillaÚnica. |
+
+| source_id | hash_sha256_corto |
+|---|---|
+| S01 | ffe3eeb0b02ff646 |
+| S02 | 4d01581e61ba2874 |
+| S03 | 8e6bdaaaaa2cdee9 |
+| S04 | 6732d1fa6559ae47 |
+| S05 | f2f91b7ac7f46f17 |
+| S06 | 75fb2d981e94cebf |
+| S07 | 937ceea03c672d9d |
+
+## 1. Descripción del sistema de software
+
+El sistema especificado es el Portal Ciudadano de ClaveÚnica, compuesto por una experiencia pública y una experiencia privada autenticada. Debe permitir acceso claro a activación, autenticación, recuperación, ayuda y contenidos públicos; ofrecer secciones privadas para configuración de ClaveÚnica, datos personales, segundo factor, historial de acciones, información personal, expedientes electrónicos, poderes/representaciones, notificaciones y autorizaciones de uso de datos sensibles; e integrarse funcionalmente con la Plataforma de Notificaciones/CasillaÚnica para configuración del Domicilio Digital Único y consulta de notificaciones. Evidencia: E01/S01:p.1-p.2; E02/S01:p.34-p.35; E05/S01:p.38-p.39; E08-E14.
+
+El portal debe centralizar información relacionada con la identidad digital de las personas, ofrecer un entorno digital centralizado, seguro y provisto por el Estado, y facilitar el acceso a servicios vinculados a notificaciones electrónicas, autorización de uso de datos sensibles y ayuda para instituciones integradas. Evidencia: E02/S01:p.35; E03/S01:p.36; E05/S01:p.39.
+
+## 2. Objetivo principal
+
+Definir y materializar una nueva versión del Portal Ciudadano de ClaveÚnica que mejore la experiencia de uso, centralice servicios e información de identidad digital, fortalezca flujos de seguridad, permita acceso a notificaciones electrónicas mediante DDU/CasillaÚnica, y entregue control y visibilidad sobre autorizaciones de uso de datos sensibles. Evidencia: E01/S01:p.1-p.2; E02/S01:p.35; E04/S01:p.37; E05/S01:p.39.
+
+## 3. Objetivos específicos
+
+- **OBJ_001:** Enriquecer la experiencia de uso mediante una nueva versión del portal con interfaz más intuitiva y segura. Evidencia: E04/S01:p.37.
+- **OBJ_002:** Centralizar información de las personas para facilitar acceso y gestión de información relacionada con el Estado. Evidencia: E02/S01:p.35; E04/S01:p.37.
+- **OBJ_003:** Agregar factores de seguridad en flujos críticos como login, recuperación y cambio de datos de contacto. Evidencia: E04/S01:p.37; E05/S01:p.39; E08/S06:p.1:HU02-HU03.
+- **OBJ_004:** Facilitar acceso a notificaciones electrónicas de procedimientos administrativos mediante DDU y Plataforma de Notificaciones. Evidencia: E01/S01:p.2; E10-E11; E14/S07:p.1.
+- **OBJ_005:** Facilitar control y visibilidad de autorizaciones de uso de datos sensibles entre instituciones públicas. Evidencia: E03/S01:p.36; E12-E13.
+- **OBJ_006:** Fortalecer ayuda pública y ayuda a instituciones integradas, incluyendo credenciales y estado de integraciones. Evidencia: E03/S01:p.36; E05/S01:p.39.
+- **OBJ_007:** Definir flujos, prototipos, pruebas y prioridades de implementación para las interfaces resultantes. Evidencia: E03/S01:p.36; E04/S01:p.37-p.38; E07/S05.
+
+## 4. Perfiles de usuarios -> actores de casos de uso
+
+| actor_id | Perfil | Descripción | Casos de uso asociados | Evidencia |
+|---|---|---|---|---|
+| ACT_001 | Usuario público del portal ClaveÚnica | Persona que accede al portal público, con o sin ClaveÚnica activada. | CU_001, CU_003, CU_020 | E08/S06:p.1:HU01-HU03; E05/S01:p.39 |
+| ACT_002 | Usuario con ClaveÚnica activada | Persona autenticada que puede administrar datos, sesión, 2FA, notificaciones y autorizaciones. | CU_002-CU_016, CU_017-CU_019 | E08/S06:p.1:HU02-HU04; E09-E13 |
+| ACT_003 | Usuario sin DDU configurado | Usuario autenticado cuyo Domicilio Digital Único aún no está configurado. | CU_005, CU_006, CU_008, CU_009, CU_012 | E09/S06:p.2:HU05-HU06; E10/S06:p.3:HU08-HU09; E11/S06:p.4:HU12; E14/S07:p.1 |
+| ACT_004 | Usuario con DDU configurado | Usuario autenticado que ya configuró DDU y puede visualizar notificaciones pendientes. | CU_007, CU_009-CU_011 | E09/S06:p.2:HU07; E10/S06:p.3:HU09-HU10; E11/S06:p.4:HU11; E14/S07:p.1 |
+| ACT_005 | Usuario con autorizaciones pendientes | Usuario que tiene solicitudes de autorización de uso de datos sensibles pendientes de decisión. | CU_013, CU_015 | E12/S06:p.5:HU13; E13/S06:p.6:HU15 |
+| ACT_006 | Usuario con autorizaciones vigentes | Usuario que tiene autorizaciones aprobadas/vigentes susceptibles de revocación. | CU_013, CU_016 | E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU16 |
+| ACT_007 | Funcionario de institución integrada | Usuario institucional que requiere ayuda, credenciales y estado de integración a ClaveÚnica. | CU_021 | E03/S01:p.36; E05/S01:p.39 |
+| ACT_008 | Plataforma de Notificaciones/CasillaÚnica | Sistema externo funcional que configura DDU, mantiene notificaciones y muestra detalle al usuario. | CU_005-CU_012 | E09-E11; E14/S07:p.1 |
+| ACT_009 | Autorizador Ciudadano | Componente/servicio funcional asociado a solicitudes, historial, aprobación, rechazo y revocación de uso de datos sensibles. | CU_013-CU_016 | E05/S01:p.39; E12-E13 |
+| ACT_010 | Portal ClaveÚnica | Sistema invocador que autentica, consulta estados, muestra secciones y deriva/recibe retorno de plataformas relacionadas. | CU_001-CU_021 | E01-E05; E08-E14 |
+
+## 5. Descripción de casos de uso con ID CU_X
+
+- **ID:** CU_001
+  - **Nombre:** Consultar portal público de ClaveÚnica
+  - **Descripción:** Permitir que cualquier usuario acceda a un sitio público con opciones disponibles de activación, autenticación y recuperación, más novedades e información de ayuda.
+  - **Relación jerárquica:** Raíz; agrupa FUN_001-FUN_003.
+  - **Actor/disparador:** ACT_001; disparador: ingreso al portal público.
+  - **Precondiciones:** El portal público está disponible para consulta.
+  - **Resultado esperado:** El usuario visualiza accesos y contenidos públicos de forma clara y precisa.
+  - **Criterios de aceptación:** Se muestran accesos a activar, autenticarse y recuperar; se muestra información de ayuda y novedades; la navegación pública es clara.
+  - **Evidencia:** E08/S06:p.1:HU01; E05/S01:p.39.
+- **ID:** CU_002
+  - **Nombre:** Cambiar datos personales con factor de seguridad
+  - **Descripción:** Permitir que un usuario con ClaveÚnica activada cambie datos personales de contacto sólo después de responder una o más preguntas de ámbito personal.
+  - **Relación jerárquica:** Raíz; agrupa FUN_004-FUN_005.
+  - **Actor/disparador:** ACT_002; disparador: usuario intenta cambiar teléfono o correo electrónico en datos personales.
+  - **Precondiciones:** Usuario autenticado con ClaveÚnica activada; sección de datos personales disponible.
+  - **Resultado esperado:** El cambio se permite sólo tras la validación adicional definida.
+  - **Criterios de aceptación:** El sistema solicita segundo factor/preguntas antes del cambio; teléfono o correo no cambian si no se responde la validación; el resultado del cambio queda reflejado en la sección.
+  - **Evidencia:** E08/S06:p.1:HU02; E05/S01:p.39.
+- **ID:** CU_003
+  - **Nombre:** Gestionar segundo factor de autenticación para login
+  - **Descripción:** Permitir que el usuario defina si desea usar segundo factor de autenticación al iniciar sesión y exigirlo cada vez que lo active.
+  - **Relación jerárquica:** Raíz; agrupa FUN_006-FUN_007.
+  - **Actor/disparador:** ACT_001, ACT_002; disparador: configuración inicial de ClaveÚnica o administración posterior de 2FA.
+  - **Precondiciones:** Usuario en flujo de configuración o administración de ClaveÚnica; mecanismo de 2FA definido por el proyecto.
+  - **Resultado esperado:** El usuario tiene preferencia de 2FA registrada y el login aplica la regla correspondiente.
+  - **Criterios de aceptación:** El usuario puede activar 2FA en configuración o posteriormente; si lo activa, el login solicita segundo factor en cada uso; si no está activo, no se exige por esta regla.
+  - **Evidencia:** E08/S06:p.1:HU03; E05/S01:p.39.
+- **ID:** CU_004
+  - **Nombre:** Gestionar sesión segura y multisesión
+  - **Descripción:** Evaluar y definir el manejo de multisesiones para reducir el riesgo de secuestro o mal uso de sesión cuando existan dispositivos autenticados con la misma ClaveÚnica.
+  - **Relación jerárquica:** Raíz; agrupa FUN_008-FUN_009.
+  - **Actor/disparador:** ACT_002; disparador: usuario mantiene o inicia sesiones en uno o más dispositivos.
+  - **Precondiciones:** Usuario autenticado con ClaveÚnica activada; existe política de multisesión definida durante el proyecto.
+  - **Resultado esperado:** El sistema aplica el manejo de multisesión definido y reduce escenarios de uso indebido documentados.
+  - **Criterios de aceptación:** Se documentan alternativas con pros y contras; se implementa el comportamiento aprobado para multisesión; se consideran alertas o controles para mal uso según definición del proyecto.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04; E05/S01:p.39.
+- **ID:** CU_005
+  - **Nombre:** Configurar DDU desde login de ClaveÚnica
+  - **Descripción:** Derivar a un usuario autenticado sin DDU configurado hacia la pasarela de configuración de la Plataforma de Notificaciones, previa confirmación en modal.
+  - **Relación jerárquica:** Raíz; agrupa FUN_010-FUN_012.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: login exitoso en ClaveÚnica sin DDU configurado.
+  - **Precondiciones:** Usuario autenticado; el sistema puede determinar estado de DDU; DDU no configurado.
+  - **Resultado esperado:** El usuario confirma continuar y es derivado a la pasarela de configuración de DDU.
+  - **Criterios de aceptación:** Se identifica que no tiene DDU; se muestra modal con continuar/cancelar; al continuar se activa la derivación a la pasarela.
+  - **Evidencia:** E09/S06:p.2:HU05; E14/S07:p.1.
+- **ID:** CU_006
+  - **Nombre:** No configurar DDU desde modal de login
+  - **Descripción:** Permitir que el usuario cancele la derivación a configuración de DDU mostrada después del login y retorne al entorno de ClaveÚnica con alerta de pendiente.
+  - **Relación jerárquica:** Raíz; agrupa FUN_013-FUN_014.
+  - **Actor/disparador:** ACT_003; disparador: usuario elige cancelar en modal de configuración DDU posterior al login.
+  - **Precondiciones:** Usuario autenticado; DDU no configurado; modal de confirmación desplegado.
+  - **Resultado esperado:** El usuario permanece/retorna al portal ClaveÚnica y la sección Domicilio Digital aparece con alerta de configuración pendiente.
+  - **Criterios de aceptación:** La opción cancelar no deriva a la pasarela; se retorna a CU; la sección Domicilio Digital muestra alerta pendiente.
+  - **Evidencia:** E09/S06:p.2:HU06.
+- **ID:** CU_007
+  - **Nombre:** Retornar a portal ClaveÚnica luego de configurar DDU
+  - **Descripción:** Permitir que el usuario que finalizó la configuración del DDU en la Plataforma de Notificaciones retorne al portal inicial de ClaveÚnica.
+  - **Relación jerárquica:** Raíz; agrupa FUN_015.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: finalización de configuración de DDU en pasarela.
+  - **Precondiciones:** Usuario derivado desde CU completó activación/configuración de DDU.
+  - **Resultado esperado:** La plataforma informa mediante modal que el usuario será retornado al portal de ClaveÚnica y devuelve el control.
+  - **Criterios de aceptación:** Al terminar configuración se despliega modal de retorno; el control vuelve al portal que invocó el flujo; el estado del usuario queda con DDU configurado.
+  - **Evidencia:** E09/S06:p.2:HU07; E14/S07:p.1.
+- **ID:** CU_008
+  - **Nombre:** Cancelar activación de DDU y retornar sin configurar
+  - **Descripción:** Permitir cancelar el proceso de activación/configuración de DDU durante la pasarela, confirmar la cancelación y retornar a ClaveÚnica sin configurar DDU.
+  - **Relación jerárquica:** Raíz; agrupa FUN_016-FUN_018.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: usuario cancela durante la activación de DDU.
+  - **Precondiciones:** Usuario se encuentra en proceso de activación/configuración de DDU.
+  - **Resultado esperado:** El usuario retorna a ClaveÚnica y conserva DDU sin configurar.
+  - **Criterios de aceptación:** El sistema solicita confirmar cancelación o continuar; si confirma cancelar, retorna a CU; DDU permanece sin configurar.
+  - **Evidencia:** E10/S06:p.3:HU08; E14/S07:p.1.
+- **ID:** CU_009
+  - **Nombre:** Visualizar sección de notificaciones en portal ClaveÚnica
+  - **Descripción:** Mostrar en el portal de ClaveÚnica una sección de acceso a notificaciones/CasillaÚnica con comportamiento diferenciado según estado de DDU.
+  - **Relación jerárquica:** Raíz; agrupa FUN_019-FUN_020.
+  - **Actor/disparador:** ACT_003, ACT_004; disparador: usuario ingresa al portal privado/sección de notificaciones.
+  - **Precondiciones:** Usuario autenticado; el sistema puede determinar estado de DDU.
+  - **Resultado esperado:** El usuario ve alerta de DDU pendiente o acceso/listado de notificaciones según corresponda.
+  - **Criterios de aceptación:** Sin DDU: sección muestra alerta pendiente e inicia activación al acceder; con DDU: sección permite acceder al listado de pendientes de lectura.
+  - **Evidencia:** E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** CU_010
+  - **Nombre:** Visualizar listado de notificaciones pendientes
+  - **Descripción:** Mostrar al usuario con DDU configurado el listado de notificaciones pendientes de lectura dentro del portal ClaveÚnica.
+  - **Relación jerárquica:** Raíz; agrupa FUN_021.
+  - **Actor/disparador:** ACT_004; disparador: usuario accede a sección de notificaciones con DDU configurado.
+  - **Precondiciones:** Usuario autenticado; DDU configurado; existen o pueden consultarse notificaciones pendientes.
+  - **Resultado esperado:** El usuario visualiza un listado de notificaciones pendientes con fecha de recepción, institución remitente y título.
+  - **Criterios de aceptación:** El listado incluye los campos requeridos; sólo presenta notificaciones pendientes de lectura; el listado se ubica en la sección de acceso a información de la plataforma de notificaciones.
+  - **Evidencia:** E10/S06:p.3:HU10; E14/S07:p.1.
+- **ID:** CU_011
+  - **Nombre:** Acceder al detalle de una notificación desde ClaveÚnica
+  - **Descripción:** Permitir que el usuario seleccione una notificación pendiente desde ClaveÚnica y sea derivado a CasillaÚnica para ver el detalle.
+  - **Relación jerárquica:** Raíz; agrupa FUN_022-FUN_023.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: usuario selecciona una notificación en el listado.
+  - **Precondiciones:** Usuario autenticado; DDU configurado; listado de notificaciones pendientes visible.
+  - **Resultado esperado:** El usuario accede en CasillaÚnica al detalle de la notificación seleccionada.
+  - **Criterios de aceptación:** El usuario puede seleccionar una notificación; CU deriva a la plataforma de notificaciones; el detalle se visualiza en CasillaÚnica.
+  - **Evidencia:** E11/S06:p.4:HU11; E14/S07:p.1.
+- **ID:** CU_012
+  - **Nombre:** Configurar DDU desde acceso del portal ClaveÚnica
+  - **Descripción:** Permitir iniciar la configuración de DDU desde la sección del portal ClaveÚnica que muestra alerta de configuración pendiente.
+  - **Relación jerárquica:** Raíz; agrupa FUN_024.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: usuario accede a la sección de notificaciones/DDU pendiente desde el portal.
+  - **Precondiciones:** Usuario autenticado; DDU no configurado; sección con alerta pendiente disponible.
+  - **Resultado esperado:** El usuario inicia el proceso de activación ingresando a la pasarela de configuración.
+  - **Criterios de aceptación:** La sección muestra DDU pendiente; al acceder permite iniciar activación; la derivación ingresa a la pasarela de configuración.
+  - **Evidencia:** E11/S06:p.4-p.5:HU12; E14/S07:p.1.
+- **ID:** CU_013
+  - **Nombre:** Visualizar gestión e historial de autorizaciones de uso de datos sensibles
+  - **Descripción:** Mostrar en el portal ClaveÚnica una sección para consultar el histórico de autorizaciones de uso de datos sensibles solicitadas entre instituciones públicas en estados aprobadas, rechazadas, pendientes y revocadas.
+  - **Relación jerárquica:** Raíz; agrupa FUN_025-FUN_026.
+  - **Actor/disparador:** ACT_002, ACT_005, ACT_006, ACT_009; disparador: usuario abre sección de gestión e historial de autorizaciones.
+  - **Precondiciones:** Usuario autenticado; existen o pueden consultarse solicitudes de autorización de uso de datos sensibles.
+  - **Resultado esperado:** El usuario visualiza el histórico clasificado por estado con los datos exigidos para cada estado.
+  - **Criterios de aceptación:** Se muestran estados aprobadas, rechazadas, pendientes y revocadas; cada estado presenta los campos definidos; la sección permite concentrar el historial en un solo lugar.
+  - **Evidencia:** E12/S06:p.5:HU13; E05/S01:p.39.
+- **ID:** CU_014
+  - **Nombre:** Visualizar historial de datos sensibles compartidos
+  - **Descripción:** Mostrar una tabla con el historial de datos sensibles compartidos entre instituciones proveedoras y solicitantes, verificando que correspondan a datos previamente autorizados.
+  - **Relación jerárquica:** Raíz; agrupa FUN_027.
+  - **Actor/disparador:** ACT_002, ACT_009; disparador: usuario consulta historial de datos compartidos.
+  - **Precondiciones:** Usuario autenticado; existen o pueden consultarse registros de datos compartidos.
+  - **Resultado esperado:** El usuario visualiza una tabla de historial con proveedor, solicitante, fecha y hora, y procedimiento administrativo involucrado.
+  - **Criterios de aceptación:** La tabla contiene las columnas requeridas; los registros corresponden a datos previamente autorizados; el usuario puede distinguir instituciones proveedoras y solicitantes.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** CU_015
+  - **Nombre:** Aprobar o rechazar autorizaciones pendientes
+  - **Descripción:** Permitir que el usuario con autorizaciones pendientes consulte la solicitud y ejecute aprobación o rechazo desde el historial de autorizaciones.
+  - **Relación jerárquica:** Raíz; agrupa FUN_028-FUN_029.
+  - **Actor/disparador:** ACT_005, ACT_009; disparador: usuario revisa una autorización pendiente.
+  - **Precondiciones:** Usuario autenticado; existe una autorización pendiente de aprobación; la solicitud muestra los datos requeridos.
+  - **Resultado esperado:** La autorización pendiente queda aprobada o rechazada según la acción seleccionada.
+  - **Criterios de aceptación:** El historial muestra solicitudes pendientes; cada pendiente dispone de botón para aprobar y botón para rechazar; la acción seleccionada actualiza el estado.
+  - **Evidencia:** E13/S06:p.6:HU15; E05/S01:p.39.
+- **ID:** CU_016
+  - **Nombre:** Revocar autorizaciones vigentes
+  - **Descripción:** Permitir que el usuario con autorizaciones vigentes consulte autorizaciones aprobadas y revoque una o varias autorizaciones.
+  - **Relación jerárquica:** Raíz; agrupa FUN_030.
+  - **Actor/disparador:** ACT_006, ACT_009; disparador: usuario decide revocar autorización vigente/aprobada.
+  - **Precondiciones:** Usuario autenticado; existe una autorización aprobada/vigente susceptible de revocación.
+  - **Resultado esperado:** La autorización seleccionada queda revocada y el historial refleja la fecha de revocación cuando corresponda.
+  - **Criterios de aceptación:** Las autorizaciones aprobadas muestran datos requeridos; existe acción de revocación; al revocar, el estado/historial se actualiza a revocada.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16; E05/S01:p.39.
+- **ID:** CU_017
+  - **Nombre:** Consultar configuración, historial de acciones e información personal
+  - **Descripción:** Soportar secciones del portal privado para configuración de ClaveÚnica, gestión de segundos factores, historial de acciones e información personal en poder del Estado.
+  - **Relación jerárquica:** Raíz; agrupa FUN_031-FUN_033.
+  - **Actor/disparador:** ACT_002; disparador: usuario ingresa a portal privado o sección personal.
+  - **Precondiciones:** Usuario autenticado; secciones privadas habilitadas según alcance definido.
+  - **Resultado esperado:** El usuario accede a configuración, historial de acciones e información personal consolidada.
+  - **Criterios de aceptación:** Sección de configuración disponible; sección de historial de acciones disponible; sección de información personal en poder del Estado disponible con categorías definidas por el alcance.
+  - **Evidencia:** E05/S01:p.39; E02/S01:p.35.
+- **ID:** CU_018
+  - **Nombre:** Consultar vista de expedientes electrónicos
+  - **Descripción:** Soportar acceso a una vista de expedientes electrónicos de la persona dentro de las secciones privadas del portal.
+  - **Relación jerárquica:** Raíz; agrupa FUN_034.
+  - **Actor/disparador:** ACT_002; disparador: usuario accede a sección de expedientes electrónicos.
+  - **Precondiciones:** Usuario autenticado; existen expedientes o una fuente definida para su visualización.
+  - **Resultado esperado:** El usuario visualiza o accede a la vista de expedientes electrónicos disponible.
+  - **Criterios de aceptación:** La sección existe en el diseño de pantallas; la vista permite acceso a expedientes electrónicos de la persona; se consideran estados vacíos si no hay expedientes.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** CU_019
+  - **Nombre:** Gestionar poderes y representaciones
+  - **Descripción:** Soportar una sección privada para gestión de poderes y representaciones de la persona.
+  - **Relación jerárquica:** Raíz; agrupa FUN_035.
+  - **Actor/disparador:** ACT_002; disparador: usuario ingresa a sección de poderes y representaciones.
+  - **Precondiciones:** Usuario autenticado; alcance funcional de poderes y representaciones definido durante el proyecto.
+  - **Resultado esperado:** El usuario accede a la sección de gestión de poderes y representaciones.
+  - **Criterios de aceptación:** La sección se contempla en la estructura y diseño de pantallas; se definen flujos de usuario asociados; se consideran casos de borde definidos por el proyecto.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** CU_020
+  - **Nombre:** Acceder a ayuda pública y contenidos informativos del portal
+  - **Descripción:** Soportar un portal público con centros de ayuda, atención de emergencias con ClaveÚnica, preguntas frecuentes, contacto, transparencia, participación ciudadana e información de trámites.
+  - **Relación jerárquica:** Raíz; agrupa FUN_036-FUN_037.
+  - **Actor/disparador:** ACT_001; disparador: usuario consulta ayuda o información pública.
+  - **Precondiciones:** Portal público disponible; contenidos definidos y publicados.
+  - **Resultado esperado:** El usuario encuentra ayuda pública y contenidos informativos/vinculantes desde el portal.
+  - **Criterios de aceptación:** Existen centros de ayuda; existen preguntas frecuentes y contacto; se contemplan secciones informativas de transparencia, participación ciudadana e información de trámites.
+  - **Evidencia:** E05/S01:p.39; E08/S06:p.1:HU01.
+- **ID:** CU_021
+  - **Nombre:** Acceder a ayuda institucional y gestionar integración
+  - **Descripción:** Soportar secciones públicas y privadas de ayuda a instituciones integradas a ClaveÚnica, incluyendo gestión de credenciales de acceso y estado de solicitudes de integración.
+  - **Relación jerárquica:** Raíz; agrupa FUN_038-FUN_040.
+  - **Actor/disparador:** ACT_007; disparador: funcionario de institución integrada consulta ayuda o estado de integración.
+  - **Precondiciones:** Institución integrada o en proceso de integración; usuario institucional con acceso según sección pública/privada.
+  - **Resultado esperado:** El funcionario accede a ayuda pertinente, gestiona credenciales y consulta estado de integraciones.
+  - **Criterios de aceptación:** Sección de ayuda institucional pública/privada definida; centro de ayuda renovado disponible; funcionalidad para gestionar credenciales; funcionalidad para consultar estado de solicitudes de integración.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39.
+
+## 6. Descripción de funcionalidades con ID FUN_X, clasificada por CU_X
+
+- **ID:** FUN_001
+  - **Nombre:** Mostrar accesos principales del portal público
+  - **Descripción:** Presentar opciones de activación, autenticación y recuperación de ClaveÚnica en el portal público.
+  - **Relación jerárquica:** CU_001.
+  - **Actor/disparador:** ACT_001; disparador: carga del portal público.
+  - **Precondiciones:** Portal público disponible.
+  - **Resultado esperado:** El usuario identifica y accede a las opciones principales.
+  - **Criterios de aceptación:** Se muestran activar, autenticarse y recuperar; las opciones son visibles y distinguibles; los enlaces/acciones conducen al flujo correspondiente.
+  - **Evidencia:** E08/S06:p.1:HU01.
+- **ID:** FUN_002
+  - **Nombre:** Publicar novedades e información de ayuda
+  - **Descripción:** Disponer contenidos de novedades e información de ayuda de manera oportuna en el portal público.
+  - **Relación jerárquica:** CU_001, CU_020.
+  - **Actor/disparador:** ACT_001; disparador: consulta de contenidos públicos.
+  - **Precondiciones:** Contenidos definidos por la contraparte; portal público disponible.
+  - **Resultado esperado:** El usuario accede a información de ayuda y novedades vigentes.
+  - **Criterios de aceptación:** Existe sección o acceso de ayuda; existe sección o acceso de novedades; los contenidos se despliegan en el portal.
+  - **Evidencia:** E08/S06:p.1:HU01; E05/S01:p.39.
+- **ID:** FUN_003
+  - **Nombre:** Organizar navegación pública clara
+  - **Descripción:** Estructurar contenido y navegación del sitio público para que las opciones disponibles se encuentren de forma clara y precisa.
+  - **Relación jerárquica:** CU_001, CU_020.
+  - **Actor/disparador:** ACT_001; disparador: navegación pública.
+  - **Precondiciones:** Arquitectura de información definida.
+  - **Resultado esperado:** El usuario navega el portal público sin ambigüedad sobre opciones y contenidos disponibles.
+  - **Criterios de aceptación:** La estructura soporta centros de ayuda, contacto, preguntas frecuentes e información pública; la navegación es consistente; se consideran pantallas de distintas dimensiones.
+  - **Evidencia:** E08/S06:p.1:HU01; E05/S01:p.39; E04/S01:p.37.
+- **ID:** FUN_004
+  - **Nombre:** Solicitar cambio de datos de contacto
+  - **Descripción:** Permitir iniciar el cambio de teléfono y/o correo electrónico desde la sección de datos personales.
+  - **Relación jerárquica:** CU_002.
+  - **Actor/disparador:** ACT_002; disparador: usuario selecciona cambiar teléfono o correo.
+  - **Precondiciones:** Usuario autenticado; sección de datos personales disponible.
+  - **Resultado esperado:** El sistema inicia el flujo de cambio y prepara validación adicional.
+  - **Criterios de aceptación:** El cambio se inicia desde datos personales; el sistema distingue teléfono y correo; el cambio queda condicionado a validación.
+  - **Evidencia:** E08/S06:p.1:HU02.
+- **ID:** FUN_005
+  - **Nombre:** Ejecutar validación personal previa al cambio
+  - **Descripción:** Solicitar una o más preguntas de ámbito personal antes de permitir cambios de teléfono o correo electrónico.
+  - **Relación jerárquica:** CU_002.
+  - **Actor/disparador:** ACT_002; disparador: intento de guardar cambio de contacto.
+  - **Precondiciones:** Usuario inició cambio de teléfono/correo; preguntas/validación definidas por el proyecto.
+  - **Resultado esperado:** El sistema permite o bloquea el cambio según resultado de validación.
+  - **Criterios de aceptación:** La pregunta o preguntas se presentan antes de cambiar; si no se responden correctamente no se modifica teléfono/correo; si se cumple validación se permite continuar.
+  - **Evidencia:** E08/S06:p.1:HU02.
+- **ID:** FUN_006
+  - **Nombre:** Administrar preferencia de segundo factor
+  - **Descripción:** Permitir al usuario definir si desea contar con segundo factor de autenticación durante configuración de ClaveÚnica o posteriormente.
+  - **Relación jerárquica:** CU_003.
+  - **Actor/disparador:** ACT_001, ACT_002; disparador: configuración inicial o administración posterior.
+  - **Precondiciones:** Usuario en flujo de configuración o administración; mecanismo de segundo factor definido.
+  - **Resultado esperado:** La preferencia de segundo factor queda registrada.
+  - **Criterios de aceptación:** El usuario puede activar el segundo factor; el usuario puede revisar la configuración posteriormente; el sistema registra estado activo/inactivo.
+  - **Evidencia:** E08/S06:p.1:HU03; E05/S01:p.39.
+- **ID:** FUN_007
+  - **Nombre:** Solicitar segundo factor en login cuando esté activo
+  - **Descripción:** Exigir el segundo factor definido cada vez que el usuario use el login de ClaveÚnica si tiene 2FA activado.
+  - **Relación jerárquica:** CU_003.
+  - **Actor/disparador:** ACT_002; disparador: intento de login con 2FA activo.
+  - **Precondiciones:** Usuario posee 2FA activo; credencial principal validada.
+  - **Resultado esperado:** El login se completa sólo tras superar segundo factor.
+  - **Criterios de aceptación:** El segundo factor se solicita en cada login con 2FA activo; sin completar el segundo factor no se finaliza el acceso; el flujo informa el paso requerido.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** FUN_008
+  - **Nombre:** Identificar escenario de multisesión
+  - **Descripción:** Detectar o considerar el uso de una misma ClaveÚnica en más de un dispositivo autenticado según definición del proyecto.
+  - **Relación jerárquica:** CU_004.
+  - **Actor/disparador:** ACT_002; disparador: sesiones concurrentes o evaluación de política de sesión.
+  - **Precondiciones:** Usuario autenticado; datos de sesión disponibles según diseño definido.
+  - **Resultado esperado:** El sistema/proyecto reconoce escenarios de multisesión para aplicar controles aprobados.
+  - **Criterios de aceptación:** Se documentan escenarios de multisesión; se evalúan pros y contras de opciones; el comportamiento final queda definido antes de implementar.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04; E05/S01:p.39.
+- **ID:** FUN_009
+  - **Nombre:** Aplicar control de sesión segura definido
+  - **Descripción:** Aplicar la decisión funcional aprobada para reducir secuestro o uso indebido de sesión en multisesión.
+  - **Relación jerárquica:** CU_004.
+  - **Actor/disparador:** ACT_002; disparador: detección o uso de multisesión.
+  - **Precondiciones:** Política de multisesión aprobada; controles definidos.
+  - **Resultado esperado:** El usuario opera bajo reglas de sesión segura y el sistema reduce mal uso documentado.
+  - **Criterios de aceptación:** El comportamiento implementado corresponde a la decisión aprobada; se consideran alertas de uso indebido o anómalo; se registran casos de borde definidos.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04; E05/S01:p.39; E04/S01:p.37.
+- **ID:** FUN_010
+  - **Nombre:** Consultar estado de DDU después del login
+  - **Descripción:** Identificar si el usuario autenticado tiene configurado o no el Domicilio Digital Único.
+  - **Relación jerárquica:** CU_005, CU_009.
+  - **Actor/disparador:** ACT_010; disparador: login exitoso o acceso a sección de notificaciones/DDU.
+  - **Precondiciones:** Usuario autenticado; fuente de estado DDU disponible.
+  - **Resultado esperado:** El sistema conoce el estado DDU del usuario para decidir el flujo.
+  - **Criterios de aceptación:** El estado se consulta antes de derivar o mostrar notificaciones; el resultado diferencia configurado/no configurado; el flujo usa ese resultado.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06; E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** FUN_011
+  - **Nombre:** Desplegar modal de confirmación para configuración DDU
+  - **Descripción:** Mostrar un modal antes de ingresar a la pasarela de configuración, permitiendo continuar o cancelar.
+  - **Relación jerárquica:** CU_005, CU_006.
+  - **Actor/disparador:** ACT_003; disparador: DDU no configurado detectado después de login.
+  - **Precondiciones:** Usuario autenticado; DDU no configurado.
+  - **Resultado esperado:** El usuario decide continuar a configuración o cancelar.
+  - **Criterios de aceptación:** El modal se muestra antes de la pasarela; incluye opción continuar; incluye opción cancelar; el flujo respeta la decisión.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06.
+- **ID:** FUN_012
+  - **Nombre:** Derivar a pasarela de configuración DDU
+  - **Descripción:** Enviar al usuario sin DDU configurado hacia la pasarela de configuración de la Plataforma de Notificaciones cuando confirma continuar.
+  - **Relación jerárquica:** CU_005, CU_012.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: usuario confirma continuar.
+  - **Precondiciones:** DDU no configurado; usuario confirmó derivación.
+  - **Resultado esperado:** El usuario ingresa al proceso de configuración DDU en CasillaÚnica/Plataforma de Notificaciones.
+  - **Criterios de aceptación:** La derivación se ejecuta sólo tras confirmación; el destino es la pasarela de configuración; el retorno posterior queda contemplado.
+  - **Evidencia:** E09/S06:p.2:HU05; E11/S06:p.4-p.5:HU12; E14/S07:p.1.
+- **ID:** FUN_013
+  - **Nombre:** Cancelar configuración DDU desde modal posterior al login
+  - **Descripción:** Permitir cancelar desde el modal que antecede la pasarela de configuración DDU.
+  - **Relación jerárquica:** CU_006.
+  - **Actor/disparador:** ACT_003; disparador: usuario selecciona cancelar en modal.
+  - **Precondiciones:** Modal de configuración DDU desplegado.
+  - **Resultado esperado:** El usuario no ingresa a la pasarela de configuración.
+  - **Criterios de aceptación:** La opción cancelar está disponible; al cancelar no se deriva a CasillaÚnica; el portal conserva al usuario en CU.
+  - **Evidencia:** E09/S06:p.2:HU06.
+- **ID:** FUN_014
+  - **Nombre:** Mostrar alerta de DDU pendiente en portal ClaveÚnica
+  - **Descripción:** Marcar la sección Domicilio Digital como pendiente de configuración cuando el usuario cancela o aún no configura DDU.
+  - **Relación jerárquica:** CU_006, CU_009, CU_012.
+  - **Actor/disparador:** ACT_003; disparador: DDU no configurado o cancelación de modal.
+  - **Precondiciones:** DDU no configurado.
+  - **Resultado esperado:** El usuario visualiza alerta de configuración pendiente.
+  - **Criterios de aceptación:** La alerta aparece en la sección Domicilio Digital o notificaciones; indica configuración pendiente; permite iniciar activación cuando el usuario accede a la sección.
+  - **Evidencia:** E09/S06:p.2:HU06; E10/S06:p.3:HU09; E11/S06:p.4-p.5:HU12.
+- **ID:** FUN_015
+  - **Nombre:** Recibir retorno desde pasarela tras configuración DDU
+  - **Descripción:** Mostrar aviso de retorno y recuperar el control del usuario en el portal ClaveÚnica después de finalizar configuración DDU.
+  - **Relación jerárquica:** CU_007.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: configuración DDU finalizada.
+  - **Precondiciones:** Usuario completó configuración de DDU en la pasarela.
+  - **Resultado esperado:** El usuario vuelve al portal ClaveÚnica con DDU configurado.
+  - **Criterios de aceptación:** Se muestra modal de aviso de retorno; el control retorna al portal invocador; el usuario puede continuar en el entorno de CU.
+  - **Evidencia:** E09/S06:p.2:HU07; E14/S07:p.1.
+- **ID:** FUN_016
+  - **Nombre:** Cancelar proceso de activación DDU en pasarela
+  - **Descripción:** Permitir que el usuario cancele el proceso de activación durante la configuración DDU.
+  - **Relación jerárquica:** CU_008.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: usuario selecciona cancelar durante activación.
+  - **Precondiciones:** Usuario se encuentra en pasarela/proceso de activación DDU.
+  - **Resultado esperado:** El sistema solicita confirmación antes de abandonar el proceso.
+  - **Criterios de aceptación:** La opción cancelar está disponible durante activación; no abandona sin confirmar; se ofrece continuar con el proceso.
+  - **Evidencia:** E10/S06:p.3:HU08.
+- **ID:** FUN_017
+  - **Nombre:** Confirmar cancelación de activación DDU
+  - **Descripción:** Desplegar modal para confirmar cancelación o continuar con la configuración DDU.
+  - **Relación jerárquica:** CU_008.
+  - **Actor/disparador:** ACT_003; disparador: usuario intenta cancelar activación.
+  - **Precondiciones:** Usuario solicitó cancelar activación DDU.
+  - **Resultado esperado:** El usuario confirma cancelación o decide continuar.
+  - **Criterios de aceptación:** El modal ofrece confirmar cancelación; el modal ofrece continuar; el resultado de la decisión guía el flujo siguiente.
+  - **Evidencia:** E10/S06:p.3:HU08.
+- **ID:** FUN_018
+  - **Nombre:** Retornar a ClaveÚnica con DDU sin configurar
+  - **Descripción:** Retornar al portal ClaveÚnica cuando el usuario confirma la cancelación de activación DDU, conservando estado sin configurar.
+  - **Relación jerárquica:** CU_008.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: usuario confirma cancelación.
+  - **Precondiciones:** Cancelación confirmada; DDU no completado.
+  - **Resultado esperado:** El usuario vuelve a ClaveÚnica y continúa con DDU sin configurar.
+  - **Criterios de aceptación:** El control vuelve a CU; el estado DDU permanece sin configurar; la sección asociada mantiene alerta o estado pendiente.
+  - **Evidencia:** E10/S06:p.3:HU08; E14/S07:p.1.
+- **ID:** FUN_019
+  - **Nombre:** Mostrar sección de acceso a notificaciones
+  - **Descripción:** Incluir en el portal ClaveÚnica una sección de acceso a la Plataforma de Notificaciones/CasillaÚnica.
+  - **Relación jerárquica:** CU_009.
+  - **Actor/disparador:** ACT_003, ACT_004; disparador: usuario autenticado visita portal/sección privada.
+  - **Precondiciones:** Usuario autenticado.
+  - **Resultado esperado:** El usuario visualiza una sección de acceso a sus notificaciones.
+  - **Criterios de aceptación:** La sección existe en el portal; identifica la relación con CasillaÚnica; su comportamiento cambia según estado de DDU.
+  - **Evidencia:** E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** FUN_020
+  - **Nombre:** Resolver comportamiento de notificaciones según DDU
+  - **Descripción:** Si DDU no está configurado, mostrar alerta pendiente e iniciar activación; si está configurado, permitir acceso al listado de notificaciones pendientes.
+  - **Relación jerárquica:** CU_009.
+  - **Actor/disparador:** ACT_003, ACT_004; disparador: acceso a sección de notificaciones.
+  - **Precondiciones:** Usuario autenticado; estado de DDU identificado.
+  - **Resultado esperado:** El usuario recibe acción coherente con su estado DDU.
+  - **Criterios de aceptación:** Sin DDU se muestra alerta e inicio de activación; con DDU se accede al listado pendiente; no se mezcla ambos comportamientos.
+  - **Evidencia:** E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** FUN_021
+  - **Nombre:** Listar notificaciones pendientes de lectura
+  - **Descripción:** Mostrar notificaciones pendientes de lectura con fecha de recepción, institución remitente y título.
+  - **Relación jerárquica:** CU_010, CU_011.
+  - **Actor/disparador:** ACT_004; disparador: usuario accede a listado de notificaciones.
+  - **Precondiciones:** Usuario con DDU configurado; datos de notificaciones disponibles.
+  - **Resultado esperado:** El usuario visualiza el listado de notificaciones pendientes con campos requeridos.
+  - **Criterios de aceptación:** Cada fila muestra fecha de recepción; cada fila muestra institución remitente; cada fila muestra título; el listado corresponde a pendientes de lectura.
+  - **Evidencia:** E10/S06:p.3:HU10; E11/S06:p.4:HU11.
+- **ID:** FUN_022
+  - **Nombre:** Seleccionar notificación para lectura
+  - **Descripción:** Permitir que el usuario seleccione una notificación pendiente desde el listado del portal ClaveÚnica.
+  - **Relación jerárquica:** CU_011.
+  - **Actor/disparador:** ACT_004; disparador: usuario selecciona fila o acción de notificación.
+  - **Precondiciones:** Listado de notificaciones pendientes visible.
+  - **Resultado esperado:** El sistema inicia acceso al detalle de la notificación seleccionada.
+  - **Criterios de aceptación:** La selección de una notificación está disponible; la selección identifica la notificación deseada; el flujo continúa hacia CasillaÚnica.
+  - **Evidencia:** E11/S06:p.4:HU11.
+- **ID:** FUN_023
+  - **Nombre:** Derivar a CasillaÚnica para detalle de notificación
+  - **Descripción:** Derivar al usuario a la plataforma de notificaciones para consultar el detalle de la notificación seleccionada.
+  - **Relación jerárquica:** CU_011.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: notificación seleccionada.
+  - **Precondiciones:** Notificación seleccionada; usuario con DDU configurado.
+  - **Resultado esperado:** El usuario ve el detalle de su notificación en CasillaÚnica.
+  - **Criterios de aceptación:** CU deriva a la plataforma de notificaciones; el detalle se consulta en CasillaÚnica; el flujo conserva la relación con la notificación seleccionada.
+  - **Evidencia:** E11/S06:p.4:HU11; E14/S07:p.1.
+- **ID:** FUN_024
+  - **Nombre:** Iniciar configuración DDU desde alerta del portal
+  - **Descripción:** Permitir iniciar activación de DDU al acceder a la sección del portal ClaveÚnica que muestra configuración pendiente.
+  - **Relación jerárquica:** CU_012.
+  - **Actor/disparador:** ACT_003; disparador: usuario hace clic/accede a sección con alerta pendiente.
+  - **Precondiciones:** DDU no configurado; alerta visible en portal.
+  - **Resultado esperado:** El usuario ingresa a la pasarela de configuración DDU.
+  - **Criterios de aceptación:** La alerta indica pendiente; el acceso inicia activación; la pasarela de configuración se abre desde el portal.
+  - **Evidencia:** E11/S06:p.4-p.5:HU12; E14/S07:p.1.
+- **ID:** FUN_025
+  - **Nombre:** Mostrar historial de autorizaciones por estado
+  - **Descripción:** Consultar y presentar autorizaciones de uso de datos sensibles clasificadas en aprobadas, rechazadas, pendientes y revocadas.
+  - **Relación jerárquica:** CU_013, CU_015, CU_016.
+  - **Actor/disparador:** ACT_002, ACT_005, ACT_006; disparador: usuario abre gestión/historial de autorizaciones.
+  - **Precondiciones:** Usuario autenticado; fuente de autorizaciones disponible.
+  - **Resultado esperado:** El usuario visualiza autorizaciones en los estados definidos.
+  - **Criterios de aceptación:** Incluye aprobadas; incluye rechazadas; incluye pendientes; incluye revocadas; cada registro se asocia a un estado.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU15-HU16.
+- **ID:** FUN_026
+  - **Nombre:** Mostrar datos de autorización según estado
+  - **Descripción:** Mostrar para cada autorización los campos requeridos según si está pendiente, aprobada, rechazada o revocada.
+  - **Relación jerárquica:** CU_013.
+  - **Actor/disparador:** ACT_002; disparador: visualización de historial o detalle de autorización.
+  - **Precondiciones:** Registros de autorización disponibles.
+  - **Resultado esperado:** Cada estado muestra datos definidos para su trazabilidad.
+  - **Criterios de aceptación:** Pendientes muestran fecha solicitud, institución solicitante, procedimiento, datos involucrados e instituciones proveedoras; aprobadas agregan fecha de aprobación; rechazadas agregan fecha de rechazo; revocadas agregan fecha de aprobación y fecha de revocación.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU16.
+- **ID:** FUN_027
+  - **Nombre:** Mostrar historial de datos sensibles compartidos
+  - **Descripción:** Presentar tabla de datos sensibles compartidos entre instituciones proveedoras y solicitantes/consumidoras.
+  - **Relación jerárquica:** CU_014.
+  - **Actor/disparador:** ACT_002; disparador: usuario consulta historial de datos compartidos.
+  - **Precondiciones:** Usuario autenticado; registros de datos compartidos disponibles.
+  - **Resultado esperado:** El usuario visualiza registros previamente autorizados de intercambio de datos sensibles.
+  - **Criterios de aceptación:** La tabla incluye institución proveedora; incluye institución solicitante/consumidora; incluye fecha y hora; incluye procedimiento administrativo involucrado.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** FUN_028
+  - **Nombre:** Aprobar autorización pendiente
+  - **Descripción:** Permitir aprobar una solicitud pendiente de autorización de uso de datos sensibles.
+  - **Relación jerárquica:** CU_015.
+  - **Actor/disparador:** ACT_005; disparador: usuario selecciona aprobar.
+  - **Precondiciones:** Solicitud en estado pendiente; datos de la solicitud visibles.
+  - **Resultado esperado:** La autorización cambia a estado aprobado según reglas del proyecto.
+  - **Criterios de aceptación:** Existe botón/acción aprobar; sólo aplica a pendientes; la solicitud cambia de estado y queda en historial.
+  - **Evidencia:** E13/S06:p.6:HU15.
+- **ID:** FUN_029
+  - **Nombre:** Rechazar autorización pendiente
+  - **Descripción:** Permitir rechazar una solicitud pendiente de autorización de uso de datos sensibles.
+  - **Relación jerárquica:** CU_015.
+  - **Actor/disparador:** ACT_005; disparador: usuario selecciona rechazar.
+  - **Precondiciones:** Solicitud en estado pendiente; datos de la solicitud visibles.
+  - **Resultado esperado:** La autorización cambia a estado rechazado según reglas del proyecto.
+  - **Criterios de aceptación:** Existe botón/acción rechazar; sólo aplica a pendientes; la solicitud cambia de estado y queda en historial.
+  - **Evidencia:** E13/S06:p.6:HU15.
+- **ID:** FUN_030
+  - **Nombre:** Revocar autorización aprobada o vigente
+  - **Descripción:** Permitir revocar una o varias autorizaciones vigentes/aprobadas de uso de datos sensibles.
+  - **Relación jerárquica:** CU_016.
+  - **Actor/disparador:** ACT_006; disparador: usuario selecciona revocar.
+  - **Precondiciones:** Autorización aprobada/vigente disponible; usuario autenticado.
+  - **Resultado esperado:** La autorización seleccionada se marca como revocada.
+  - **Criterios de aceptación:** Existe acción de revocación; la autorización pasa a estado revocado; se refleja fecha de revocación en el historial cuando corresponda.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16.
+- **ID:** FUN_031
+  - **Nombre:** Mostrar configuración de ClaveÚnica
+  - **Descripción:** Soportar una sección privada para configuración de ClaveÚnica y gestión de segundos factores.
+  - **Relación jerárquica:** CU_017, CU_003.
+  - **Actor/disparador:** ACT_002; disparador: usuario abre configuración.
+  - **Precondiciones:** Usuario autenticado; sección privada habilitada.
+  - **Resultado esperado:** El usuario administra configuración y factores de seguridad disponibles.
+  - **Criterios de aceptación:** La sección está contemplada en las pantallas privadas; la gestión de segundos factores está disponible; los cambios respetan validaciones definidas.
+  - **Evidencia:** E05/S01:p.39; E08/S06:p.1:HU03.
+- **ID:** FUN_032
+  - **Nombre:** Mostrar historial de acciones
+  - **Descripción:** Soportar una sección para que el usuario consulte historial de acciones asociado a ClaveÚnica.
+  - **Relación jerárquica:** CU_017.
+  - **Actor/disparador:** ACT_002; disparador: usuario abre historial de acciones.
+  - **Precondiciones:** Usuario autenticado; registros de acciones disponibles o estado vacío definido.
+  - **Resultado esperado:** El usuario visualiza historial de acciones o un estado vacío comprensible.
+  - **Criterios de aceptación:** La sección está contemplada en diseño; los registros se presentan al usuario; si no hay registros se muestra estado vacío.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FUN_033
+  - **Nombre:** Mostrar información personal en poder del Estado
+  - **Descripción:** Soportar sección de información personal en poder del Estado, incluyendo categorías de salud, social, educación, laboral, tributaria u otras definidas por el alcance.
+  - **Relación jerárquica:** CU_017.
+  - **Actor/disparador:** ACT_002; disparador: usuario consulta información personal.
+  - **Precondiciones:** Usuario autenticado; fuentes/categorías de información definidas.
+  - **Resultado esperado:** El usuario accede a información personal consolidada por categorías.
+  - **Criterios de aceptación:** La sección existe en diseño; se consideran categorías mencionadas; se muestran estados vacíos o falta de información cuando aplique.
+  - **Evidencia:** E05/S01:p.39; E02/S01:p.35; E04/S01:p.37.
+- **ID:** FUN_034
+  - **Nombre:** Mostrar vista de expedientes electrónicos
+  - **Descripción:** Proveer acceso a una vista de expedientes electrónicos de la persona dentro del portal privado.
+  - **Relación jerárquica:** CU_018.
+  - **Actor/disparador:** ACT_002; disparador: usuario abre expedientes electrónicos.
+  - **Precondiciones:** Usuario autenticado; fuente de expedientes definida o estado vacío contemplado.
+  - **Resultado esperado:** El usuario visualiza la vista de expedientes electrónicos.
+  - **Criterios de aceptación:** La vista está incorporada en las pantallas; se despliegan expedientes o estado vacío; se mantiene navegación consistente con el portal.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FUN_035
+  - **Nombre:** Gestionar poderes y representaciones
+  - **Descripción:** Proveer una sección para poderes y representaciones de la persona en el portal privado.
+  - **Relación jerárquica:** CU_019.
+  - **Actor/disparador:** ACT_002; disparador: usuario abre poderes y representaciones.
+  - **Precondiciones:** Usuario autenticado; alcance de gestión definido.
+  - **Resultado esperado:** El usuario accede a funcionalidades de poderes y representaciones definidas por el proyecto.
+  - **Criterios de aceptación:** La sección está contemplada; se definen flujos asociados; se consideran casos de borde y estados vacíos.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FUN_036
+  - **Nombre:** Mostrar centro de ayuda pública, preguntas frecuentes y contacto
+  - **Descripción:** Ofrecer ayuda pública, preguntas frecuentes, contacto y atención de emergencias relacionadas con ClaveÚnica.
+  - **Relación jerárquica:** CU_020, CU_001.
+  - **Actor/disparador:** ACT_001; disparador: usuario solicita ayuda o información pública.
+  - **Precondiciones:** Contenidos de ayuda definidos.
+  - **Resultado esperado:** El usuario accede a soporte informativo público.
+  - **Criterios de aceptación:** Centro de ayuda disponible; preguntas frecuentes disponibles; contacto disponible; atención de emergencias contemplada como sección pública.
+  - **Evidencia:** E05/S01:p.39; E08/S06:p.1:HU01.
+- **ID:** FUN_037
+  - **Nombre:** Mostrar contenidos informativos y de vinculación
+  - **Descripción:** Ofrecer acceso a información de transparencia, participación ciudadana e información de trámites desde el portal público.
+  - **Relación jerárquica:** CU_020.
+  - **Actor/disparador:** ACT_001; disparador: usuario consulta secciones informativas.
+  - **Precondiciones:** Contenidos informativos definidos y aprobados.
+  - **Resultado esperado:** El usuario accede a secciones informativas o de vinculación del portal.
+  - **Criterios de aceptación:** Se contemplan secciones de transparencia; se contempla participación ciudadana; se contempla información de trámites.
+  - **Evidencia:** E05/S01:p.39.
+- **ID:** FUN_038
+  - **Nombre:** Mostrar ayuda para instituciones integradas
+  - **Descripción:** Disponer secciones públicas y privadas de ayuda para instituciones que se integran a ClaveÚnica.
+  - **Relación jerárquica:** CU_021.
+  - **Actor/disparador:** ACT_007; disparador: funcionario consulta ayuda institucional.
+  - **Precondiciones:** Contenidos y accesos institucionales definidos.
+  - **Resultado esperado:** El funcionario accede a ayuda pertinente a su quehacer.
+  - **Criterios de aceptación:** Existe ayuda pública institucional; existe ayuda privada institucional; el centro de ayuda se mejora/renueva conforme al alcance.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39.
+- **ID:** FUN_039
+  - **Nombre:** Gestionar credenciales de acceso institucional
+  - **Descripción:** Permitir a funcionarios de instituciones integradas gestionar credenciales de acceso asociadas a ClaveÚnica.
+  - **Relación jerárquica:** CU_021.
+  - **Actor/disparador:** ACT_007; disparador: funcionario administra credenciales.
+  - **Precondiciones:** Funcionario institucional autorizado; sección privada disponible.
+  - **Resultado esperado:** El funcionario gestiona credenciales de acceso según reglas definidas.
+  - **Criterios de aceptación:** La funcionalidad se contempla en la sección privada; el usuario institucional puede acceder a credenciales; se definen validaciones de acceso institucional.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** FUN_040
+  - **Nombre:** Consultar estado de solicitudes de integración
+  - **Descripción:** Permitir a instituciones integradas o en proceso consultar el estado de sus solicitudes de integración a ClaveÚnica.
+  - **Relación jerárquica:** CU_021.
+  - **Actor/disparador:** ACT_007; disparador: funcionario consulta estado de integración.
+  - **Precondiciones:** Solicitud de integración registrada; funcionario con acceso según reglas definidas.
+  - **Resultado esperado:** El funcionario visualiza el estado de la solicitud de integración.
+  - **Criterios de aceptación:** La funcionalidad está contemplada; se muestra estado de solicitud; se mantiene información de ayuda pertinente al proceso.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39.
+
+## 7. Descripción de flujos de trabajo o procedimientos con ID FT_X, clasificado por FUN_X
+
+- **ID:** FT_001
+  - **Nombre:** Navegación pública de activación, autenticación, recuperación y ayuda
+  - **Descripción:** El usuario entra al portal público, identifica las opciones principales, consulta ayuda/novedades y selecciona el flujo requerido.
+  - **Relación jerárquica:** FUN_001-FUN_003; CU_001.
+  - **Actor/disparador:** ACT_001; disparador: ingreso al portal público.
+  - **Precondiciones:** Portal público disponible; contenidos publicados.
+  - **Resultado esperado:** El usuario accede al flujo o contenido público que necesita.
+  - **Criterios de aceptación:** Opciones principales visibles; ayuda/novedades accesibles; navegación consistente entre secciones; se contemplan pantallas de distintas dimensiones.
+  - **Evidencia:** E08/S06:p.1:HU01; E05/S01:p.39; E04/S01:p.37.
+- **ID:** FT_002
+  - **Nombre:** Cambio de teléfono o correo con validación personal
+  - **Descripción:** El usuario solicita cambiar teléfono/correo, el sistema presenta validación personal y sólo permite guardar el cambio tras superarla.
+  - **Relación jerárquica:** FUN_004-FUN_005; CU_002.
+  - **Actor/disparador:** ACT_002; disparador: editar datos de contacto.
+  - **Precondiciones:** Usuario autenticado; dato de contacto editable; preguntas/validación definidas.
+  - **Resultado esperado:** Cambio de contacto completado o bloqueado por validación no superada.
+  - **Criterios de aceptación:** La validación ocurre antes de cambiar; si falla o no se responde no se modifica el dato; si se supera se permite continuar/guardar.
+  - **Evidencia:** E08/S06:p.1:HU02.
+- **ID:** FT_003
+  - **Nombre:** Configuración de segundo factor
+  - **Descripción:** Durante configuración de ClaveÚnica o posteriormente, el usuario decide activar o no el segundo factor y el sistema registra la preferencia.
+  - **Relación jerárquica:** FUN_006; CU_003.
+  - **Actor/disparador:** ACT_001, ACT_002; disparador: configuración inicial o administración de 2FA.
+  - **Precondiciones:** Usuario en flujo de configuración o administración; mecanismo 2FA definido.
+  - **Resultado esperado:** Preferencia de segundo factor registrada.
+  - **Criterios de aceptación:** Opción de activar disponible; preferencia editable posteriormente según diseño; estado activo/inactivo persistido.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** FT_004
+  - **Nombre:** Login con segundo factor activo
+  - **Descripción:** Después de validar la credencial principal, el sistema solicita el segundo factor si el usuario lo activó y completa el acceso sólo si se supera.
+  - **Relación jerárquica:** FUN_007; CU_003.
+  - **Actor/disparador:** ACT_002; disparador: intento de login.
+  - **Precondiciones:** Usuario tiene 2FA activo; credencial principal válida.
+  - **Resultado esperado:** Login completado con segundo factor o detenido si no se supera.
+  - **Criterios de aceptación:** Solicitud de segundo factor en cada login; no se permite acceso sin completar el segundo factor activo; el flujo informa acción requerida.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** FT_005
+  - **Nombre:** Definición y aplicación del manejo multisesión
+  - **Descripción:** El proyecto evalúa alternativas de manejo de sesiones concurrentes, define política aprobada y el sistema aplica el control definido.
+  - **Relación jerárquica:** FUN_008-FUN_009; CU_004.
+  - **Actor/disparador:** ACT_002, ACT_010; disparador: sesiones concurrentes o revisión de seguridad.
+  - **Precondiciones:** Alternativa de manejo multisesión aprobada por el proyecto.
+  - **Resultado esperado:** Las multisesiones operan bajo reglas definidas para reducir mal uso.
+  - **Criterios de aceptación:** Se documentan pros/contras; se define comportamiento; se consideran alertas de uso indebido/anómalo; el control implementado coincide con la definición.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04; E05/S01:p.39.
+- **ID:** FT_006
+  - **Nombre:** Derivación a configuración DDU después de login
+  - **Descripción:** Tras login, CU consulta estado DDU; si no está configurado muestra modal; si el usuario continúa lo deriva a la pasarela de configuración.
+  - **Relación jerárquica:** FUN_010-FUN_012; CU_005.
+  - **Actor/disparador:** ACT_003, ACT_008, ACT_010; disparador: login exitoso sin DDU configurado.
+  - **Precondiciones:** Usuario autenticado; estado DDU no configurado.
+  - **Resultado esperado:** Usuario derivado a la pasarela de configuración DDU.
+  - **Criterios de aceptación:** Consulta estado DDU; modal antes de pasarela; continuar ejecuta derivación; control de retorno considerado.
+  - **Evidencia:** E09/S06:p.2:HU05; E14/S07:p.1.
+- **ID:** FT_007
+  - **Nombre:** Cancelación de configuración DDU desde modal de login
+  - **Descripción:** El usuario cancela el modal de configuración DDU; el sistema lo retorna/mantiene en CU y muestra alerta de configuración pendiente.
+  - **Relación jerárquica:** FUN_011, FUN_013-FUN_014; CU_006.
+  - **Actor/disparador:** ACT_003; disparador: cancelar modal posterior al login.
+  - **Precondiciones:** Modal de DDU desplegado; DDU no configurado.
+  - **Resultado esperado:** Usuario continúa en CU con alerta de DDU pendiente.
+  - **Criterios de aceptación:** No se deriva a pasarela; se retorna al entorno CU; la sección Domicilio Digital indica pendiente.
+  - **Evidencia:** E09/S06:p.2:HU06.
+- **ID:** FT_008
+  - **Nombre:** Retorno a CU tras configuración exitosa de DDU
+  - **Descripción:** La pasarela de notificaciones finaliza configuración DDU, muestra modal de retorno y devuelve el control a CU.
+  - **Relación jerárquica:** FUN_015; CU_007.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: DDU configurado en pasarela.
+  - **Precondiciones:** Usuario finalizó configuración de DDU.
+  - **Resultado esperado:** Usuario retorna al portal ClaveÚnica como portal invocador.
+  - **Criterios de aceptación:** Modal de retorno desplegado; retorno al portal inicial; DDU queda configurado para comportamiento posterior.
+  - **Evidencia:** E09/S06:p.2:HU07; E14/S07:p.1.
+- **ID:** FT_009
+  - **Nombre:** Cancelación de activación DDU durante la pasarela
+  - **Descripción:** Durante activación de DDU, el usuario cancela; el sistema confirma cancelar o continuar; si cancela retorna a CU con DDU sin configurar.
+  - **Relación jerárquica:** FUN_016-FUN_018; CU_008.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: cancelar activación durante pasarela.
+  - **Precondiciones:** Proceso de activación DDU iniciado y no finalizado.
+  - **Resultado esperado:** Usuario retorna a CU y conserva DDU sin configurar, o continúa si decide no cancelar.
+  - **Criterios de aceptación:** Modal confirma cancelación; opción continuar disponible; confirmación de cancelación retorna a CU; DDU no se configura.
+  - **Evidencia:** E10/S06:p.3:HU08; E14/S07:p.1.
+- **ID:** FT_010
+  - **Nombre:** Resolución de sección de notificaciones según estado DDU
+  - **Descripción:** Al abrir la sección de notificaciones, el sistema determina estado DDU y muestra alerta/activación o listado de pendientes.
+  - **Relación jerárquica:** FUN_019-FUN_020; CU_009.
+  - **Actor/disparador:** ACT_003, ACT_004; disparador: acceso a sección de notificaciones.
+  - **Precondiciones:** Usuario autenticado; estado DDU consultable.
+  - **Resultado esperado:** El usuario obtiene la acción adecuada según DDU configurado o pendiente.
+  - **Criterios de aceptación:** Sin DDU muestra alerta y permite iniciar activación; con DDU muestra/accede a pendientes; comportamiento consistente con estado.
+  - **Evidencia:** E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** FT_011
+  - **Nombre:** Consulta de listado de notificaciones pendientes
+  - **Descripción:** El usuario con DDU configurado abre la sección y visualiza notificaciones pendientes de lectura con los campos requeridos.
+  - **Relación jerárquica:** FUN_021; CU_010.
+  - **Actor/disparador:** ACT_004; disparador: abrir listado de notificaciones.
+  - **Precondiciones:** DDU configurado; usuario autenticado; datos de notificaciones disponibles o estado vacío definido.
+  - **Resultado esperado:** Listado de pendientes visible.
+  - **Criterios de aceptación:** Campos fecha de recepción, institución remitente y título; sólo pendientes de lectura; se considera estado vacío si no existen registros.
+  - **Evidencia:** E10/S06:p.3:HU10; E04/S01:p.37.
+- **ID:** FT_012
+  - **Nombre:** Acceso al detalle de notificación en CasillaÚnica
+  - **Descripción:** El usuario selecciona una notificación en el listado; CU deriva a CasillaÚnica para mostrar el detalle.
+  - **Relación jerárquica:** FUN_022-FUN_023; CU_011.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: selección de notificación.
+  - **Precondiciones:** Listado visible; notificación seleccionable; usuario con DDU configurado.
+  - **Resultado esperado:** Detalle consultado en plataforma de notificaciones.
+  - **Criterios de aceptación:** Selección habilitada; derivación a CasillaÚnica; detalle corresponde a notificación seleccionada.
+  - **Evidencia:** E11/S06:p.4:HU11; E14/S07:p.1.
+- **ID:** FT_013
+  - **Nombre:** Inicio de activación DDU desde sección del portal
+  - **Descripción:** El usuario sin DDU accede a la sección con alerta pendiente y el sistema inicia la pasarela de configuración.
+  - **Relación jerárquica:** FUN_014, FUN_024; CU_012.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: acceso a sección DDU/notificaciones pendiente.
+  - **Precondiciones:** DDU no configurado; alerta visible.
+  - **Resultado esperado:** Usuario ingresa a pasarela de configuración DDU.
+  - **Criterios de aceptación:** Alerta pendiente visible; acceso inicia activación; derivación a pasarela realizada.
+  - **Evidencia:** E11/S06:p.4-p.5:HU12; E14/S07:p.1.
+- **ID:** FT_014
+  - **Nombre:** Consulta de historial de autorizaciones por estado
+  - **Descripción:** El usuario abre gestión de autorizaciones; el sistema muestra autorizaciones en estados pendientes, aprobadas, rechazadas y revocadas con campos por estado.
+  - **Relación jerárquica:** FUN_025-FUN_026; CU_013.
+  - **Actor/disparador:** ACT_002, ACT_009; disparador: abrir gestión/historial de autorizaciones.
+  - **Precondiciones:** Usuario autenticado; registros o estado vacío disponible.
+  - **Resultado esperado:** Historial de autorizaciones trazable por estado.
+  - **Criterios de aceptación:** Estados requeridos visibles; datos por estado completos; revocadas incluyen fecha de revocación cuando aplique.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU16.
+- **ID:** FT_015
+  - **Nombre:** Consulta de historial de datos compartidos
+  - **Descripción:** El usuario consulta una tabla de intercambios de datos sensibles autorizados entre instituciones proveedoras y solicitantes.
+  - **Relación jerárquica:** FUN_027; CU_014.
+  - **Actor/disparador:** ACT_002, ACT_009; disparador: abrir historial de datos compartidos.
+  - **Precondiciones:** Registros de intercambio disponibles o estado vacío definido.
+  - **Resultado esperado:** Tabla de datos compartidos visible y verificable.
+  - **Criterios de aceptación:** Incluye proveedor, solicitante/consumidora, fecha y hora, procedimiento; los registros son datos previamente autorizados.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** FT_016
+  - **Nombre:** Decisión de autorización pendiente
+  - **Descripción:** El usuario visualiza una solicitud pendiente y elige aprobar o rechazar mediante acciones disponibles.
+  - **Relación jerárquica:** FUN_028-FUN_029; CU_015.
+  - **Actor/disparador:** ACT_005, ACT_009; disparador: aprobar o rechazar autorización pendiente.
+  - **Precondiciones:** Solicitud en estado pendiente; datos visibles.
+  - **Resultado esperado:** Solicitud cambia a aprobada o rechazada y queda en historial.
+  - **Criterios de aceptación:** Botón aprobar disponible; botón rechazar disponible; acción sólo sobre pendientes; historial actualiza estado.
+  - **Evidencia:** E13/S06:p.6:HU15.
+- **ID:** FT_017
+  - **Nombre:** Revocación de autorización vigente
+  - **Descripción:** El usuario visualiza autorizaciones aprobadas/vigentes y revoca una o varias; el historial refleja la revocación.
+  - **Relación jerárquica:** FUN_030; CU_016.
+  - **Actor/disparador:** ACT_006, ACT_009; disparador: seleccionar revocar autorización.
+  - **Precondiciones:** Autorización aprobada/vigente disponible.
+  - **Resultado esperado:** Autorización queda revocada.
+  - **Criterios de aceptación:** Acción revocar disponible; registro cambia a revocado; se conserva fecha de solicitud/aprobación y fecha de revocación cuando aplique.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16.
+- **ID:** FT_018
+  - **Nombre:** Consulta de secciones privadas personales
+  - **Descripción:** El usuario autenticado accede a configuración, historial de acciones e información personal consolidada por categorías.
+  - **Relación jerárquica:** FUN_031-FUN_033; CU_017.
+  - **Actor/disparador:** ACT_002; disparador: acceso a portal privado/sección personal.
+  - **Precondiciones:** Usuario autenticado; secciones definidas por alcance.
+  - **Resultado esperado:** Secciones privadas personales visibles y navegables.
+  - **Criterios de aceptación:** Configuración visible; historial de acciones visible; información personal en poder del Estado contemplada; estados vacíos/alertas diseñados.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FT_019
+  - **Nombre:** Consulta de expedientes electrónicos
+  - **Descripción:** El usuario ingresa a la vista de expedientes electrónicos y consulta información disponible o estado vacío.
+  - **Relación jerárquica:** FUN_034; CU_018.
+  - **Actor/disparador:** ACT_002; disparador: abrir expedientes electrónicos.
+  - **Precondiciones:** Usuario autenticado; fuente de expedientes o estado vacío definido.
+  - **Resultado esperado:** Vista de expedientes electrónicos mostrada.
+  - **Criterios de aceptación:** Vista disponible; navegación consistente; estado vacío diseñado si no hay expedientes.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FT_020
+  - **Nombre:** Gestión de poderes y representaciones
+  - **Descripción:** El usuario ingresa a la sección de poderes/representaciones y ejecuta flujos definidos durante el alcance.
+  - **Relación jerárquica:** FUN_035; CU_019.
+  - **Actor/disparador:** ACT_002; disparador: abrir sección de poderes y representaciones.
+  - **Precondiciones:** Usuario autenticado; alcance funcional definido por investigación/prototipado.
+  - **Resultado esperado:** Funcionalidades definidas de poderes y representaciones disponibles.
+  - **Criterios de aceptación:** Sección incluida; flujos definidos y prototipados; casos de borde considerados.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** FT_021
+  - **Nombre:** Consulta de ayuda pública y contenidos informativos
+  - **Descripción:** El usuario público accede a centros de ayuda, emergencias, preguntas frecuentes, contacto, transparencia, participación ciudadana e información de trámites.
+  - **Relación jerárquica:** FUN_036-FUN_037; CU_020.
+  - **Actor/disparador:** ACT_001; disparador: consulta de ayuda/contenido público.
+  - **Precondiciones:** Contenidos publicados y navegación pública definida.
+  - **Resultado esperado:** Información pública y ayuda consultable.
+  - **Criterios de aceptación:** Centro de ayuda disponible; FAQ/contacto disponibles; secciones informativas definidas; contenidos alineados al diseño de portal público.
+  - **Evidencia:** E05/S01:p.39; E08/S06:p.1:HU01.
+- **ID:** FT_022
+  - **Nombre:** Ayuda institucional y gestión de integración
+  - **Descripción:** El funcionario de institución integrada accede a ayuda pública/privada, gestiona credenciales y consulta estado de integración.
+  - **Relación jerárquica:** FUN_038-FUN_040; CU_021.
+  - **Actor/disparador:** ACT_007; disparador: consulta de ayuda o gestión institucional.
+  - **Precondiciones:** Usuario institucional con acceso según sección; institución integrada o en proceso.
+  - **Resultado esperado:** Ayuda y funcionalidades de integración disponibles para instituciones.
+  - **Criterios de aceptación:** Ayuda pública y privada contemplada; credenciales gestionables; estado de integración visible.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39.
+- **ID:** FT_023
+  - **Nombre:** Investigación de usuarios y necesidades
+  - **Descripción:** Definir metodología de investigación para perfiles de usuario, métricas, necesidades, recopilación y análisis cualitativo/cuantitativo.
+  - **Relación jerárquica:** OT_001; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: inicio de definición de solución.
+  - **Precondiciones:** Alcance contractual aprobado; acceso a información necesaria.
+  - **Resultado esperado:** Insumos de investigación para flujos, arquitectura y prototipos.
+  - **Criterios de aceptación:** Metodología propuesta; perfiles/necesidades definidos; evidencia cualitativa/cuantitativa analizada.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** FT_024
+  - **Nombre:** Ideación, arquitectura de información y prototipos de baja fidelidad
+  - **Descripción:** Estructurar flujos de usuario, mapas de navegación y prototipos de baja fidelidad basados en investigación.
+  - **Relación jerárquica:** OT_002-OT_003; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: cierre de investigación inicial.
+  - **Precondiciones:** Insumos de investigación disponibles.
+  - **Resultado esperado:** Flujos, navegación y prototipos de baja fidelidad definidos.
+  - **Criterios de aceptación:** Flujos de usuario estructurados; mapa de navegación o similar; prototipos de baja fidelidad disponibles; sesiones tempranas consideradas.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** FT_025
+  - **Nombre:** Prototipado de alta fidelidad y testeo con usuarios
+  - **Descripción:** Crear prototipos de alta fidelidad con contenido real o cercano y ejecutar testeos para minimizar fricciones de usabilidad.
+  - **Relación jerárquica:** OT_004-OT_005; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/usuarios de prueba/contraparte; disparador: prototipos listos para validación.
+  - **Precondiciones:** Flujos y prototipos base definidos.
+  - **Resultado esperado:** Prototipos validados y mejorados por resultados de pruebas.
+  - **Criterios de aceptación:** Prototipos navegables; testeos definidos en etapas; informe de correcciones de usabilidad/accesibilidad; mejoras incorporadas.
+  - **Evidencia:** E03/S01:p.36; E04/S01:p.37-p.38.
+- **ID:** FT_026
+  - **Nombre:** Implementación priorizada y pruebas de interfaces definidas
+  - **Descripción:** Implementar prototipos de alta fidelidad priorizados, definiendo historias de usuario asociadas y pruebas de componentes/interfaz.
+  - **Relación jerárquica:** OT_006, OT_011; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: prototipos de alta fidelidad aprobados y prioridades definidas.
+  - **Precondiciones:** Tres prioridades de implementación asignadas; prototipos definidos.
+  - **Resultado esperado:** Interfaces priorizadas implementadas y probadas al menos para prioridades 1 y 2.
+  - **Criterios de aceptación:** Prioridades 1 y 2 implementadas como mínimo; historias de usuario asociadas definidas; pruebas ejecutadas y evidenciadas; pruebas de prototipo y accesibilidad consideradas.
+  - **Evidencia:** E03/S01:p.36; E07/S05:ANEXO6.
+
+## 8. Descripción de reglas de negocio con ID RN_X, clasificado por FT_X
+
+- **ID:** RN_001
+  - **Nombre:** Accesos obligatorios del portal público
+  - **Descripción:** El portal público debe disponer claramente las opciones activar, autenticarse y recuperar.
+  - **Relación jerárquica:** FT_001; FUN_001.
+  - **Actor/disparador:** ACT_001; disparador: ingreso al portal público.
+  - **Precondiciones:** Portal público disponible.
+  - **Resultado esperado:** Opciones principales visibles.
+  - **Criterios de aceptación:** Las tres opciones están presentes; están ubicadas en el portal público; son comprensibles para el usuario.
+  - **Evidencia:** E08/S06:p.1:HU01.
+- **ID:** RN_002
+  - **Nombre:** Bloqueo de cambio de teléfono/correo sin validación personal
+  - **Descripción:** No se debe permitir cambiar teléfono y/o correo electrónico sin antes responder una o más preguntas del ámbito personal.
+  - **Relación jerárquica:** FT_002; FUN_005.
+  - **Actor/disparador:** ACT_002; disparador: intento de guardar teléfono/correo.
+  - **Precondiciones:** Usuario autenticado; cambio de dato de contacto iniciado.
+  - **Resultado esperado:** El cambio queda condicionado a validación personal previa.
+  - **Criterios de aceptación:** Sin respuesta válida no hay cambio; con respuesta válida se permite continuar; aplica a teléfono y correo.
+  - **Evidencia:** E08/S06:p.1:HU02.
+- **ID:** RN_003
+  - **Nombre:** Segundo factor opcional y obligatorio si está activo
+  - **Descripción:** El 2FA es opcional para el usuario, pero si lo activa será obligatorio cada vez que use el login de ClaveÚnica.
+  - **Relación jerárquica:** FT_003-FT_004; FUN_006-FUN_007.
+  - **Actor/disparador:** ACT_001, ACT_002; disparador: configuración o login.
+  - **Precondiciones:** Mecanismo 2FA definido; usuario puede configurar preferencia.
+  - **Resultado esperado:** Login aplica regla de obligatoriedad según preferencia.
+  - **Criterios de aceptación:** Activación voluntaria; obligatoriedad en cada login si activo; registro de estado activo/inactivo.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** RN_004
+  - **Nombre:** Evaluación obligatoria de multisesión
+  - **Descripción:** Debe evaluarse la mejor forma de manejar multisesiones y sus pros/contras para evitar posible mal uso de ClaveÚnica.
+  - **Relación jerárquica:** FT_005; FUN_008-FUN_009.
+  - **Actor/disparador:** ACT_010; disparador: definición de política de sesión.
+  - **Precondiciones:** Escenario de sesiones concurrentes identificado.
+  - **Resultado esperado:** Política de multisesión definida y justificada.
+  - **Criterios de aceptación:** Alternativas evaluadas; pros/contras documentados; comportamiento aprobado antes de implementación.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04.
+- **ID:** RN_005
+  - **Nombre:** Consulta de estado DDU después de autenticación
+  - **Descripción:** El sistema ClaveÚnica debe identificar si el usuario autenticado tiene o no configurado su DDU.
+  - **Relación jerárquica:** FT_006, FT_010; FUN_010.
+  - **Actor/disparador:** ACT_010; disparador: login o acceso a notificaciones.
+  - **Precondiciones:** Usuario autenticado.
+  - **Resultado esperado:** Estado DDU disponible para decidir el flujo.
+  - **Criterios de aceptación:** Estado configurado/no configurado identificado; resultado usado para modal, alerta o listado; no se deriva sin conocer estado.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06; E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** RN_006
+  - **Nombre:** Modal obligatorio antes de pasarela DDU desde login
+  - **Descripción:** Antes de ingresar a la pasarela de configuración DDU, el sistema debe desplegar un modal para confirmar continuar o cancelar.
+  - **Relación jerárquica:** FT_006-FT_007; FUN_011.
+  - **Actor/disparador:** ACT_003; disparador: DDU no configurado detectado después de login.
+  - **Precondiciones:** Usuario autenticado sin DDU.
+  - **Resultado esperado:** El usuario decide antes de ser derivado.
+  - **Criterios de aceptación:** Modal previo; opción continuar; opción cancelar; derivación sólo si continúa.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06.
+- **ID:** RN_007
+  - **Nombre:** Cancelación desde modal mantiene DDU pendiente
+  - **Descripción:** Si el usuario cancela desde el modal, se retorna al portal CU y la sección Domicilio Digital aparece con alerta de configuración pendiente.
+  - **Relación jerárquica:** FT_007; FUN_013-FUN_014.
+  - **Actor/disparador:** ACT_003; disparador: cancelar modal.
+  - **Precondiciones:** DDU no configurado; modal desplegado.
+  - **Resultado esperado:** Portal CU muestra pendiente de configuración.
+  - **Criterios de aceptación:** No hay configuración DDU; retorno a CU; alerta pendiente visible.
+  - **Evidencia:** E09/S06:p.2:HU06.
+- **ID:** RN_008
+  - **Nombre:** Retorno al portal invocador tras completar DDU
+  - **Descripción:** Al finalizar la configuración DDU en la Plataforma de Notificaciones, el sistema informa mediante modal y retorna al portal inicial ClaveÚnica.
+  - **Relación jerárquica:** FT_008; FUN_015.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: configuración DDU completada.
+  - **Precondiciones:** Proceso DDU finalizado.
+  - **Resultado esperado:** Control vuelve a CU.
+  - **Criterios de aceptación:** Modal de aviso; retorno al portal inicial; usuario puede continuar en CU.
+  - **Evidencia:** E09/S06:p.2:HU07; E14/S07:p.1.
+- **ID:** RN_009
+  - **Nombre:** Cancelación durante activación conserva DDU sin configurar
+  - **Descripción:** Si el usuario confirma cancelación durante la activación DDU, el sistema retorna a ClaveÚnica y el usuario continúa con DDU sin configurar.
+  - **Relación jerárquica:** FT_009; FUN_016-FUN_018.
+  - **Actor/disparador:** ACT_003, ACT_008; disparador: confirmar cancelación durante activación.
+  - **Precondiciones:** Proceso de activación DDU en curso.
+  - **Resultado esperado:** DDU permanece sin configurar.
+  - **Criterios de aceptación:** Confirmación solicitada; retorno a CU; estado DDU sin configurar.
+  - **Evidencia:** E10/S06:p.3:HU08.
+- **ID:** RN_010
+  - **Nombre:** Comportamiento dual de sección notificaciones
+  - **Descripción:** La sección de notificaciones debe mostrar alerta e iniciar activación si DDU no está configurado, y permitir acceso a pendientes de lectura si DDU está configurado.
+  - **Relación jerárquica:** FT_010; FUN_019-FUN_020.
+  - **Actor/disparador:** ACT_003, ACT_004; disparador: abrir sección notificaciones.
+  - **Precondiciones:** Usuario autenticado; estado DDU conocido.
+  - **Resultado esperado:** Sección responde según estado DDU.
+  - **Criterios de aceptación:** Sin DDU: alerta e inicio activación; con DDU: acceso al listado; el usuario no queda sin orientación.
+  - **Evidencia:** E10/S06:p.3:HU09.
+- **ID:** RN_011
+  - **Nombre:** Campos mínimos del listado de notificaciones
+  - **Descripción:** El listado de notificaciones pendientes debe desplegar fecha de recepción, institución remitente y título de la notificación.
+  - **Relación jerárquica:** FT_011-FT_012; FUN_021.
+  - **Actor/disparador:** ACT_004; disparador: listar notificaciones.
+  - **Precondiciones:** DDU configurado; notificaciones pendientes disponibles.
+  - **Resultado esperado:** Listado con campos mínimos.
+  - **Criterios de aceptación:** Fecha de recepción visible; institución remitente visible; título visible.
+  - **Evidencia:** E10/S06:p.3:HU10; E11/S06:p.4:HU11.
+- **ID:** RN_012
+  - **Nombre:** Detalle de notificación en plataforma de notificaciones
+  - **Descripción:** Para leer el detalle, el usuario selecciona una notificación y CU lo deriva a la plataforma de notificaciones/CasillaÚnica.
+  - **Relación jerárquica:** FT_012; FUN_022-FUN_023.
+  - **Actor/disparador:** ACT_004, ACT_008; disparador: seleccionar notificación.
+  - **Precondiciones:** DDU configurado; listado visible.
+  - **Resultado esperado:** Detalle se visualiza en CasillaÚnica.
+  - **Criterios de aceptación:** Selección disponible; derivación a CasillaÚnica; detalle consultable.
+  - **Evidencia:** E11/S06:p.4:HU11.
+- **ID:** RN_013
+  - **Nombre:** Estados del historial de autorizaciones
+  - **Descripción:** El historial de autorizaciones de uso de datos sensibles debe contemplar solicitudes aprobadas, rechazadas, pendientes y revocadas.
+  - **Relación jerárquica:** FT_014; FUN_025.
+  - **Actor/disparador:** ACT_002, ACT_009; disparador: consultar historial de autorizaciones.
+  - **Precondiciones:** Usuario autenticado.
+  - **Resultado esperado:** Historial clasificado por estado.
+  - **Criterios de aceptación:** Los cuatro estados están representados; cada solicitud tiene estado; estado visible para el usuario.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6:HU15-HU16.
+- **ID:** RN_014
+  - **Nombre:** Datos de solicitudes pendientes
+  - **Descripción:** Para solicitudes pendientes se debe mostrar fecha de solicitud, institución solicitante, procedimiento administrativo, listado de datos involucrados e instituciones proveedoras.
+  - **Relación jerárquica:** FT_014, FT_016; FUN_026, FUN_028-FUN_029.
+  - **Actor/disparador:** ACT_005; disparador: visualizar solicitud pendiente.
+  - **Precondiciones:** Solicitud en estado pendiente.
+  - **Resultado esperado:** Usuario conoce los datos necesarios para decidir.
+  - **Criterios de aceptación:** Todos los campos requeridos visibles; datos asociados a la solicitud correcta; estado pendiente visible.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6:HU15.
+- **ID:** RN_015
+  - **Nombre:** Datos de solicitudes aprobadas
+  - **Descripción:** Para solicitudes aprobadas se debe mostrar fecha de solicitud, fecha de aprobación, institución solicitante, procedimiento administrativo, listado de datos involucrados e instituciones proveedoras.
+  - **Relación jerárquica:** FT_014, FT_017; FUN_026, FUN_030.
+  - **Actor/disparador:** ACT_006; disparador: visualizar autorización aprobada/vigente.
+  - **Precondiciones:** Solicitud aprobada/vigente.
+  - **Resultado esperado:** Usuario ve datos necesarios para seguimiento o revocación.
+  - **Criterios de aceptación:** Fecha de solicitud visible; fecha de aprobación visible; institución solicitante, procedimiento, datos e instituciones proveedoras visibles.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU16.
+- **ID:** RN_016
+  - **Nombre:** Datos de solicitudes rechazadas
+  - **Descripción:** Para solicitudes rechazadas se debe mostrar fecha de solicitud, fecha de rechazo, institución solicitante, procedimiento administrativo, listado de datos involucrados e instituciones proveedoras.
+  - **Relación jerárquica:** FT_014; FUN_026.
+  - **Actor/disparador:** ACT_002; disparador: visualizar autorización rechazada.
+  - **Precondiciones:** Solicitud rechazada.
+  - **Resultado esperado:** Usuario visualiza trazabilidad del rechazo.
+  - **Criterios de aceptación:** Fecha de rechazo visible; datos mínimos visibles; estado rechazado visible.
+  - **Evidencia:** E12/S06:p.5:HU13.
+- **ID:** RN_017
+  - **Nombre:** Datos de solicitudes revocadas
+  - **Descripción:** Para solicitudes revocadas se debe mostrar fecha de solicitud, fecha de aprobación, fecha de revocación, institución solicitante, procedimiento administrativo, listado de datos involucrados e instituciones proveedoras.
+  - **Relación jerárquica:** FT_014, FT_017; FUN_026, FUN_030.
+  - **Actor/disparador:** ACT_006; disparador: visualizar autorización revocada.
+  - **Precondiciones:** Solicitud revocada.
+  - **Resultado esperado:** Usuario visualiza trazabilidad de revocación.
+  - **Criterios de aceptación:** Fecha de revocación visible; fechas de solicitud/aprobación visibles; datos e instituciones visibles.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.7:HU16.
+- **ID:** RN_018
+  - **Nombre:** Campos del historial de datos compartidos
+  - **Descripción:** El historial de datos sensibles compartidos debe presentarse como tabla con institución proveedora, institución solicitante/consumidora, fecha y hora, y procedimiento administrativo involucrado.
+  - **Relación jerárquica:** FT_015; FUN_027.
+  - **Actor/disparador:** ACT_002; disparador: consultar historial de datos compartidos.
+  - **Precondiciones:** Registros de datos compartidos disponibles.
+  - **Resultado esperado:** Tabla de intercambio de datos visible.
+  - **Criterios de aceptación:** Cuatro columnas mínimas presentes; registros verifican datos previamente autorizados; fecha y hora visibles.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** RN_019
+  - **Nombre:** Acciones de aprobación y rechazo para pendientes
+  - **Descripción:** Las solicitudes pendientes deben disponer acciones para aprobar y rechazar la autorización pendiente.
+  - **Relación jerárquica:** FT_016; FUN_028-FUN_029.
+  - **Actor/disparador:** ACT_005; disparador: visualizar pendiente.
+  - **Precondiciones:** Solicitud en estado pendiente.
+  - **Resultado esperado:** Usuario puede decidir aprobar o rechazar.
+  - **Criterios de aceptación:** Botón/acción aprobar visible; botón/acción rechazar visible; acción aplica sólo a la solicitud pendiente.
+  - **Evidencia:** E13/S06:p.6:HU15.
+- **ID:** RN_020
+  - **Nombre:** Acción de revocación para autorizaciones vigentes
+  - **Descripción:** Las autorizaciones vigentes/aprobadas deben disponer una acción para revocar una o varias autorizaciones.
+  - **Relación jerárquica:** FT_017; FUN_030.
+  - **Actor/disparador:** ACT_006; disparador: visualizar autorización vigente/aprobada.
+  - **Precondiciones:** Autorización vigente/aprobada.
+  - **Resultado esperado:** Usuario puede revocar autorización.
+  - **Criterios de aceptación:** Acción revocar disponible; estado cambia a revocado; historial conserva trazabilidad.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16.
+- **ID:** RN_021
+  - **Nombre:** Datos compartidos deben ser previamente autorizados
+  - **Descripción:** El historial de datos sensibles compartidos debe permitir verificar que los datos compartidos fueron previamente autorizados.
+  - **Relación jerárquica:** FT_015; FUN_027.
+  - **Actor/disparador:** ACT_002, ACT_009; disparador: consulta de historial de datos compartidos.
+  - **Precondiciones:** Registros de intercambio existentes.
+  - **Resultado esperado:** El usuario puede verificar autorización previa de los datos compartidos.
+  - **Criterios de aceptación:** Cada registro se asocia a autorización previa; la tabla permite identificar proveedor/solicitante/procedimiento; no se presenta intercambio sin referencia funcional a autorización.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** RN_022
+  - **Nombre:** Secciones privadas ampliadas del portal
+  - **Descripción:** El portal debe soportar secciones privadas como configuración, segundos factores, historial de acciones, expedientes, poderes/representaciones, autorizaciones, notificaciones e información personal en poder del Estado.
+  - **Relación jerárquica:** FT_018-FT_020; FUN_031-FUN_035.
+  - **Actor/disparador:** ACT_002; disparador: diseño/uso del portal privado.
+  - **Precondiciones:** Usuario autenticado; secciones incluidas en alcance.
+  - **Resultado esperado:** Portal privado con secciones funcionales definidas.
+  - **Criterios de aceptación:** Secciones contempladas en estructura y pantallas; navegación clara; casos de borde/estados vacíos diseñados.
+  - **Evidencia:** E05/S01:p.39; E04/S01:p.37.
+- **ID:** RN_023
+  - **Nombre:** Secciones públicas de ayuda e información
+  - **Descripción:** El portal público debe contemplar centros de ayuda, emergencias con ClaveÚnica, preguntas frecuentes, contacto, transparencia, participación ciudadana e información de trámites.
+  - **Relación jerárquica:** FT_021; FUN_036-FUN_037.
+  - **Actor/disparador:** ACT_001; disparador: consulta pública.
+  - **Precondiciones:** Contenidos definidos.
+  - **Resultado esperado:** Ayuda e información pública disponible.
+  - **Criterios de aceptación:** Cada tipo de sección se contempla en diseño; contenidos publicados; navegación coherente.
+  - **Evidencia:** E05/S01:p.39.
+- **ID:** RN_024
+  - **Nombre:** Ayuda institucional pública y privada
+  - **Descripción:** La solución debe soportar secciones públicas y privadas de ayuda para instituciones integradas a ClaveÚnica.
+  - **Relación jerárquica:** FT_022; FUN_038.
+  - **Actor/disparador:** ACT_007; disparador: consulta institucional.
+  - **Precondiciones:** Institución integrada o en proceso; accesos definidos.
+  - **Resultado esperado:** Funcionarios acceden a ayuda pertinente.
+  - **Criterios de aceptación:** Ayuda pública institucional; ayuda privada institucional; centro de ayuda renovado.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39.
+- **ID:** RN_025
+  - **Nombre:** Gestión institucional de credenciales e integración
+  - **Descripción:** Las instituciones integradas deben contar con funcionalidades para gestionar credenciales de acceso y consultar el estado de sus solicitudes de integración.
+  - **Relación jerárquica:** FT_022; FUN_039-FUN_040.
+  - **Actor/disparador:** ACT_007; disparador: gestión institucional.
+  - **Precondiciones:** Usuario institucional autorizado; solicitud/credenciales disponibles.
+  - **Resultado esperado:** Credenciales y estado de integración gestionables/consultables.
+  - **Criterios de aceptación:** Función de credenciales disponible; función de estado de integración disponible; acceso institucional controlado según definición.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** RN_026
+  - **Nombre:** Requerimientos referenciales no exhaustivos
+  - **Descripción:** Las historias del Anexo 7 son una primera versión y deben complementarse con el trabajo de la contratación; nuevos requerimientos pueden surgir de investigación y desarrollo dentro del alcance.
+  - **Relación jerárquica:** FT_023-FT_026; OT_001-OT_006.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: actividades de investigación y desarrollo.
+  - **Precondiciones:** Contrato en ejecución; alcance de licitación vigente.
+  - **Resultado esperado:** Requerimientos complementarios identificados sin salir del alcance.
+  - **Criterios de aceptación:** Se complementan historias referenciales; nuevos hallazgos mantienen alcance; se asigna evidencia y decisión de contraparte.
+  - **Evidencia:** E08/S06:p.1:introducción; E05/S01:p.39.
+- **ID:** RN_027
+  - **Nombre:** Diseño de casos de borde y alertas
+  - **Descripción:** Además del flujo exitoso, se deben considerar y diseñar casos de borde y sistema de alertas para errores, estados vacíos, falta de información y errores al ingresar o cargar información.
+  - **Relación jerárquica:** FT_001-FT_026; OT_009.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: diseño de flujos y prototipos.
+  - **Precondiciones:** Flujos funcionales definidos.
+  - **Resultado esperado:** Cada flujo cuenta con tratamiento de borde y alertas aplicables.
+  - **Criterios de aceptación:** Errores de sistema considerados; estados vacíos considerados; falta de información considerada; errores de ingreso/carga considerados.
+  - **Evidencia:** E04/S01:p.37.
+
+## 9. Descripción de validaciones y chequeos con ID CH_X, clasificado por FT_X
+
+- **ID:** CH_001
+  - **Nombre:** Verificar disponibilidad de opciones públicas
+  - **Descripción:** Comprobar que activar, autenticarse y recuperar estén visibles y accesibles en portal público.
+  - **Relación jerárquica:** FT_001; RN_001.
+  - **Actor/disparador:** Equipo de QA/usuario público; disparador: prueba de portal público.
+  - **Precondiciones:** Portal público desplegado en ambiente de prueba.
+  - **Resultado esperado:** Opciones principales verificadas.
+  - **Criterios de aceptación:** Las tres opciones están presentes; son accionables; se registra evidencia de prueba.
+  - **Evidencia:** E08/S06:p.1:HU01; E07/S05:plan_pruebas.
+- **ID:** CH_002
+  - **Nombre:** Validar preguntas personales antes de cambio de contacto
+  - **Descripción:** Comprobar que teléfono/correo no cambien sin responder una o más preguntas personales definidas.
+  - **Relación jerárquica:** FT_002; RN_002.
+  - **Actor/disparador:** ACT_002/QA; disparador: prueba de cambio de contacto.
+  - **Precondiciones:** Usuario autenticado; flujo de datos personales disponible.
+  - **Resultado esperado:** Cambio permitido sólo con validación superada.
+  - **Criterios de aceptación:** Sin respuesta no cambia; respuesta inválida no cambia; respuesta válida permite cambio.
+  - **Evidencia:** E08/S06:p.1:HU02.
+- **ID:** CH_003
+  - **Nombre:** Verificar persistencia de preferencia 2FA
+  - **Descripción:** Comprobar que la activación/desactivación o preferencia definida de segundo factor quede registrada y sea consultable posteriormente.
+  - **Relación jerárquica:** FT_003; RN_003.
+  - **Actor/disparador:** ACT_002/QA; disparador: configuración de 2FA.
+  - **Precondiciones:** Mecanismo de segundo factor definido; usuario en configuración.
+  - **Resultado esperado:** Estado de 2FA consistente después de guardar.
+  - **Criterios de aceptación:** Estado activo/inactivo persistente; cambio visible en administración; comportamiento de login usa ese estado.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** CH_004
+  - **Nombre:** Validar exigencia de segundo factor en login
+  - **Descripción:** Comprobar que el login solicite segundo factor cada vez que el usuario tenga 2FA activo.
+  - **Relación jerárquica:** FT_004; RN_003.
+  - **Actor/disparador:** ACT_002/QA; disparador: intento de login con 2FA activo.
+  - **Precondiciones:** Usuario con 2FA activo.
+  - **Resultado esperado:** Acceso completado sólo con segundo factor exitoso.
+  - **Criterios de aceptación:** Se solicita segundo factor; no se accede si no se supera; se accede si se supera.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** CH_005
+  - **Nombre:** Verificar consulta de estado DDU
+  - **Descripción:** Comprobar que, después del login o al entrar a notificaciones, el sistema identifique DDU configurado/no configurado.
+  - **Relación jerárquica:** FT_006, FT_010; RN_005.
+  - **Actor/disparador:** ACT_010/QA; disparador: login o acceso a sección notificaciones.
+  - **Precondiciones:** Usuarios de prueba con DDU configurado y no configurado.
+  - **Resultado esperado:** El flujo usa correctamente el estado DDU.
+  - **Criterios de aceptación:** Usuario sin DDU activa modal/alerta; usuario con DDU accede a notificaciones; resultados son reproducibles.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06; E10/S06:p.3:HU09; E14/S07:p.1.
+- **ID:** CH_006
+  - **Nombre:** Validar modal de DDU antes de pasarela
+  - **Descripción:** Comprobar que el modal de continuar/cancelar aparezca antes de ingresar a la pasarela de configuración DDU.
+  - **Relación jerárquica:** FT_006-FT_007; RN_006.
+  - **Actor/disparador:** ACT_003/QA; disparador: login sin DDU.
+  - **Precondiciones:** Usuario autenticado sin DDU.
+  - **Resultado esperado:** Modal mostrado y decisión respetada.
+  - **Criterios de aceptación:** Modal aparece antes de derivación; continuar deriva; cancelar no deriva.
+  - **Evidencia:** E09/S06:p.2:HU05-HU06.
+- **ID:** CH_007
+  - **Nombre:** Validar alerta DDU pendiente tras cancelar
+  - **Descripción:** Comprobar que, al cancelar desde modal o conservar DDU sin configurar, el portal muestre alerta de configuración pendiente.
+  - **Relación jerárquica:** FT_007, FT_009, FT_013; RN_007, RN_009-RN_010.
+  - **Actor/disparador:** ACT_003/QA; disparador: cancelar DDU o entrar a sección pendiente.
+  - **Precondiciones:** DDU no configurado.
+  - **Resultado esperado:** Alerta pendiente visible.
+  - **Criterios de aceptación:** Alerta aparece en sección; indica configuración pendiente; permite iniciar activación cuando corresponde.
+  - **Evidencia:** E09/S06:p.2:HU06; E10/S06:p.3:HU09; E11/S06:p.4-p.5:HU12.
+- **ID:** CH_008
+  - **Nombre:** Confirmar cancelación durante activación DDU
+  - **Descripción:** Comprobar que al cancelar en la pasarela se solicite confirmación y se respete cancelar o continuar.
+  - **Relación jerárquica:** FT_009; RN_009.
+  - **Actor/disparador:** ACT_003/QA; disparador: cancelar durante activación DDU.
+  - **Precondiciones:** Proceso de activación en curso.
+  - **Resultado esperado:** Decisión del usuario aplicada.
+  - **Criterios de aceptación:** Modal de confirmación visible; continuar mantiene proceso; cancelar retorna a CU con DDU sin configurar.
+  - **Evidencia:** E10/S06:p.3:HU08.
+- **ID:** CH_009
+  - **Nombre:** Validar retorno desde pasarela DDU
+  - **Descripción:** Comprobar que al finalizar DDU la pasarela muestre aviso de retorno y devuelva control a ClaveÚnica.
+  - **Relación jerárquica:** FT_008; RN_008.
+  - **Actor/disparador:** ACT_004, ACT_008/QA; disparador: completar configuración DDU.
+  - **Precondiciones:** Usuario completó DDU en pasarela.
+  - **Resultado esperado:** Control retorna a CU.
+  - **Criterios de aceptación:** Modal de retorno visible; portal invocador recupera control; estado DDU actualizado a configurado.
+  - **Evidencia:** E09/S06:p.2:HU07; E14/S07:p.1.
+- **ID:** CH_010
+  - **Nombre:** Validar listado de notificaciones pendientes
+  - **Descripción:** Comprobar que el listado muestre sólo pendientes de lectura con campos requeridos.
+  - **Relación jerárquica:** FT_011; RN_011.
+  - **Actor/disparador:** ACT_004/QA; disparador: abrir listado de notificaciones.
+  - **Precondiciones:** Usuario con DDU configurado; datos de prueba disponibles.
+  - **Resultado esperado:** Listado consistente con campos mínimos.
+  - **Criterios de aceptación:** Fecha de recepción visible; institución remitente visible; título visible; registros son pendientes.
+  - **Evidencia:** E10/S06:p.3:HU10.
+- **ID:** CH_011
+  - **Nombre:** Validar derivación a detalle de notificación
+  - **Descripción:** Comprobar que seleccionar una notificación derive a CasillaÚnica y muestre el detalle correspondiente.
+  - **Relación jerárquica:** FT_012; RN_012.
+  - **Actor/disparador:** ACT_004, ACT_008/QA; disparador: selección de notificación.
+  - **Precondiciones:** Listado visible; notificación seleccionable.
+  - **Resultado esperado:** Detalle visible en plataforma de notificaciones.
+  - **Criterios de aceptación:** La selección inicia derivación; el detalle corresponde a la notificación seleccionada; el usuario llega a CasillaÚnica.
+  - **Evidencia:** E11/S06:p.4:HU11; E14/S07:p.1.
+- **ID:** CH_012
+  - **Nombre:** Validar campos del historial de autorizaciones
+  - **Descripción:** Comprobar que los campos mostrados varíen correctamente según estado pendiente, aprobada, rechazada o revocada.
+  - **Relación jerárquica:** FT_014; RN_013-RN_017.
+  - **Actor/disparador:** ACT_002/QA; disparador: consulta de historial de autorizaciones.
+  - **Precondiciones:** Registros de prueba para cada estado.
+  - **Resultado esperado:** Historial con datos correctos por estado.
+  - **Criterios de aceptación:** Pendiente muestra campos RN_014; aprobada RN_015; rechazada RN_016; revocada RN_017.
+  - **Evidencia:** E12/S06:p.5:HU13; E13/S06:p.6-p.7:HU16.
+- **ID:** CH_013
+  - **Nombre:** Validar acciones por estado de autorización
+  - **Descripción:** Comprobar que aprobar/rechazar esté disponible para pendientes y revocar para vigentes/aprobadas.
+  - **Relación jerárquica:** FT_016-FT_017; RN_019-RN_020.
+  - **Actor/disparador:** ACT_005, ACT_006/QA; disparador: consulta de solicitud pendiente o vigente.
+  - **Precondiciones:** Registros pendientes y aprobados/vigentes disponibles.
+  - **Resultado esperado:** Acciones disponibles según estado.
+  - **Criterios de aceptación:** Pendiente muestra aprobar y rechazar; aprobada/vigente muestra revocar; la acción actualiza historial.
+  - **Evidencia:** E13/S06:p.6-p.7:HU15-HU16.
+- **ID:** CH_014
+  - **Nombre:** Validar tabla de datos sensibles compartidos
+  - **Descripción:** Comprobar que la tabla de datos compartidos incluya columnas requeridas y registros previamente autorizados.
+  - **Relación jerárquica:** FT_015; RN_018, RN_021.
+  - **Actor/disparador:** ACT_002/QA; disparador: consulta de historial de datos compartidos.
+  - **Precondiciones:** Registros de intercambio y autorizaciones relacionadas disponibles.
+  - **Resultado esperado:** Historial verificable de datos compartidos.
+  - **Criterios de aceptación:** Columnas proveedor, solicitante, fecha/hora y procedimiento; relación con autorización previa; datos mostrados corresponden al usuario.
+  - **Evidencia:** E13/S06:p.6:HU14.
+- **ID:** CH_015
+  - **Nombre:** Validar diseño de estados vacíos y errores
+  - **Descripción:** Comprobar que cada flujo contemple estados vacíos, errores de sistema, falta de información y errores de ingreso/carga.
+  - **Relación jerárquica:** FT_001-FT_026; RN_027.
+  - **Actor/disparador:** QA/contraparte; disparador: revisión de prototipos y pruebas.
+  - **Precondiciones:** Flujos/prototipos definidos.
+  - **Resultado esperado:** Casos de borde documentados y diseñados.
+  - **Criterios de aceptación:** Estado vacío definido; alerta de error definida; falta de información definida; error de ingreso/carga definido.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** CH_016
+  - **Nombre:** Validar accesibilidad de interfaces
+  - **Descripción:** Comprobar consideraciones de accesibilidad como tamaño de tipografía, alineación de texto, texto alternativo, contraste, legibilidad y uso del sistema.
+  - **Relación jerárquica:** FT_025-FT_026; OT_010.
+  - **Actor/disparador:** QA/usuarios de prueba/contraparte; disparador: revisión de prototipos e interfaces.
+  - **Precondiciones:** Prototipos o interfaces disponibles.
+  - **Resultado esperado:** Problemas de accesibilidad identificados y corregidos según plan.
+  - **Criterios de aceptación:** Tipografía legible; contraste revisado; texto alternativo considerado; alineación de texto revisada; correcciones registradas.
+  - **Evidencia:** E05/S01:p.38; E07/S05:aseguramiento_calidad.
+- **ID:** CH_017
+  - **Nombre:** Validar usabilidad con usuarios
+  - **Descripción:** Comprobar que los prototipos sean navegables y estén preparados para testeos de usabilidad, generando informe de correcciones.
+  - **Relación jerárquica:** FT_025; OT_004-OT_005.
+  - **Actor/disparador:** Usuarios de prueba/equipo UX/contraparte; disparador: etapa de testeo.
+  - **Precondiciones:** Prototipos navegables disponibles; muestra definida.
+  - **Resultado esperado:** Correcciones de usabilidad/accesibilidad identificadas e incorporadas.
+  - **Criterios de aceptación:** Pruebas moderadas o no moderadas definidas; resultados analizados; informe de correcciones; mejoras integradas en prototipos.
+  - **Evidencia:** E04/S01:p.37-p.38; E03/S01:p.36.
+- **ID:** CH_018
+  - **Nombre:** Validar pruebas y evidencia de aseguramiento de calidad
+  - **Descripción:** Comprobar que exista plan de pruebas, evidencia de ejecución y cantidad/tipo de testeos de prototipo y accesibilidad.
+  - **Relación jerárquica:** FT_026; OT_011.
+  - **Actor/disparador:** QA/contraparte; disparador: revisión de entregables de calidad.
+  - **Precondiciones:** Plan de aseguramiento de calidad presentado.
+  - **Resultado esperado:** Evidencia de calidad disponible para aceptación.
+  - **Criterios de aceptación:** Plan de pruebas entregado; evidencia de ejecución entregada; cantidad y tipo de testeos informados; pruebas de prototipo y accesibilidad incluidas.
+  - **Evidencia:** E07/S05:aseguramiento_calidad.
+- **ID:** CH_019
+  - **Nombre:** Validar implementación priorizada
+  - **Descripción:** Comprobar que las interfaces/prototipos definidos se implementen al menos en prioridades 1 y 2, con historias asociadas y pruebas.
+  - **Relación jerárquica:** FT_026; OT_006.
+  - **Actor/disparador:** Contraparte/QA; disparador: revisión de incrementos priorizados.
+  - **Precondiciones:** Prioridades de implementación asignadas; prototipos aprobados.
+  - **Resultado esperado:** Prioridades mínimas implementadas y verificadas.
+  - **Criterios de aceptación:** Prioridad 1 implementada; prioridad 2 implementada; historias de usuario asociadas definidas; pruebas de componentes/interfaz ejecutadas.
+  - **Evidencia:** E03/S01:p.36.
+
+## 10. Descripción de restricciones y excepciones con ID EX_X, clasificado por FT_X
+
+- **ID:** EX_001
+  - **Nombre:** Cancelación del modal DDU posterior al login
+  - **Descripción:** Si el usuario decide no configurar DDU desde el modal posterior al login, no se deriva a la pasarela y se muestra alerta de DDU pendiente en CU.
+  - **Relación jerárquica:** FT_007; RN_007.
+  - **Actor/disparador:** ACT_003; disparador: cancelar modal.
+  - **Precondiciones:** Usuario autenticado sin DDU; modal desplegado.
+  - **Resultado esperado:** Usuario permanece/retorna a CU con DDU pendiente.
+  - **Criterios de aceptación:** Cancelación disponible; no se configura DDU; alerta pendiente visible.
+  - **Evidencia:** E09/S06:p.2:HU06.
+- **ID:** EX_002
+  - **Nombre:** Cancelación durante activación DDU
+  - **Descripción:** Si el usuario cancela el proceso de activación DDU durante la pasarela y confirma la cancelación, retorna a CU sin configurar DDU.
+  - **Relación jerárquica:** FT_009; RN_009.
+  - **Actor/disparador:** ACT_003; disparador: cancelar activación.
+  - **Precondiciones:** Proceso DDU iniciado y no finalizado.
+  - **Resultado esperado:** Usuario retorna a CU con DDU sin configurar.
+  - **Criterios de aceptación:** Confirmación solicitada; al confirmar retorna; DDU conserva estado no configurado.
+  - **Evidencia:** E10/S06:p.3:HU08.
+- **ID:** EX_003
+  - **Nombre:** Usuario con DDU no configurado no ve listado de notificaciones
+  - **Descripción:** Cuando DDU no está configurado, la sección de notificaciones no muestra listado de pendientes; muestra alerta e inicio de activación.
+  - **Relación jerárquica:** FT_010-FT_013; RN_010.
+  - **Actor/disparador:** ACT_003; disparador: entrar a notificaciones sin DDU.
+  - **Precondiciones:** Usuario autenticado sin DDU.
+  - **Resultado esperado:** Usuario recibe alerta y opción de configuración.
+  - **Criterios de aceptación:** No se muestra listado de pendientes; se muestra alerta; se puede iniciar activación.
+  - **Evidencia:** E10/S06:p.3:HU09; E11/S06:p.4-p.5:HU12.
+- **ID:** EX_004
+  - **Nombre:** Usuario con DDU configurado accede a listado en vez de pasarela
+  - **Descripción:** Cuando DDU ya está configurado, la sección de notificaciones permite acceder al listado de pendientes de lectura en vez de iniciar activación.
+  - **Relación jerárquica:** FT_010-FT_011; RN_010-RN_011.
+  - **Actor/disparador:** ACT_004; disparador: entrar a notificaciones con DDU configurado.
+  - **Precondiciones:** Usuario autenticado con DDU configurado.
+  - **Resultado esperado:** Listado de pendientes disponible.
+  - **Criterios de aceptación:** No se muestra alerta de pendiente como flujo principal; listado accesible; campos requeridos visibles.
+  - **Evidencia:** E10/S06:p.3:HU09-HU10; E14/S07:p.1.
+- **ID:** EX_005
+  - **Nombre:** Segundo factor activo bloquea login si no se completa
+  - **Descripción:** Si el usuario activó 2FA, el login no debe completarse sin superar el segundo factor definido.
+  - **Relación jerárquica:** FT_004; RN_003.
+  - **Actor/disparador:** ACT_002; disparador: login con 2FA activo.
+  - **Precondiciones:** 2FA activo; credencial principal validada.
+  - **Resultado esperado:** Acceso bloqueado hasta completar segundo factor.
+  - **Criterios de aceptación:** Se solicita segundo factor; no hay sesión final sin factor; sesión final sólo con factor superado.
+  - **Evidencia:** E08/S06:p.1:HU03.
+- **ID:** EX_006
+  - **Nombre:** Estados vacíos en secciones y listados
+  - **Descripción:** Cuando no exista información para mostrar, los flujos deben contemplar estado vacío en lugar de fallar o presentar información incompleta.
+  - **Relación jerárquica:** FT_001-FT_026; RN_027.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: consulta sin datos.
+  - **Precondiciones:** Sección consultada sin datos disponibles.
+  - **Resultado esperado:** Usuario ve estado vacío diseñado.
+  - **Criterios de aceptación:** Estado vacío explícito; no se muestran datos incorrectos; se orienta al usuario según sección.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** EX_007
+  - **Nombre:** Errores al ingresar o cargar información
+  - **Descripción:** Cuando existan errores al ingresar o cargar información, el sistema debe considerar alertas o tratamiento de borde definido.
+  - **Relación jerárquica:** FT_001-FT_026; RN_027.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: error de ingreso/carga.
+  - **Precondiciones:** Usuario interactúa con formulario, listado o consulta.
+  - **Resultado esperado:** Usuario recibe alerta o manejo de error definido.
+  - **Criterios de aceptación:** Error detectado; alerta/mensaje diseñado; el sistema evita estados inconsistentes.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** EX_008
+  - **Nombre:** Falta de información disponible
+  - **Descripción:** Cuando falte información en una sección, debe existir tratamiento de borde definido para comunicar o resolver la ausencia de datos.
+  - **Relación jerárquica:** FT_001-FT_026; RN_027.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: fuente sin información o información incompleta.
+  - **Precondiciones:** Sección requiere información no disponible.
+  - **Resultado esperado:** Usuario recibe estado o alerta de falta de información.
+  - **Criterios de aceptación:** Falta de información identificada; mensaje/estado definido; no se inventan datos en pantalla.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** EX_009
+  - **Nombre:** Mal uso o comportamiento anómalo de ClaveÚnica
+  - **Descripción:** Los flujos deben estudiar y definir mecanismos de alerta de comportamiento de uso indebido o anómalo de ClaveÚnica.
+  - **Relación jerárquica:** FT_005; RN_004, RN_027.
+  - **Actor/disparador:** ACT_002, ACT_010; disparador: escenario de uso indebido o anómalo definido.
+  - **Precondiciones:** Mecanismos de alerta definidos durante el proyecto.
+  - **Resultado esperado:** Alerta o control funcional aplicado según definición.
+  - **Criterios de aceptación:** Comportamiento anómalo definido; alerta/control especificado; casos de sesión considerados.
+  - **Evidencia:** E05/S01:p.39; E08/S06:p.1-p.2:HU04.
+- **ID:** EX_010
+  - **Nombre:** Diferencia terminológica en revocación
+  - **Descripción:** El título y cuerpo de la historia HU16 refieren autorizaciones vigentes/aprobadas, pero la última frase menciona revocar una autorización pendiente; se registra como conflicto de evidencia y no se resuelve por inferencia.
+  - **Relación jerárquica:** FT_017; CU_016; sección 13.
+  - **Actor/disparador:** ACT_006; disparador: especificación de revocación.
+  - **Precondiciones:** Historia HU16 usada como evidencia.
+  - **Resultado esperado:** Se mantiene requisito de revocar vigentes/aprobadas y se documenta ambigüedad.
+  - **Criterios de aceptación:** Conflicto listado; no se cambia el alcance por intuición; se solicita aclaración en vacíos.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16.
+
+## 11. Otras especificaciones útiles para desarrollo del sistema, sin stack tecnológico
+
+- **ID:** OT_001
+  - **Nombre:** Metodología de investigación de usuarios
+  - **Descripción:** Definir metodología para descubrir perfiles de usuario, métricas de negocio, necesidades alineadas a objetivos, y análisis cualitativo/cuantitativo.
+  - **Relación jerárquica:** FT_023; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: inicio de investigación.
+  - **Precondiciones:** Alcance y objetivos del portal definidos.
+  - **Resultado esperado:** Insumos verificables para decisiones de experiencia y diseño.
+  - **Criterios de aceptación:** Perfiles identificados; métricas y necesidades documentadas; análisis cualitativo/cuantitativo registrado.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** OT_002
+  - **Nombre:** Estrategia de pruebas de usabilidad
+  - **Descripción:** Proponer y desarrollar estrategias de pruebas de usabilidad en etapas tempranas y finales para respaldar decisiones de experiencia.
+  - **Relación jerárquica:** FT_023, FT_025; soporte transversal.
+  - **Actor/disparador:** Equipo del proyecto/usuarios de prueba/contraparte; disparador: planificación de validación.
+  - **Precondiciones:** Prototipos o conceptos disponibles según etapa.
+  - **Resultado esperado:** Decisiones de experiencia respaldadas por pruebas.
+  - **Criterios de aceptación:** Estrategia temprana definida; estrategia final definida; hallazgos asociados a decisiones.
+  - **Evidencia:** E03/S01:p.36; E04/S01:p.37-p.38.
+- **ID:** OT_003
+  - **Nombre:** Arquitectura de información y flujos de usuario
+  - **Descripción:** Definir estructura, arquitectura de información, mapas de navegación y flujos de usuario que soporten nuevos requerimientos y secciones.
+  - **Relación jerárquica:** FT_024; soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: cierre de investigación inicial.
+  - **Precondiciones:** Necesidades y requerimientos identificados.
+  - **Resultado esperado:** Base de navegación y flujos para prototipos.
+  - **Criterios de aceptación:** Flujos documentados; mapa de navegación o equivalente; secciones públicas/privadas contempladas.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.38-p.39.
+- **ID:** OT_004
+  - **Nombre:** Prototipos de baja y alta fidelidad
+  - **Descripción:** Crear prototipos de baja fidelidad basados en investigación y prototipos de alta fidelidad basados en requerimientos, flujos y contenido real o cercano.
+  - **Relación jerárquica:** FT_024-FT_025; soporte transversal.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: definición de solución.
+  - **Precondiciones:** Flujos y arquitectura de información definidos.
+  - **Resultado esperado:** Prototipos navegables y verificables para validación e implementación.
+  - **Criterios de aceptación:** Prototipos de baja fidelidad disponibles; prototipos de alta fidelidad disponibles; contenido real o cercano incorporado cuando aplique.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** OT_005
+  - **Nombre:** Pruebas con usuarios e informe de correcciones
+  - **Descripción:** Ejecutar pruebas con usuarios para minimizar fricciones de usabilidad y generar informe de correcciones, problemas de usabilidad/accesibilidad y ajustes.
+  - **Relación jerárquica:** FT_025; soporte transversal.
+  - **Actor/disparador:** Equipo UX/usuarios de prueba/contraparte; disparador: prototipo navegable disponible.
+  - **Precondiciones:** Prototipos navegables y plan de pruebas definido.
+  - **Resultado esperado:** Correcciones identificadas e incorporadas.
+  - **Criterios de aceptación:** Pruebas ejecutadas; resultados analizados; informe de correcciones producido; mejoras integradas en prototipos.
+  - **Evidencia:** E04/S01:p.37-p.38.
+- **ID:** OT_006
+  - **Nombre:** Implementación priorizada de interfaces definidas
+  - **Descripción:** Asignar tres prioridades de implementación para prototipos definidos e implementar al menos prioridades 1 y 2, incluyendo historias de usuario y pruebas asociadas.
+  - **Relación jerárquica:** FT_026; soporte transversal.
+  - **Actor/disparador:** Equipo de implementación/contraparte; disparador: prototipos de alta fidelidad aprobados.
+  - **Precondiciones:** Prioridades asignadas; prototipos definidos.
+  - **Resultado esperado:** Interfaces priorizadas implementadas y probadas.
+  - **Criterios de aceptación:** Tres prioridades definidas; prioridades 1 y 2 implementadas como mínimo; historias asociadas definidas; pruebas ejecutadas.
+  - **Evidencia:** E03/S01:p.36.
+- **ID:** OT_007
+  - **Nombre:** Diseño adaptable para tamaños de pantalla
+  - **Descripción:** Diseñar interfaces considerando primero pantallas móviles y luego pantallas más amplias como tablet o escritorio.
+  - **Relación jerárquica:** FT_001-FT_026; soporte transversal.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: diseño de pantallas.
+  - **Precondiciones:** Pantallas o secciones a diseñar identificadas.
+  - **Resultado esperado:** Interfaces preparadas para distintos tamaños de pantalla.
+  - **Criterios de aceptación:** Pantallas móviles consideradas; tablet/escritorio considerados; navegación y contenidos se adaptan sin perder función.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** OT_008
+  - **Nombre:** Componentes reutilizables y navegación consistente
+  - **Descripción:** Diseñar vistas maestras reutilizables, componentes consistentes y navegación clara en todas las vistas del prototipo, omitiendo marcas o herramientas específicas.
+  - **Relación jerárquica:** FT_001-FT_026; soporte transversal.
+  - **Actor/disparador:** Equipo de diseño/contraparte; disparador: diseño de vistas.
+  - **Precondiciones:** Arquitectura de información y flujos definidos.
+  - **Resultado esperado:** Interfaz coherente y mantenible desde la experiencia del usuario.
+  - **Criterios de aceptación:** Componentes reutilizables; navegación clara; consistencia visual; edición facilitada.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** OT_009
+  - **Nombre:** Casos de borde y sistema de alertas
+  - **Descripción:** Diseñar, además del flujo exitoso, casos de borde y alertas para errores de sistema, estados vacíos, falta de información y errores al ingresar o cargar información.
+  - **Relación jerárquica:** FT_001-FT_026; RN_027; EX_006-EX_008.
+  - **Actor/disparador:** ACT_001-ACT_007; disparador: diseño de cada flujo.
+  - **Precondiciones:** Flujos principales definidos.
+  - **Resultado esperado:** Cada flujo cuenta con tratamiento de excepción verificable.
+  - **Criterios de aceptación:** Errores de sistema; estados vacíos; falta de información; errores de ingreso/carga; alertas definidas.
+  - **Evidencia:** E04/S01:p.37.
+- **ID:** OT_010
+  - **Nombre:** Accesibilidad de interfaz
+  - **Descripción:** Considerar accesibilidad en tamaño de tipografía, alineaciones de texto, texto alternativo, contraste, legibilidad y uso del sistema.
+  - **Relación jerárquica:** FT_025-FT_026; CH_016.
+  - **Actor/disparador:** ACT_001-ACT_007/QA; disparador: diseño y prueba de interfaces.
+  - **Precondiciones:** Prototipos o interfaces disponibles.
+  - **Resultado esperado:** Interfaces con criterios de accesibilidad revisados.
+  - **Criterios de aceptación:** Tipografía revisada; contraste revisado; textos alternativos considerados; legibilidad y uso evaluados.
+  - **Evidencia:** E05/S01:p.38; E07/S05:aseguramiento_calidad.
+- **ID:** OT_011
+  - **Nombre:** Plan de aseguramiento de calidad
+  - **Descripción:** Presentar plan de aseguramiento de calidad que describa metodologías, herramientas y prácticas para garantizar calidad, con plan de pruebas, evidencia de ejecución y testeos de prototipo y accesibilidad.
+  - **Relación jerárquica:** FT_026; CH_018.
+  - **Actor/disparador:** Proveedor/contraparte/QA; disparador: presentación y ejecución de oferta técnica.
+  - **Precondiciones:** Propuesta técnica y plan de trabajo definidos.
+  - **Resultado esperado:** Calidad verificable mediante evidencias de prueba.
+  - **Criterios de aceptación:** Plan de pruebas; evidencia de ejecución; cantidad y tipo de testeos; prototipo y accesibilidad cubiertos.
+  - **Evidencia:** E07/S05:aseguramiento_calidad; E05/S01:p.38.
+- **ID:** OT_012
+  - **Nombre:** Garantía funcional del software
+  - **Descripción:** La garantía debe cubrir que el software cumpla funcionalidades y características especificadas en requerimientos técnicos, y contemplar apoyo técnico para resolver problemas o dudas durante su uso.
+  - **Relación jerárquica:** Soporte posterior a CU_001-CU_021.
+  - **Actor/disparador:** Proveedor/contraparte; disparador: término de contrato y uso del software durante garantía.
+  - **Precondiciones:** Software entregado; garantía vigente.
+  - **Resultado esperado:** Problemas o dudas funcionales atendidas durante garantía.
+  - **Criterios de aceptación:** Garantía mínima de 6 meses; cubre funcionamiento y cumplimiento funcional; apoyo técnico disponible; comunicación dentro del plazo de garantía.
+  - **Evidencia:** E06/S01:p.42-p.43; E07/S05:garantia_software.
+- **ID:** OT_013
+  - **Nombre:** Contenido mínimo de propuesta técnica y entregables
+  - **Descripción:** La propuesta debe detallar antecedentes del proyecto, requerimientos/servicios/entregables, objeto, alcance, metodología, cronograma, entregables, aseguramiento de calidad y garantía.
+  - **Relación jerárquica:** Soporte de gestión para CU_001-CU_021 y FT_023-FT_026.
+  - **Actor/disparador:** Proveedor/contraparte; disparador: elaboración de propuesta técnica.
+  - **Precondiciones:** Bases y requerimientos disponibles.
+  - **Resultado esperado:** Propuesta técnica trazable al alcance de la contratación.
+  - **Criterios de aceptación:** Antecedentes generales incluidos; objeto y alcance explicitados; entregables definidos; plan de trabajo y calidad incluidos; garantía informada.
+  - **Evidencia:** E07/S05:ANEXO6.
+- **ID:** OT_014
+  - **Nombre:** Plan de versiones del portal
+  - **Descripción:** Proponer versiones del portal de ClaveÚnica y un plan de implementación en corto, mediano y largo plazo para la evolución del portal.
+  - **Relación jerárquica:** Soporte transversal a CU_001-CU_021.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: planificación de evolución.
+  - **Precondiciones:** Estructura y requerimientos del portal definidos.
+  - **Resultado esperado:** Evolución del portal organizada por plazos.
+  - **Criterios de aceptación:** Versión o versiones propuestas; plazos corto/mediano/largo definidos; alcance de cada etapa documentado.
+  - **Evidencia:** E05/S01:p.39.
+- **ID:** OT_015
+  - **Nombre:** Propuesta de contenidos del portal público
+  - **Descripción:** Proponer contenidos del portal público para ayuda, contacto, emergencias, transparencia, participación ciudadana e información de trámites, alineados a lineamientos institucionales de voz y tono sin incorporar stack tecnológico.
+  - **Relación jerárquica:** FT_021; CU_020.
+  - **Actor/disparador:** Equipo de contenido/contraparte; disparador: diseño del portal público.
+  - **Precondiciones:** Secciones públicas definidas.
+  - **Resultado esperado:** Contenidos públicos coherentes y útiles para usuarios.
+  - **Criterios de aceptación:** Contenidos de ayuda; contenidos de contacto/FAQ; secciones informativas; consistencia editorial revisada.
+  - **Evidencia:** E05/S01:p.39.
+- **ID:** OT_016
+  - **Nombre:** Trazabilidad de nuevos requerimientos
+  - **Descripción:** Los nuevos requerimientos identificados durante investigación y desarrollo deben mantenerse dentro del alcance de la licitación y registrarse con evidencia y decisión de contraparte.
+  - **Relación jerárquica:** RN_026; FT_023-FT_026.
+  - **Actor/disparador:** Equipo del proyecto/contraparte; disparador: hallazgo de investigación o desarrollo.
+  - **Precondiciones:** Ciclo de investigación/desarrollo en curso.
+  - **Resultado esperado:** Requerimientos complementarios controlados y trazables.
+  - **Criterios de aceptación:** Nuevo requerimiento registrado; evidencia asociada; decisión de incluir/excluir; no se excede alcance documental.
+  - **Evidencia:** E08/S06:p.1:introducción; E05/S01:p.39.
+
+## 12. Trazabilidad y evidencia
+
+Catálogo de evidencias recuperadas:
+
+| chunk_id | Referencia | Contenido recuperado |
+|---|---|---|
+| E01 | S01:p.1-p.2 | Considerandos sobre ClaveÚnica como autenticación digital del Estado, identidad digital, DDU y Plataforma de Notificaciones. |
+| E02 | S01:p.34-p.35 | Objeto y contexto técnico: portal ciudadano, identidad digital, DDU y necesidad de nueva versión del portal. |
+| E03 | S01:p.36 | Requerimientos específicos: investigación, ideación, prototipado, testeo, implementación de interfaces y alcance de autorizador/ayuda institucional. |
+| E04 | S01:p.37 | Beneficios, lineamientos de diseño adaptable, navegación consistente, casos de borde y pruebas de usabilidad. |
+| E05 | S01:p.38-p.39 | Accesibilidad, calidad y lineamientos funcionales: secciones, 2FA, DDU, notificaciones, autorizador, ayuda institucional. |
+| E06 | S01:p.42-p.43 | Garantía del software y apoyo técnico. |
+| E07 | S05:ANEXO6 | Contenido mínimo de oferta técnica, aseguramiento de calidad y garantía. |
+| E08 | S06:p.1 | Historias HU01-HU04. |
+| E09 | S06:p.2 | Historias HU05-HU07. |
+| E10 | S06:p.3 | Historias HU08-HU10. |
+| E11 | S06:p.4-p.5 | Historias HU11-HU12. |
+| E12 | S06:p.5 | Historia HU13. |
+| E13 | S06:p.6-p.7 | Historias HU14-HU16. |
+| E14 | S07:p.1 | Flujo referencial de integración ClaveÚnica-CasillaÚnica/DDU y retorno. |
+| E15 | S02-S04 | Anexos administrativos/económicos/equipo/experiencia sin requisitos funcionales del sistema. |
+
+Matriz de trazabilidad jerárquica CU -> FUN -> FT -> RN/CH/EX/OT:
+
+| CU | FUN | FT | RN | CH | EX | OT |
+|---|---|---|---|---|---|---|
+| CU_001 | FUN_001-FUN_003 | FT_001 | RN_001, RN_023, RN_027 | CH_001, CH_015-CH_017 | EX_006-EX_008 | OT_007-OT_010, OT_015 |
+| CU_002 | FUN_004-FUN_005 | FT_002 | RN_002, RN_027 | CH_002, CH_015 | EX_007-EX_008 | OT_009-OT_011 |
+| CU_003 | FUN_006-FUN_007, FUN_031 | FT_003-FT_004 | RN_003, RN_022 | CH_003-CH_004 | EX_005 | OT_009-OT_011 |
+| CU_004 | FUN_008-FUN_009 | FT_005 | RN_004, RN_027 | CH_015 | EX_009 | OT_009-OT_011 |
+| CU_005 | FUN_010-FUN_012 | FT_006 | RN_005-RN_006 | CH_005-CH_006 | No aplica | OT_009-OT_011 |
+| CU_006 | FUN_011, FUN_013-FUN_014 | FT_007 | RN_006-RN_007 | CH_006-CH_007 | EX_001 | OT_009 |
+| CU_007 | FUN_015 | FT_008 | RN_008 | CH_009 | No aplica | OT_009-OT_011 |
+| CU_008 | FUN_016-FUN_018 | FT_009 | RN_009 | CH_008 | EX_002 | OT_009 |
+| CU_009 | FUN_019-FUN_020, FUN_010, FUN_014 | FT_010 | RN_005, RN_010 | CH_005, CH_007 | EX_003-EX_004 | OT_009-OT_010 |
+| CU_010 | FUN_021 | FT_011 | RN_011 | CH_010 | EX_006 | OT_009-OT_011 |
+| CU_011 | FUN_021-FUN_023 | FT_012 | RN_011-RN_012 | CH_010-CH_011 | EX_007 | OT_009-OT_011 |
+| CU_012 | FUN_012, FUN_014, FUN_024 | FT_013 | RN_005, RN_010 | CH_005, CH_007 | EX_003 | OT_009 |
+| CU_013 | FUN_025-FUN_026 | FT_014 | RN_013-RN_017 | CH_012 | EX_006-EX_008 | OT_009-OT_011 |
+| CU_014 | FUN_027 | FT_015 | RN_018, RN_021 | CH_014 | EX_006-EX_008 | OT_009-OT_011 |
+| CU_015 | FUN_028-FUN_029 | FT_016 | RN_014, RN_019 | CH_013 | EX_006-EX_008 | OT_009-OT_011 |
+| CU_016 | FUN_030 | FT_017 | RN_015, RN_017, RN_020 | CH_013 | EX_010 | OT_009-OT_011 |
+| CU_017 | FUN_031-FUN_033 | FT_018 | RN_022, RN_027 | CH_015-CH_016 | EX_006-EX_008 | OT_007-OT_010 |
+| CU_018 | FUN_034 | FT_019 | RN_022, RN_027 | CH_015-CH_016 | EX_006-EX_008 | OT_007-OT_010 |
+| CU_019 | FUN_035 | FT_020 | RN_022, RN_027 | CH_015-CH_016 | EX_006-EX_008 | OT_007-OT_010 |
+| CU_020 | FUN_002-FUN_003, FUN_036-FUN_037 | FT_021 | RN_001, RN_023, RN_027 | CH_001, CH_015-CH_017 | EX_006-EX_008 | OT_007-OT_010, OT_015 |
+| CU_021 | FUN_038-FUN_040 | FT_022 | RN_024-RN_025, RN_027 | CH_015-CH_016 | EX_006-EX_008 | OT_007-OT_010 |
+
+Criterios aplicados de trazabilidad:
+
+- Cada requisito conserva al menos una evidencia source_id/chunk_id/página/sección.
+- Los anexos administrativos S02-S04 fueron inventariados y excluidos de requisitos funcionales porque no describen conducta del sistema.
+- Los elementos de herramientas, marcas, infraestructura, despliegue y stack tecnológico fueron omitidos; cuando una fuente mezcló una necesidad funcional con un detalle técnico, se conservó sólo la conducta observable del sistema.
+- Las historias referenciales del Anexo 7 no se trataron como alcance exhaustivo; se incorporó el mandato documental de complementarlas durante investigación y desarrollo dentro del mismo alcance.
+
+## 13. Vacíos, ambigüedades y conflictos de evidencia
+
+- **ID:** VAC_001
+  - **Descripción:** El Anexo 7 menciona que la información de notificaciones se encuentra propuesta en un Anexo 9, pero el flujo cargado y descrito como integración es el Anexo 8.
+  - **Evidencia:** E10/S06:p.3; E11/S06:p.4-p.5; E14/S07:p.1
+  - **Impacto:** Conflicto de numeración de anexos.
+  - **Acción requerida:** Usar S07/Anexo 8 como evidencia cargada y solicitar confirmación documental si se requiere trazabilidad formal.
+- **ID:** VAC_002
+  - **Descripción:** El manejo de multisesión exige evaluar alternativas, pros y contras, pero no define la política final ni la conducta exacta del sistema.
+  - **Evidencia:** E08/S06:p.1-p.2:HU04; E05/S01:p.39
+  - **Impacto:** Ambigüedad funcional de seguridad.
+  - **Acción requerida:** Definir política de multisesión con contraparte antes de implementación.
+- **ID:** VAC_003
+  - **Descripción:** El segundo factor de autenticación se declara opcional y obligatorio si se activa, pero no se especifica método final, enrolamiento, recuperación ni excepciones.
+  - **Evidencia:** E08/S06:p.1:HU03
+  - **Impacto:** Vacío de definición del 2FA.
+  - **Acción requerida:** Definir mecanismo, enrolamiento, desactivación y recuperación en análisis funcional.
+- **ID:** VAC_004
+  - **Descripción:** Para cambio de teléfono/correo se indica responder una o más preguntas personales, pero no se especifica cantidad, origen de preguntas, vigencia ni manejo de fallo.
+  - **Evidencia:** E08/S06:p.1:HU02
+  - **Impacto:** Vacío de validación.
+  - **Acción requerida:** Definir banco/origen de preguntas, número, reintentos y mensajes.
+- **ID:** VAC_005
+  - **Descripción:** La historia HU16 titula revocar autorizaciones vigentes y describe solicitudes aprobadas, pero cierra indicando botón para revocar una autorización pendiente.
+  - **Evidencia:** E13/S06:p.6-p.7:HU16
+  - **Impacto:** Conflicto semántico vigente/aprobada/pendiente.
+  - **Acción requerida:** Confirmar si la revocación aplica sólo a aprobadas/vigentes y corregir texto base.
+- **ID:** VAC_006
+  - **Descripción:** Las secciones de información personal, expedientes, poderes/representaciones, configuración e historial de acciones están mencionadas como secciones a soportar, pero no se detallan campos, filtros, acciones ni reglas específicas.
+  - **Evidencia:** E05/S01:p.39
+  - **Impacto:** Vacío de detalle funcional para secciones privadas ampliadas.
+  - **Acción requerida:** Levantar detalle en investigación y prototipado, manteniendo trazabilidad.
+- **ID:** VAC_007
+  - **Descripción:** La sección institucional de ayuda, credenciales y estado de integraciones se menciona en alcance, pero no detalla roles institucionales, estados posibles ni operaciones de credenciales.
+  - **Evidencia:** E03/S01:p.36; E05/S01:p.39
+  - **Impacto:** Vacío de detalle para actor institucional.
+  - **Acción requerida:** Definir actores institucionales, permisos, estados y acciones.
+- **ID:** VAC_008
+  - **Descripción:** El detalle de pantallas referenciado mediante enlace externo de prototipos no fue consultado porque no forma parte de los archivos cargados y no hubo permiso explícito para web.
+  - **Evidencia:** E14/S07:p.1
+  - **Impacto:** Fuente externa no incorporada.
+  - **Acción requerida:** Solicitar archivo exportado o permiso explícito si se requiere incorporar ese detalle.
+- **ID:** VAC_009
+  - **Descripción:** Las historias del Anexo 7 son referenciales y primera versión; el propio documento exige complementarlas con el trabajo de la contratación.
+  - **Evidencia:** E08/S06:p.1:introducción; E05/S01:p.39
+  - **Impacto:** Alcance no exhaustivo.
+  - **Acción requerida:** Registrar nuevos requisitos con evidencia durante investigación y aprobación de contraparte.
+- **ID:** VAC_010
+  - **Descripción:** No se especifican mensajes exactos, textos de modales, criterios de ordenamiento, paginación, filtros, búsqueda ni estados de lectura de notificaciones más allá de campos mínimos.
+  - **Evidencia:** E09-E11; E14
+  - **Impacto:** Vacío de detalle de interfaz y datos.
+  - **Acción requerida:** Definir microcontenido, estados, ordenamiento y controles en prototipos/validación.
+
+## 14. indice con trazabilidad de las imágenes.
+
+Los anexos visuales se generaron en PNG y se guardaron en la carpeta relativa `anexos_imagenes/`. El índice siguiente vincula cada imagen con fuente, página y requisitos asociados.
+
+| imagen_id | archivo PNG | fuente/página | clasificación | trazabilidad |
+|---|---|---|---|---|
+| IMG_001 | `anexos_imagenes/IMG_001_ANEXO_N7_p1.png` | ANEXO_N°7.pdf p.1 | Tabla de historias de usuario referenciales HU-01 a HU-04: portal público, datos personales, 2FA y multisesión. | CU_001-CU_004; FUN_001-FUN_009; RN_001-RN_004 |
+| IMG_002 | `anexos_imagenes/IMG_002_ANEXO_N7_p2.png` | ANEXO_N°7.pdf p.2 | Tabla de historias HU-05 a HU-07: DDU desde login, cancelación desde login y retorno tras configurar DDU. | CU_005-CU_007; FUN_010-FUN_015; RN_005-RN_008 |
+| IMG_003 | `anexos_imagenes/IMG_003_ANEXO_N7_p3.png` | ANEXO_N°7.pdf p.3 | Tabla de historias HU-08 a HU-10: cancelación de activación, sección de notificaciones y listado. | CU_008-CU_010; FUN_016-FUN_021; RN_009-RN_011 |
+| IMG_004 | `anexos_imagenes/IMG_004_ANEXO_N7_p4.png` | ANEXO_N°7.pdf p.4 | Tabla de historias HU-11 a HU-12: detalle de notificación y activación DDU desde portal. | CU_011-CU_012; FUN_022-FUN_024; RN_012 |
+| IMG_005 | `anexos_imagenes/IMG_005_ANEXO_N7_p5.png` | ANEXO_N°7.pdf p.5 | Tabla de historia HU-13: gestión e historial de autorizaciones de datos sensibles. | CU_013; FUN_025-FUN_026; RN_013-RN_017 |
+| IMG_006 | `anexos_imagenes/IMG_006_ANEXO_N7_p6.png` | ANEXO_N°7.pdf p.6 | Tabla de historias HU-14 a HU-16: historial de datos compartidos, aprobación/rechazo y revocación. | CU_014-CU_016; FUN_027-FUN_030; RN_018-RN_020 |
+| IMG_007 | `anexos_imagenes/IMG_007_ANEXO_N7_p7.png` | ANEXO_N°7.pdf p.7 | Continuación de HU-16: datos mostrados para autorización aprobada y botón de revocación. | CU_016; FUN_030; RN_017, RN_020; EX_010 |
+| IMG_008 | `anexos_imagenes/IMG_008_ANEXO_N8_p1.png` | ANEXO_N°8.pdf p.1 | Página completa del flujo referencial de integración ClaveÚnica y Plataforma de Notificaciones. | CU_005-CU_012; FT_006-FT_013; RN_005-RN_012 |
+| IMG_009 | `anexos_imagenes/IMG_009_ANEXO_N8_p1.png` | ANEXO_N°8.pdf p.1 | Diagrama del flujo Persona Natural: sitio institucional, activación DDU, retorno y acceso a notificaciones. | CU_005-CU_012; FT_006-FT_013; RN_005-RN_012 |
+| IMG_010 | `anexos_imagenes/IMG_010_Rex._N997-2023_aprueba_bases-mp_p35.png` | Rex._N°997-2023_aprueba_bases-mp.pdf p.35 | Base técnica: contexto de ClaveÚnica, identidad digital, DDU y requerimiento de nuevo portal ciudadano. | Descripción sistema; CU_001-CU_021; E02 |
+| IMG_011 | `anexos_imagenes/IMG_011_Rex._N997-2023_aprueba_bases-mp_p36.png` | Rex._N°997-2023_aprueba_bases-mp.pdf p.36 | Base técnica: requerimientos específicos de investigación, ideación, prototipado, testeo, implementación y alcance. | FT_023-FT_026; OT_001-OT_006; CU_021 |
+| IMG_012 | `anexos_imagenes/IMG_012_Rex._N997-2023_aprueba_bases-mp_p37.png` | Rex._N°997-2023_aprueba_bases-mp.pdf p.37 | Base técnica: beneficios y lineamientos de experiencia, diseño adaptable, alertas y pruebas de usabilidad. | Objetivos; OT_007-OT_009; RN_027 |
+| IMG_013 | `anexos_imagenes/IMG_013_Rex._N997-2023_aprueba_bases-mp_p38.png` | Rex._N°997-2023_aprueba_bases-mp.pdf p.38 | Base técnica: accesibilidad, aseguramiento de calidad y comienzo de lineamientos funcionales. | OT_010-OT_011; CH_016-CH_018 |
+| IMG_014 | `anexos_imagenes/IMG_014_Rex._N997-2023_aprueba_bases-mp_p39.png` | Rex._N°997-2023_aprueba_bases-mp.pdf p.39 | Base técnica: lineamientos funcionales del portal, secciones requeridas, 2FA, DDU, notificaciones y autorizador. | CU_017-CU_021; RN_022-RN_026 |
+

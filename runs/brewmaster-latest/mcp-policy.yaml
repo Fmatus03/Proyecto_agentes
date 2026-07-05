@@ -1,0 +1,8 @@
+mcp_gateway:
+  default: deny
+  discovery_allowed: false
+  invocation_allowed: false
+  allowlist: []
+  write_requires_human_approval: true
+  pre_gate: mcp_policy
+  post_gate: tool-output

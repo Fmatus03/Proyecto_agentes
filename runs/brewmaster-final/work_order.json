@@ -1,0 +1,28 @@
+{
+  "acceptance_criteria": [
+    "BrewMaster declara los modulos MVP de la especificacion.",
+    "BrewMaster declara exactamente 30 pantallas.",
+    "BrewMaster usa endpoints /api/v1 y acciones REST consistentes.",
+    "BrewMaster materializa backend, frontend, contratos y pruebas en DEV.",
+    "BrewMaster usa React + Bootstrap como contrato frontend y no una plantilla heredada."
+  ],
+  "approvals": {},
+  "authorized_sources": [
+    "fabricas_agentes_ia.md",
+    "projects/BrewMaster/brewmaster_especificacion_completa.md"
+  ],
+  "budget": {
+    "cost_usd": 0,
+    "mcp_calls": 0,
+    "tool_calls": 200
+  },
+  "metadata": {
+    "blueprint": "brewmaster"
+  },
+  "objective": "Implementar BrewMaster segun especificacion completa.",
+  "project_id": "brewmaster",
+  "project_version": "v0001",
+  "scope": "local_artifacts_only",
+  "side_effects": "no_external_writes_no_deploy",
+  "type": "brewmaster_mvp"
+}

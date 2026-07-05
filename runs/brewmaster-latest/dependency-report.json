@@ -1,0 +1,9 @@
+{
+  "blocking_findings": 0,
+  "high_critical_open": 0,
+  "manifests": [
+    "pyproject.toml"
+  ],
+  "note": "No external CVE database was called; runtime has no third-party dependencies.",
+  "scanner": "local_manifest_policy_scan"
+}

@@ -1,0 +1,16 @@
+{
+  "blocking_findings": 0,
+  "components": [
+    {
+      "name": "python-stdlib",
+      "type": "runtime",
+      "version": "system"
+    },
+    {
+      "name": "webforge-factory",
+      "type": "application",
+      "version": "0.1.0"
+    }
+  ],
+  "sbom_format": "webforge.local.v1"
+}

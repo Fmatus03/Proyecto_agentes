@@ -1,0 +1,1241 @@
+{
+  "architecture_source": "fabricas_agentes_ia.md",
+  "blueprint_id": "brewmaster.sdd.mvp.v1",
+  "endpoints": [
+    {
+      "handler": "users.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/users"
+    },
+    {
+      "handler": "users.create",
+      "method": "POST",
+      "path": "/api/v1/users",
+      "transactional": false
+    },
+    {
+      "handler": "users.get",
+      "method": "GET",
+      "path": "/api/v1/users/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "users.update",
+      "method": "PUT",
+      "path": "/api/v1/users/{id}"
+    },
+    {
+      "handler": "users.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/users/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "roles.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/roles"
+    },
+    {
+      "handler": "roles.create",
+      "method": "POST",
+      "path": "/api/v1/roles",
+      "transactional": false
+    },
+    {
+      "handler": "roles.get",
+      "method": "GET",
+      "path": "/api/v1/roles/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "roles.update",
+      "method": "PUT",
+      "path": "/api/v1/roles/{id}"
+    },
+    {
+      "handler": "roles.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/roles/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "suppliers.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/suppliers"
+    },
+    {
+      "handler": "suppliers.create",
+      "method": "POST",
+      "path": "/api/v1/suppliers",
+      "transactional": false
+    },
+    {
+      "handler": "suppliers.get",
+      "method": "GET",
+      "path": "/api/v1/suppliers/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "suppliers.update",
+      "method": "PUT",
+      "path": "/api/v1/suppliers/{id}"
+    },
+    {
+      "handler": "suppliers.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/suppliers/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "warehouses.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/warehouses"
+    },
+    {
+      "handler": "warehouses.create",
+      "method": "POST",
+      "path": "/api/v1/warehouses",
+      "transactional": false
+    },
+    {
+      "handler": "warehouses.get",
+      "method": "GET",
+      "path": "/api/v1/warehouses/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "warehouses.update",
+      "method": "PUT",
+      "path": "/api/v1/warehouses/{id}"
+    },
+    {
+      "handler": "warehouses.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/warehouses/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "supplies.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/supplies"
+    },
+    {
+      "handler": "supplies.create",
+      "method": "POST",
+      "path": "/api/v1/supplies",
+      "transactional": false
+    },
+    {
+      "handler": "supplies.get",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "supplies.update",
+      "method": "PUT",
+      "path": "/api/v1/supplies/{id}"
+    },
+    {
+      "handler": "supplies.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/supplies/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "supply-entries.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/supply-entries"
+    },
+    {
+      "handler": "supply-entries.create",
+      "method": "POST",
+      "path": "/api/v1/supply-entries",
+      "transactional": true
+    },
+    {
+      "handler": "supply-entries.get",
+      "method": "GET",
+      "path": "/api/v1/supply-entries/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "supply-entries.update",
+      "method": "PUT",
+      "path": "/api/v1/supply-entries/{id}"
+    },
+    {
+      "handler": "supply-entries.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/supply-entries/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "recipes.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/recipes"
+    },
+    {
+      "handler": "recipes.create",
+      "method": "POST",
+      "path": "/api/v1/recipes",
+      "transactional": false
+    },
+    {
+      "handler": "recipes.get",
+      "method": "GET",
+      "path": "/api/v1/recipes/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "recipes.update",
+      "method": "PUT",
+      "path": "/api/v1/recipes/{id}"
+    },
+    {
+      "handler": "recipes.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/recipes/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "presentation-types.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/presentation-types"
+    },
+    {
+      "handler": "presentation-types.create",
+      "method": "POST",
+      "path": "/api/v1/presentation-types",
+      "transactional": false
+    },
+    {
+      "handler": "presentation-types.get",
+      "method": "GET",
+      "path": "/api/v1/presentation-types/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "presentation-types.update",
+      "method": "PUT",
+      "path": "/api/v1/presentation-types/{id}"
+    },
+    {
+      "handler": "presentation-types.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/presentation-types/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "batches.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/batches"
+    },
+    {
+      "handler": "batches.create",
+      "method": "POST",
+      "path": "/api/v1/batches",
+      "transactional": true
+    },
+    {
+      "handler": "batches.get",
+      "method": "GET",
+      "path": "/api/v1/batches/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "batches.update",
+      "method": "PUT",
+      "path": "/api/v1/batches/{id}"
+    },
+    {
+      "handler": "batches.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/batches/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "finished-products.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/finished-products"
+    },
+    {
+      "handler": "finished-products.create",
+      "method": "POST",
+      "path": "/api/v1/finished-products",
+      "transactional": false
+    },
+    {
+      "handler": "finished-products.get",
+      "method": "GET",
+      "path": "/api/v1/finished-products/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "finished-products.update",
+      "method": "PUT",
+      "path": "/api/v1/finished-products/{id}"
+    },
+    {
+      "handler": "finished-products.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/finished-products/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "waste-records.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/waste-records"
+    },
+    {
+      "handler": "waste-records.create",
+      "method": "POST",
+      "path": "/api/v1/waste-records",
+      "transactional": true
+    },
+    {
+      "handler": "waste-records.get",
+      "method": "GET",
+      "path": "/api/v1/waste-records/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "waste-records.update",
+      "method": "PUT",
+      "path": "/api/v1/waste-records/{id}"
+    },
+    {
+      "handler": "waste-records.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/waste-records/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "customers.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/customers"
+    },
+    {
+      "handler": "customers.create",
+      "method": "POST",
+      "path": "/api/v1/customers",
+      "transactional": false
+    },
+    {
+      "handler": "customers.get",
+      "method": "GET",
+      "path": "/api/v1/customers/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "customers.update",
+      "method": "PUT",
+      "path": "/api/v1/customers/{id}"
+    },
+    {
+      "handler": "customers.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/customers/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "sales.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/sales"
+    },
+    {
+      "handler": "sales.create",
+      "method": "POST",
+      "path": "/api/v1/sales",
+      "transactional": true
+    },
+    {
+      "handler": "sales.get",
+      "method": "GET",
+      "path": "/api/v1/sales/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "sales.update",
+      "method": "PUT",
+      "path": "/api/v1/sales/{id}"
+    },
+    {
+      "handler": "sales.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/sales/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "reservations.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/reservations"
+    },
+    {
+      "handler": "reservations.create",
+      "method": "POST",
+      "path": "/api/v1/reservations",
+      "transactional": true
+    },
+    {
+      "handler": "reservations.get",
+      "method": "GET",
+      "path": "/api/v1/reservations/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "reservations.update",
+      "method": "PUT",
+      "path": "/api/v1/reservations/{id}"
+    },
+    {
+      "handler": "reservations.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/reservations/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "purchase-orders.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/purchase-orders"
+    },
+    {
+      "handler": "purchase-orders.create",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders",
+      "transactional": true
+    },
+    {
+      "handler": "purchase-orders.get",
+      "method": "GET",
+      "path": "/api/v1/purchase-orders/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "purchase-orders.update",
+      "method": "PUT",
+      "path": "/api/v1/purchase-orders/{id}"
+    },
+    {
+      "handler": "purchase-orders.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/purchase-orders/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "equipment.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/equipment"
+    },
+    {
+      "handler": "equipment.create",
+      "method": "POST",
+      "path": "/api/v1/equipment",
+      "transactional": false
+    },
+    {
+      "handler": "equipment.get",
+      "method": "GET",
+      "path": "/api/v1/equipment/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "equipment.update",
+      "method": "PUT",
+      "path": "/api/v1/equipment/{id}"
+    },
+    {
+      "handler": "equipment.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/equipment/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "equipment-movements.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/equipment-movements"
+    },
+    {
+      "handler": "equipment-movements.create",
+      "method": "POST",
+      "path": "/api/v1/equipment-movements",
+      "transactional": false
+    },
+    {
+      "handler": "equipment-movements.get",
+      "method": "GET",
+      "path": "/api/v1/equipment-movements/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "equipment-movements.update",
+      "method": "PUT",
+      "path": "/api/v1/equipment-movements/{id}"
+    },
+    {
+      "handler": "equipment-movements.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/equipment-movements/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "operational-expenses.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/operational-expenses"
+    },
+    {
+      "handler": "operational-expenses.create",
+      "method": "POST",
+      "path": "/api/v1/operational-expenses",
+      "transactional": false
+    },
+    {
+      "handler": "operational-expenses.get",
+      "method": "GET",
+      "path": "/api/v1/operational-expenses/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "operational-expenses.update",
+      "method": "PUT",
+      "path": "/api/v1/operational-expenses/{id}"
+    },
+    {
+      "handler": "operational-expenses.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/operational-expenses/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "monthly-goals.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/monthly-goals"
+    },
+    {
+      "handler": "monthly-goals.create",
+      "method": "POST",
+      "path": "/api/v1/monthly-goals",
+      "transactional": false
+    },
+    {
+      "handler": "monthly-goals.get",
+      "method": "GET",
+      "path": "/api/v1/monthly-goals/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "monthly-goals.update",
+      "method": "PUT",
+      "path": "/api/v1/monthly-goals/{id}"
+    },
+    {
+      "handler": "monthly-goals.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/monthly-goals/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "reports.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/reports"
+    },
+    {
+      "handler": "reports.create",
+      "method": "POST",
+      "path": "/api/v1/reports",
+      "transactional": false
+    },
+    {
+      "handler": "reports.get",
+      "method": "GET",
+      "path": "/api/v1/reports/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "reports.update",
+      "method": "PUT",
+      "path": "/api/v1/reports/{id}"
+    },
+    {
+      "handler": "reports.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/reports/{id}",
+      "physical_delete": false
+    },
+    {
+      "handler": "settings.list",
+      "method": "GET",
+      "paginated": true,
+      "path": "/api/v1/settings"
+    },
+    {
+      "handler": "settings.create",
+      "method": "POST",
+      "path": "/api/v1/settings",
+      "transactional": false
+    },
+    {
+      "handler": "settings.get",
+      "method": "GET",
+      "path": "/api/v1/settings/{id}"
+    },
+    {
+      "audit": true,
+      "handler": "settings.update",
+      "method": "PUT",
+      "path": "/api/v1/settings/{id}"
+    },
+    {
+      "handler": "settings.soft_delete",
+      "method": "DELETE",
+      "path": "/api/v1/settings/{id}",
+      "physical_delete": false
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.login",
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.refresh",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.password_reset_request",
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/request"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.password_reset_confirm",
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/confirm"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "supplies.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/supplies/{id}/toggle-status"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "supplies.kardex",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}/kardex"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "recipes.clone",
+      "method": "POST",
+      "path": "/api/v1/recipes/{id}/clone"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.complete",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/complete"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.cancel",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/cancel"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.quality_check",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/quality-check"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "finished_products.price",
+      "method": "PATCH",
+      "path": "/api/v1/finished-products/{id}/price"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "sales.void",
+      "method": "POST",
+      "path": "/api/v1/sales/{id}/void"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reservations.consume",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/consume"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reservations.release",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/release"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "purchase_orders.send",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/send"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "purchase_orders.receive",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/receive"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reports.export",
+      "method": "POST",
+      "path": "/api/v1/reports/export"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "settings.smtp_test",
+      "method": "POST",
+      "path": "/api/v1/settings/smtp/test"
+    }
+  ],
+  "entities": [
+    "audit_logs",
+    "batch_quality_checks",
+    "batch_supply_snapshots",
+    "beer_styles",
+    "customer_types",
+    "customers",
+    "equipment",
+    "equipment_movements",
+    "equipment_types",
+    "expense_categories",
+    "export_jobs",
+    "finished_products",
+    "monthly_goals",
+    "notification_queue",
+    "operational_expenses",
+    "password_reset_tokens",
+    "permissions",
+    "presentation_types",
+    "product_movements",
+    "product_prices",
+    "production_batches",
+    "purchase_order_items",
+    "purchase_orders",
+    "recipe_ingredients",
+    "recipes",
+    "role_permissions",
+    "roles",
+    "sale_items",
+    "sales",
+    "settings",
+    "smtp_config",
+    "stock_reservations",
+    "suppliers",
+    "supplies",
+    "supply_categories",
+    "supply_entries",
+    "supply_movements",
+    "users",
+    "warehouses",
+    "waste_records"
+  ],
+  "factory_controls": {
+    "context": "authorized specification and architecture sources only",
+    "determinism": "local deterministic generation, no external cost",
+    "entrypoint": "harness.run_agent(agent_id, state)",
+    "gates": [
+      "schema",
+      "budget",
+      "project_isolation",
+      "frontend_template",
+      "sandbox",
+      "tests",
+      "security",
+      "coverage"
+    ],
+    "memory": "project scoped propose-only memory",
+    "side_effects": "all generated implementation files pass through DEV sandbox materializer"
+  },
+  "modules": [
+    {
+      "acceptance": "login, JWT, roles, CRUD usuarios y auditoria de accesos",
+      "entities": [
+        "users",
+        "roles",
+        "permissions",
+        "role_permissions",
+        "audit_logs",
+        "password_reset_tokens"
+      ],
+      "id": "REQ-AUTH",
+      "name": "Usuarios y auth",
+      "screens": [
+        "P-01",
+        "P-02",
+        "P-30"
+      ],
+      "use_cases": [
+        "UC-ALT-03"
+      ]
+    },
+    {
+      "acceptance": "CRUD, Kardex trazable, alertas de stock bajo con correo e intervalo respetado",
+      "entities": [
+        "suppliers",
+        "warehouses",
+        "supply_categories",
+        "supplies",
+        "supply_movements",
+        "supply_entries",
+        "notification_queue"
+      ],
+      "id": "REQ-INS",
+      "name": "Insumos",
+      "screens": [
+        "P-04",
+        "P-05",
+        "P-06",
+        "P-07",
+        "P-08",
+        "P-09",
+        "P-12"
+      ],
+      "use_cases": [
+        "UC-INS-01",
+        "UC-INS-02",
+        "UC-INS-03",
+        "UC-INS-04",
+        "UC-INS-05",
+        "UC-INS-06"
+      ]
+    },
+    {
+      "acceptance": "CRUD, calculo de costo, clonado y bloqueo si tiene lotes activos",
+      "entities": [
+        "beer_styles",
+        "presentation_types",
+        "recipes",
+        "recipe_ingredients"
+      ],
+      "id": "REQ-REC",
+      "name": "Recetas",
+      "screens": [
+        "P-10",
+        "P-11",
+        "P-13"
+      ],
+      "use_cases": [
+        "UC-REC-01",
+        "UC-REC-02"
+      ]
+    },
+    {
+      "acceptance": "crear lote, completar con descuento de insumos, calidad, merma y costo calculado",
+      "entities": [
+        "production_batches",
+        "batch_quality_checks",
+        "waste_records",
+        "batch_supply_snapshots"
+      ],
+      "id": "REQ-PROD",
+      "name": "Produccion",
+      "screens": [
+        "P-14",
+        "P-15",
+        "P-16",
+        "P-17",
+        "P-19"
+      ],
+      "use_cases": [
+        "UC-PROD-01",
+        "UC-PROD-02",
+        "UC-PROD-03",
+        "UC-PROD-04"
+      ]
+    },
+    {
+      "acceptance": "stock actualizado al completar lote, precio editable, Kardex trazable",
+      "entities": [
+        "finished_products",
+        "product_movements"
+      ],
+      "id": "REQ-PRO",
+      "name": "Inventario productos",
+      "screens": [
+        "P-18"
+      ],
+      "use_cases": [
+        "UC-PRO-01",
+        "UC-PRO-02"
+      ]
+    },
+    {
+      "acceptance": "venta con stock validado, ganancia calculada, Kardex y reservas",
+      "entities": [
+        "customer_types",
+        "customers",
+        "product_prices",
+        "sales",
+        "sale_items",
+        "stock_reservations"
+      ],
+      "id": "REQ-VTA",
+      "name": "Ventas",
+      "screens": [
+        "P-20",
+        "P-21",
+        "P-22",
+        "P-23"
+      ],
+      "use_cases": [
+        "UC-VTA-01",
+        "UC-VTA-02",
+        "UC-VTA-03",
+        "UC-VTA-04",
+        "UC-VTA-05"
+      ]
+    },
+    {
+      "acceptance": "orden, recepcion parcial/total y entrada de inventario automatica",
+      "entities": [
+        "purchase_orders",
+        "purchase_order_items"
+      ],
+      "id": "REQ-COM",
+      "name": "Compras",
+      "screens": [
+        "P-24",
+        "P-25"
+      ],
+      "use_cases": [
+        "UC-COM-01",
+        "UC-COM-02"
+      ]
+    },
+    {
+      "acceptance": "CRUD, historial de mantenimientos y alerta de revision vencida",
+      "entities": [
+        "equipment_types",
+        "equipment",
+        "equipment_movements"
+      ],
+      "id": "REQ-EQU",
+      "name": "Equipos",
+      "screens": [
+        "P-26",
+        "P-27"
+      ],
+      "use_cases": [
+        "UC-EQU-01",
+        "UC-EQU-02"
+      ]
+    },
+    {
+      "acceptance": "gastos operativos, reportes financieros basicos y metas mensuales",
+      "entities": [
+        "expense_categories",
+        "operational_expenses",
+        "monthly_goals"
+      ],
+      "id": "REQ-FIN",
+      "name": "Finanzas",
+      "screens": [
+        "P-28",
+        "P-29"
+      ],
+      "use_cases": [
+        "UC-FIN-01",
+        "UC-FIN-02",
+        "UC-FIN-03"
+      ]
+    },
+    {
+      "acceptance": "KPIs reales, graficos, alertas operacionales y reportes exportables",
+      "entities": [
+        "export_jobs"
+      ],
+      "id": "REQ-REP",
+      "name": "Dashboard y reportes",
+      "screens": [
+        "P-03",
+        "P-29"
+      ],
+      "use_cases": [
+        "UC-REP-01",
+        "UC-REP-02"
+      ]
+    },
+    {
+      "acceptance": "SMTP cifrado, cola, reintentos, metas, usuarios y roles",
+      "entities": [
+        "settings",
+        "smtp_config",
+        "notification_queue",
+        "monthly_goals"
+      ],
+      "id": "REQ-ALT",
+      "name": "Configuracion y alertas",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "UC-ALT-01",
+        "UC-ALT-02",
+        "UC-ALT-03"
+      ]
+    }
+  ],
+  "non_functional": {
+    "audit": "100 percent critical writes include actor, date, entity, action and IP",
+    "observability": [
+      "request_id",
+      "user_id",
+      "module",
+      "latency",
+      "structured logs"
+    ],
+    "performance": [
+      "paginated listings",
+      "SQL aggregations for dashboard",
+      "background heavy exports"
+    ],
+    "privacy": [
+      "financial data hidden without permission",
+      "SMTP credential encrypted at rest"
+    ],
+    "security": [
+      "bcrypt",
+      "expiring JWT",
+      "RBAC on every endpoint"
+    ]
+  },
+  "screens": [
+    {
+      "id": "P-01",
+      "module": "Auth",
+      "name": "Login",
+      "route": "/login"
+    },
+    {
+      "id": "P-02",
+      "module": "Auth",
+      "name": "Recuperar contrasena",
+      "route": "/password/recover"
+    },
+    {
+      "id": "P-03",
+      "module": "Dashboard",
+      "name": "Dashboard general",
+      "route": "/"
+    },
+    {
+      "id": "P-04",
+      "module": "Insumos",
+      "name": "Listado de insumos",
+      "route": "/supplies"
+    },
+    {
+      "id": "P-05",
+      "module": "Insumos",
+      "name": "Formulario de insumo",
+      "route": "/supplies/:id"
+    },
+    {
+      "id": "P-06",
+      "module": "Insumos",
+      "name": "Kardex de insumo",
+      "route": "/supplies/:id/kardex"
+    },
+    {
+      "id": "P-07",
+      "module": "Insumos",
+      "name": "Entrada de insumos",
+      "route": "/supply-entries/new"
+    },
+    {
+      "id": "P-08",
+      "module": "Proveedores",
+      "name": "Listado de proveedores",
+      "route": "/suppliers"
+    },
+    {
+      "id": "P-09",
+      "module": "Proveedores",
+      "name": "Formulario de proveedor",
+      "route": "/suppliers/:id"
+    },
+    {
+      "id": "P-10",
+      "module": "Recetas",
+      "name": "Listado de recetas",
+      "route": "/recipes"
+    },
+    {
+      "id": "P-11",
+      "module": "Recetas",
+      "name": "Formulario de receta",
+      "route": "/recipes/:id"
+    },
+    {
+      "id": "P-12",
+      "module": "Maestros",
+      "name": "Listado de bodegas",
+      "route": "/warehouses"
+    },
+    {
+      "id": "P-13",
+      "module": "Maestros",
+      "name": "Tipos de presentacion",
+      "route": "/presentation-types"
+    },
+    {
+      "id": "P-14",
+      "module": "Produccion",
+      "name": "Listado de lotes de produccion",
+      "route": "/batches"
+    },
+    {
+      "id": "P-15",
+      "module": "Produccion",
+      "name": "Formulario de lote de produccion",
+      "route": "/batches/:id"
+    },
+    {
+      "id": "P-16",
+      "module": "Produccion",
+      "name": "Detalle de lote",
+      "route": "/batches/:id/detail"
+    },
+    {
+      "id": "P-17",
+      "module": "Produccion",
+      "name": "Control de calidad de lote",
+      "route": "/batches/:id/quality"
+    },
+    {
+      "id": "P-18",
+      "module": "Inventario productos",
+      "name": "Inventario de productos terminados",
+      "route": "/finished-products"
+    },
+    {
+      "id": "P-19",
+      "module": "Mermas",
+      "name": "Registro de mermas",
+      "route": "/waste-records/new"
+    },
+    {
+      "id": "P-20",
+      "module": "Ventas",
+      "name": "Listado de clientes",
+      "route": "/customers"
+    },
+    {
+      "id": "P-21",
+      "module": "Ventas",
+      "name": "Formulario de cliente",
+      "route": "/customers/:id"
+    },
+    {
+      "id": "P-22",
+      "module": "Ventas",
+      "name": "Formulario de venta",
+      "route": "/sales/new"
+    },
+    {
+      "id": "P-23",
+      "module": "Ventas",
+      "name": "Reservas de stock",
+      "route": "/reservations"
+    },
+    {
+      "id": "P-24",
+      "module": "Compras",
+      "name": "Ordenes de compra",
+      "route": "/purchase-orders"
+    },
+    {
+      "id": "P-25",
+      "module": "Compras",
+      "name": "Recepcion de compra",
+      "route": "/purchase-orders/:id/receive"
+    },
+    {
+      "id": "P-26",
+      "module": "Equipos",
+      "name": "Listado de equipos",
+      "route": "/equipment"
+    },
+    {
+      "id": "P-27",
+      "module": "Equipos",
+      "name": "Historial de mantenimiento",
+      "route": "/equipment/:id/history"
+    },
+    {
+      "id": "P-28",
+      "module": "Finanzas",
+      "name": "Gastos operativos",
+      "route": "/expenses"
+    },
+    {
+      "id": "P-29",
+      "module": "Reportes",
+      "name": "Reportes financieros y operacionales",
+      "route": "/reports"
+    },
+    {
+      "id": "P-30",
+      "module": "Configuracion",
+      "name": "Configuracion SMTP, usuarios y roles",
+      "route": "/settings"
+    }
+  ],
+  "source_spec": "projects/BrewMaster/brewmaster_especificacion_completa.md",
+  "stack": {
+    "auth": "JWT with refresh token",
+    "backend": "Python 3 + FastAPI",
+    "database": "MySQL or MariaDB",
+    "frontend": "React + Bootstrap",
+    "jobs": "APScheduler",
+    "orm": "SQLAlchemy + Alembic",
+    "reports": [
+      "CSV",
+      "XLSX",
+      "PDF"
+    ]
+  },
+  "transactional_rules": [
+    "complete_batch_validates_stock_consumes_supplies_creates_finished_product_and_calculates_cost_atomically",
+    "supply_entry_updates_stock_and_kardex_atomically",
+    "sale_validates_available_stock_decrements_inventory_and_writes_kardex_atomically",
+    "purchase_order_receive_generates_supply_entry_and_updates_order_atomically",
+    "reservation_uses_current_stock_minus_active_reservations",
+    "waste_record_decrements_inventory_and_writes_kardex_atomically",
+    "email_alerts_are_enqueued_and_retried_asynchronously",
+    "state_change_actions_are_idempotent_or_reject_current_state_conflict"
+  ]
+}

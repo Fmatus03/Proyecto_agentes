@@ -1,0 +1,13 @@
+{
+  "factory_learning_write_allowed": false,
+  "factory_memory_read_allowed": false,
+  "mode": "project_scoped_propose_only",
+  "project_id": "brewmaster",
+  "project_learning_root": "project/brewmaster/learning",
+  "project_memory_root": "project/brewmaster/memory",
+  "sandbox_memory_roots": {
+    "DEV": "project/brewmaster/sandboxes/DEV/memory",
+    "QA": "project/brewmaster/sandboxes/QA/memory"
+  },
+  "shared_with_factory": false
+}

@@ -1,0 +1,24 @@
+{
+  "agent_id": "agent.context_rag",
+  "context_pack_hash": "sha256:58850e4f9b37a6da592918b626699339ba80da10ba6cdcdf23b97b7e9e4bbd71",
+  "context_pack_id": "CTX-CONTEXT",
+  "mode": "minimal_snippets_only",
+  "phase": "context",
+  "source_count": 2,
+  "sources": [
+    {
+      "evidence_id": "EV-SRC-001",
+      "path": "fabricas_agentes_ia.md",
+      "redactions": 0,
+      "sha256": "sha256:c15d4775b4b0a4a3011b2410c5682f2e3ad8abb035c367fa5c98efa223001aab",
+      "snippet": "Versi\u00f3n 0.91 \u00b7 Junio 2026 \u00b7 Material docente del curso \u00abDesarrollo de Agentes de IA\u00bb Departamento de Computaci\u00f3n e Inform\u00e1tica \u00b7 Universidad de La Frontera \n\n### **Prefacio** \n\nE ste libro nace de un problema muy concreto: los equipos est\u00e1n pasando de conversar con modelos a construir sistemas que leen archivos, llaman herramientas, coordinan subtareas y entregan resultados. Ese salto es poderoso, pero tambi\u00e9n riesgoso. Un **agente libre** \u2014un modelo al que se le entrega un objetivo amplio y una caja de herramientas, confiando en que un solo \u00abs\u00faper prompt\u00bb lo resuelva todo\u2014 puede desviarse de "
+    },
+    {
+      "evidence_id": "EV-SRC-002",
+      "path": "projects/BrewMaster/brewmaster_especificacion_completa.md",
+      "redactions": 0,
+      "sha256": "sha256:e97b88c2565f366080193fcc9fa79ce6bb8fcafbb662e60918470e6bfa6ed18e",
+      "snippet": "# Especificaci\u00f3n BrewMaster \u2014 Sistema de Gesti\u00f3n para Cervecer\u00edas Artesanales\n\nA continuaci\u00f3n tienes una **especificaci\u00f3n directa** para BrewMaster, un sistema web de gesti\u00f3n integral para cervecer\u00edas artesanales, coherente entre m\u00f3dulos, tablas y endpoints.\n\n# 0. Supuesto general del sistema\n\nSistema web para gestionar:\n\nInsumos, recetas, producci\u00f3n de lotes, calidad, mermas, inventario de productos terminados, ventas, clientes, \u00f3rdenes de compra, proveedores, equipos, finanzas operativas, reportes, dashboard y alertas por correo.\n\nArquitectura recomendada:\n\n`/api/v1`\n\nRegla general de endpoi"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "autonomous": "true",
+  "clone_mode": "independent_local_clone",
+  "clone_source": "project/brewmaster/versions/v0001",
+  "factory_learning_write_allowed": "false",
+  "factory_memory_read_allowed": "false",
+  "frontend_contract": "FRONTEND_CONTRACT.md",
+  "frontend_required_files": "frontend/package.json,frontend/src/App.jsx,frontend/src/routes.js,frontend/src/screens/catalog.js",
+  "frontend_template": "BREWMASTER_REACT_BOOTSTRAP",
+  "frontend_template_hash": "sha256:77b8337bb1390de05b463b52c20bc9c3828d67ae82d9f68cece9f07c4d194904",
+  "frontend_template_required": "true",
+  "frontend_template_source": "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4",
+  "learning_path": "project/brewmaster/sandboxes/QA/learning",
+  "memory_path": "project/brewmaster/sandboxes/QA/memory",
+  "name": "QA",
+  "path": "project/brewmaster/sandboxes/QA",
+  "sandbox_id": "brewmaster-qa-v0001",
+  "shared_with_factory": "false",
+  "version": "v0001"
+}

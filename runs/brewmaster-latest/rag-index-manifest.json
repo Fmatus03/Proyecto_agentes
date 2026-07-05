@@ -1,0 +1,9 @@
+{
+  "cache_key": "sha256:de289ac5bf9bab87a44239f2e6267437300ea53804b67812dc2609019406917c",
+  "corpus_loaded_fully": false,
+  "document_count": 2,
+  "index_id": "rag-index.webforge.local.v1",
+  "retrieval": "authorized_sources_section_index",
+  "section_count": 517,
+  "source_count": 2
+}

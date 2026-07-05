@@ -1,0 +1,6 @@
+{
+  "critical_checks_passed_pct": 100,
+  "secrets_in_context_logs_outputs": 0,
+  "unapproved_mcp_invocations": 0,
+  "unsafe_action_without_approval": 0
+}

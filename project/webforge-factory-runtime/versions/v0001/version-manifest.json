@@ -1,0 +1,6 @@
+{
+  "project_id": "webforge-factory-runtime",
+  "purpose": "immutable clone source for DEV and QA sandboxes",
+  "shared_with_factory": false,
+  "version": "v0001"
+}

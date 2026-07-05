@@ -1,0 +1,13 @@
+{
+  "factory_learning_write_allowed": false,
+  "factory_memory_read_allowed": false,
+  "mode": "project_scoped_propose_only",
+  "project_id": "webforge-factory-runtime",
+  "project_learning_root": "project/webforge-factory-runtime/learning",
+  "project_memory_root": "project/webforge-factory-runtime/memory",
+  "sandbox_memory_roots": {
+    "DEV": "project/webforge-factory-runtime/sandboxes/DEV/memory",
+    "QA": "project/webforge-factory-runtime/sandboxes/QA/memory"
+  },
+  "shared_with_factory": false
+}

@@ -1,0 +1,169 @@
+{
+  "acceptance_gate": {
+    "has_30_screens": true,
+    "has_all_macro_requirements": true,
+    "has_api_v1": true,
+    "has_transactional_rules": true
+  },
+  "action_endpoints": [
+    {
+      "action_endpoint": true,
+      "handler": "auth.login",
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.refresh",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.password_reset_request",
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/request"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "auth.password_reset_confirm",
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/confirm"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "supplies.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/supplies/{id}/toggle-status"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "supplies.kardex",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}/kardex"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "recipes.clone",
+      "method": "POST",
+      "path": "/api/v1/recipes/{id}/clone"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.complete",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/complete"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.cancel",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/cancel"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "batches.quality_check",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/quality-check"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "finished_products.price",
+      "method": "PATCH",
+      "path": "/api/v1/finished-products/{id}/price"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "sales.void",
+      "method": "POST",
+      "path": "/api/v1/sales/{id}/void"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reservations.consume",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/consume"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reservations.release",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/release"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "purchase_orders.send",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/send"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "purchase_orders.receive",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/receive"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "reports.export",
+      "method": "POST",
+      "path": "/api/v1/reports/export"
+    },
+    {
+      "action_endpoint": true,
+      "handler": "settings.smtp_test",
+      "method": "POST",
+      "path": "/api/v1/settings/smtp/test"
+    }
+  ],
+  "critical_transaction_count": 8,
+  "endpoint_count": 123,
+  "entity_count": 40,
+  "module_count": 11,
+  "module_coverage": {
+    "REQ-ALT": "SMTP cifrado, cola, reintentos, metas, usuarios y roles",
+    "REQ-AUTH": "login, JWT, roles, CRUD usuarios y auditoria de accesos",
+    "REQ-COM": "orden, recepcion parcial/total y entrada de inventario automatica",
+    "REQ-EQU": "CRUD, historial de mantenimientos y alerta de revision vencida",
+    "REQ-FIN": "gastos operativos, reportes financieros basicos y metas mensuales",
+    "REQ-INS": "CRUD, Kardex trazable, alertas de stock bajo con correo e intervalo respetado",
+    "REQ-PRO": "stock actualizado al completar lote, precio editable, Kardex trazable",
+    "REQ-PROD": "crear lote, completar con descuento de insumos, calidad, merma y costo calculado",
+    "REQ-REC": "CRUD, calculo de costo, clonado y bloqueo si tiene lotes activos",
+    "REQ-REP": "KPIs reales, graficos, alertas operacionales y reportes exportables",
+    "REQ-VTA": "venta con stock validado, ganancia calculada, Kardex y reservas"
+  },
+  "screen_count": 30,
+  "screen_ids": [
+    "P-01",
+    "P-02",
+    "P-03",
+    "P-04",
+    "P-05",
+    "P-06",
+    "P-07",
+    "P-08",
+    "P-09",
+    "P-10",
+    "P-11",
+    "P-12",
+    "P-13",
+    "P-14",
+    "P-15",
+    "P-16",
+    "P-17",
+    "P-18",
+    "P-19",
+    "P-20",
+    "P-21",
+    "P-22",
+    "P-23",
+    "P-24",
+    "P-25",
+    "P-26",
+    "P-27",
+    "P-28",
+    "P-29",
+    "P-30"
+  ],
+  "status": "pass"
+}

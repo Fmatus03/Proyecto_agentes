@@ -1,0 +1,182 @@
+{
+  "acceptance_gate": {
+    "has_30_screens": true,
+    "has_40_spec_endpoints": true,
+    "has_all_macro_requirements": true,
+    "has_api_v1": true,
+    "has_transactional_rules": true,
+    "has_v001_v100": true
+  },
+  "action_endpoints": [
+    {
+      "action_endpoint": true,
+      "description": "iniciar sesi\u00f3n, retorna token JWT.",
+      "handler": "auth.login",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "cerrar sesi\u00f3n.",
+      "handler": "auth.logout",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "obtener usuario autenticado.",
+      "handler": "auth.list",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": true,
+      "description": "cambiar contrase\u00f1a.",
+      "handler": "auth.change_password",
+      "method": "POST",
+      "path": "/api/v1/auth/change-password",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "activar o desactivar usuario.",
+      "handler": "users.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/users/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "activar o desactivar proveedor.",
+      "handler": "suppliers.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/suppliers/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "activar o desactivar insumo.",
+      "handler": "supplies.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/supplies/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "Kardex del insumo.",
+      "handler": "supplies.detail",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}/kardex",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": true,
+      "description": "clonar receta.",
+      "handler": "recipes.clone",
+      "method": "POST",
+      "path": "/api/v1/recipes/{id}/clone",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "completar lote.",
+      "handler": "batches.complete",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/complete",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "cancelar lote.",
+      "handler": "batches.cancel",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/cancel",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "registrar control de calidad.",
+      "handler": "batches.quality_check",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/quality-check",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "description": "actualizar precio de venta.",
+      "handler": "products.update",
+      "method": "PUT",
+      "path": "/api/v1/products/{id}/price",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    }
+  ],
+  "critical_transaction_count": 8,
+  "endpoint_count": 40,
+  "entity_count": 40,
+  "module_count": 11,
+  "module_coverage": {
+    "REQ-ALT": "SMTP cifrado, cola, reintentos, metas, usuarios y roles",
+    "REQ-AUTH": "login, JWT, roles, CRUD usuarios y auditoria de accesos",
+    "REQ-COM": "orden, recepcion parcial/total y entrada de inventario automatica",
+    "REQ-EQU": "CRUD, historial de mantenimientos y alerta de revision vencida",
+    "REQ-FIN": "gastos operativos, reportes financieros basicos y metas mensuales",
+    "REQ-INS": "CRUD, Kardex trazable, alertas de stock bajo con correo e intervalo respetado",
+    "REQ-PRO": "stock actualizado al completar lote, precio editable, Kardex trazable",
+    "REQ-PROD": "crear lote, completar con descuento de insumos, calidad, merma y costo calculado",
+    "REQ-REC": "CRUD, calculo de costo, clonado y bloqueo si tiene lotes activos",
+    "REQ-REP": "KPIs reales, graficos, alertas operacionales y reportes exportables",
+    "REQ-VTA": "venta con stock validado, ganancia calculada, Kardex y reservas"
+  },
+  "permission_count": 42,
+  "screen_count": 30,
+  "screen_ids": [
+    "P-01",
+    "P-02",
+    "P-03",
+    "P-04",
+    "P-05",
+    "P-06",
+    "P-07",
+    "P-08",
+    "P-09",
+    "P-10",
+    "P-11",
+    "P-12",
+    "P-13",
+    "P-14",
+    "P-15",
+    "P-16",
+    "P-17",
+    "P-18",
+    "P-19",
+    "P-20",
+    "P-21",
+    "P-22",
+    "P-23",
+    "P-24",
+    "P-25",
+    "P-26",
+    "P-27",
+    "P-28",
+    "P-29",
+    "P-30"
+  ],
+  "status": "pass",
+  "validation_count": 100
+}

@@ -1,0 +1,273 @@
+{
+  "entities": [
+    "users",
+    "roles",
+    "permissions",
+    "role_permissions",
+    "audit_logs",
+    "settings",
+    "suppliers",
+    "warehouses",
+    "supply_categories",
+    "supplies",
+    "supply_movements",
+    "supply_entries",
+    "notification_queue",
+    "beer_styles",
+    "presentation_types",
+    "recipes",
+    "recipe_ingredients",
+    "production_batches",
+    "batch_quality_checks",
+    "waste_records",
+    "finished_products",
+    "product_movements",
+    "customer_types",
+    "customers",
+    "product_prices",
+    "sales",
+    "sale_items",
+    "stock_reservations",
+    "purchase_orders",
+    "purchase_order_items",
+    "equipment_types",
+    "equipment",
+    "equipment_movements",
+    "expense_categories",
+    "operational_expenses",
+    "monthly_goals",
+    "password_reset_tokens",
+    "export_jobs",
+    "smtp_config",
+    "batch_supply_snapshots"
+  ],
+  "modules": [
+    {
+      "acceptance": "login, JWT, roles, CRUD usuarios y auditoria de accesos",
+      "entities": [
+        "users",
+        "roles",
+        "permissions",
+        "role_permissions",
+        "audit_logs",
+        "password_reset_tokens"
+      ],
+      "id": "REQ-AUTH",
+      "name": "Usuarios y auth",
+      "screens": [
+        "P-01",
+        "P-02",
+        "P-30"
+      ],
+      "use_cases": [
+        "UC-ALT-03"
+      ]
+    },
+    {
+      "acceptance": "CRUD, Kardex trazable, alertas de stock bajo con correo e intervalo respetado",
+      "entities": [
+        "suppliers",
+        "warehouses",
+        "supply_categories",
+        "supplies",
+        "supply_movements",
+        "supply_entries",
+        "notification_queue"
+      ],
+      "id": "REQ-INS",
+      "name": "Insumos",
+      "screens": [
+        "P-04",
+        "P-05",
+        "P-06",
+        "P-07",
+        "P-08",
+        "P-09",
+        "P-12"
+      ],
+      "use_cases": [
+        "UC-INS-01",
+        "UC-INS-02",
+        "UC-INS-03",
+        "UC-INS-04",
+        "UC-INS-05",
+        "UC-INS-06"
+      ]
+    },
+    {
+      "acceptance": "CRUD, calculo de costo, clonado y bloqueo si tiene lotes activos",
+      "entities": [
+        "beer_styles",
+        "presentation_types",
+        "recipes",
+        "recipe_ingredients"
+      ],
+      "id": "REQ-REC",
+      "name": "Recetas",
+      "screens": [
+        "P-10",
+        "P-11",
+        "P-13"
+      ],
+      "use_cases": [
+        "UC-REC-01",
+        "UC-REC-02"
+      ]
+    },
+    {
+      "acceptance": "crear lote, completar con descuento de insumos, calidad, merma y costo calculado",
+      "entities": [
+        "production_batches",
+        "batch_quality_checks",
+        "waste_records",
+        "batch_supply_snapshots"
+      ],
+      "id": "REQ-PROD",
+      "name": "Produccion",
+      "screens": [
+        "P-14",
+        "P-15",
+        "P-16",
+        "P-17",
+        "P-19"
+      ],
+      "use_cases": [
+        "UC-PROD-01",
+        "UC-PROD-02",
+        "UC-PROD-03",
+        "UC-PROD-04"
+      ]
+    },
+    {
+      "acceptance": "stock actualizado al completar lote, precio editable, Kardex trazable",
+      "entities": [
+        "finished_products",
+        "product_movements"
+      ],
+      "id": "REQ-PRO",
+      "name": "Inventario productos",
+      "screens": [
+        "P-18"
+      ],
+      "use_cases": [
+        "UC-PRO-01",
+        "UC-PRO-02"
+      ]
+    },
+    {
+      "acceptance": "venta con stock validado, ganancia calculada, Kardex y reservas",
+      "entities": [
+        "customer_types",
+        "customers",
+        "product_prices",
+        "sales",
+        "sale_items",
+        "stock_reservations"
+      ],
+      "id": "REQ-VTA",
+      "name": "Ventas",
+      "screens": [
+        "P-20",
+        "P-21",
+        "P-22",
+        "P-23"
+      ],
+      "use_cases": [
+        "UC-VTA-01",
+        "UC-VTA-02",
+        "UC-VTA-03",
+        "UC-VTA-04",
+        "UC-VTA-05"
+      ]
+    },
+    {
+      "acceptance": "orden, recepcion parcial/total y entrada de inventario automatica",
+      "entities": [
+        "purchase_orders",
+        "purchase_order_items"
+      ],
+      "id": "REQ-COM",
+      "name": "Compras",
+      "screens": [
+        "P-24",
+        "P-25"
+      ],
+      "use_cases": [
+        "UC-COM-01",
+        "UC-COM-02"
+      ]
+    },
+    {
+      "acceptance": "CRUD, historial de mantenimientos y alerta de revision vencida",
+      "entities": [
+        "equipment_types",
+        "equipment",
+        "equipment_movements"
+      ],
+      "id": "REQ-EQU",
+      "name": "Equipos",
+      "screens": [
+        "P-26",
+        "P-27"
+      ],
+      "use_cases": [
+        "UC-EQU-01",
+        "UC-EQU-02"
+      ]
+    },
+    {
+      "acceptance": "gastos operativos, reportes financieros basicos y metas mensuales",
+      "entities": [
+        "expense_categories",
+        "operational_expenses",
+        "monthly_goals"
+      ],
+      "id": "REQ-FIN",
+      "name": "Finanzas",
+      "screens": [
+        "P-28",
+        "P-29"
+      ],
+      "use_cases": [
+        "UC-FIN-01",
+        "UC-FIN-02",
+        "UC-FIN-03"
+      ]
+    },
+    {
+      "acceptance": "KPIs reales, graficos, alertas operacionales y reportes exportables",
+      "entities": [
+        "export_jobs"
+      ],
+      "id": "REQ-REP",
+      "name": "Dashboard y reportes",
+      "screens": [
+        "P-03",
+        "P-29"
+      ],
+      "use_cases": [
+        "UC-REP-01",
+        "UC-REP-02"
+      ]
+    },
+    {
+      "acceptance": "SMTP cifrado, cola, reintentos, metas, usuarios y roles",
+      "entities": [
+        "settings",
+        "smtp_config",
+        "notification_queue",
+        "monthly_goals"
+      ],
+      "id": "REQ-ALT",
+      "name": "Configuracion y alertas",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "UC-ALT-01",
+        "UC-ALT-02",
+        "UC-ALT-03"
+      ]
+    }
+  ]
+}
