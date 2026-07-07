@@ -1,9 +1,5 @@
 {
   "declared_permissions": [
-    "admin.users",
-    "audit.read"
-  ],
-  "deferred_permissions": [
     "supplies.read",
     "supplies.create",
     "supplies.update",
@@ -43,20 +39,47 @@
     "expenses.create",
     "reports.read",
     "reports.export",
-    "admin.settings"
+    "admin.users",
+    "admin.settings",
+    "audit.read"
   ],
-  "milestone_id": "HITO-001",
   "roles": {
     "admin": [
       "*"
     ],
     "auditor": [
-      "audit.read"
+      "audit:read",
+      "reports:audit"
     ],
-    "operador": []
+    "compras": [
+      "supplies:*",
+      "suppliers:*",
+      "purchase-orders:*",
+      "reports:inventory"
+    ],
+    "finanzas": [
+      "expenses:*",
+      "reports:financial",
+      "monthly-goals:read"
+    ],
+    "produccion": [
+      "recipes:*",
+      "batches:*",
+      "quality:*",
+      "waste:*",
+      "equipment:*"
+    ],
+    "ventas": [
+      "customers:*",
+      "sales:*",
+      "reservations:*",
+      "finished-products:read"
+    ]
   },
   "sensitive_permissions": [
-    "admin.users",
-    "audit.read"
+    "costs:read",
+    "financial:read",
+    "smtp:update",
+    "users:write"
   ]
 }

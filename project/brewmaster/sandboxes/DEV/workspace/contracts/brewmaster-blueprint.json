@@ -1,6 +1,6 @@
 {
   "architecture_source": "fabricas_agentes_ia.md",
-  "blueprint_id": "brewmaster.sdd.hito1.v1",
+  "blueprint_id": "brewmaster.sdd.hito8.v1",
   "business_rules": [
     {
       "id": 1,
@@ -41,6 +41,202 @@
     {
       "id": 10,
       "text": "Un usuario sin permiso recibe HTTP 403, nunca datos parciales."
+    },
+    {
+      "id": 11,
+      "text": "El c\u00f3digo de insumo debe ser \u00fanico por empresa."
+    },
+    {
+      "id": 12,
+      "text": "Un insumo inactivo no puede recibir entradas ni usarse en recetas o lotes."
+    },
+    {
+      "id": 13,
+      "text": "El costo unitario de un insumo no puede ser negativo."
+    },
+    {
+      "id": 14,
+      "text": "El stock m\u00ednimo de un insumo no puede ser negativo."
+    },
+    {
+      "id": 15,
+      "text": "El stock actual de un insumo no puede ser negativo."
+    },
+    {
+      "id": 16,
+      "text": "Un insumo con movimientos de inventario no se elimina f\u00edsicamente."
+    },
+    {
+      "id": 17,
+      "text": "Toda entrada de insumo actualiza el stock actual y registra en Kardex."
+    },
+    {
+      "id": 18,
+      "text": "Toda salida de insumo valida que haya stock suficiente antes de procesar."
+    },
+    {
+      "id": 19,
+      "text": "El sistema no permite stock negativo salvo configuraci\u00f3n expl\u00edcita."
+    },
+    {
+      "id": 20,
+      "text": "Las alertas de stock bajo se env\u00edan solo si el insumo tiene alertas habilitadas."
+    },
+    {
+      "id": 21,
+      "text": "No se reenv\u00eda alerta de stock bajo antes de 24 horas para el mismo insumo."
+    },
+    {
+      "id": 22,
+      "text": "Stock en cero fuerza env\u00edo de alerta inmediato sin respetar intervalo."
+    },
+    {
+      "id": 23,
+      "text": "Stock recuperado sobre m\u00ednimo resetea el temporizador de alerta."
+    },
+    {
+      "id": 24,
+      "text": "Tras 5 intentos fallidos de correo, la notificaci\u00f3n queda en estado de error definitivo."
+    },
+    {
+      "id": 25,
+      "text": "Una receta debe tener al menos un ingrediente activo."
+    },
+    {
+      "id": 26,
+      "text": "Una receta con lotes activos en producci\u00f3n no puede editarse."
+    },
+    {
+      "id": 27,
+      "text": "El costo estimado de una receta se calcula autom\u00e1ticamente con los costos unitarios vigentes."
+    },
+    {
+      "id": 28,
+      "text": "Una receta solo puede clonarse si est\u00e1 activa o en prueba."
+    },
+    {
+      "id": 29,
+      "text": "Un lote de producci\u00f3n creado queda en estado en_elaboracion."
+    },
+    {
+      "id": 30,
+      "text": "Un lote no puede completarse sin stock suficiente de insumos de la receta."
+    },
+    {
+      "id": 31,
+      "text": "Al completar un lote, los insumos se descuentan proporcionalmente a la cantidad producida."
+    },
+    {
+      "id": 32,
+      "text": "Al completar un lote, el inventario de productos terminados se crea o incrementa."
+    },
+    {
+      "id": 33,
+      "text": "El costo total de un lote incluye insumos, mano de obra, energ\u00eda, agua, merma e indirectos."
+    },
+    {
+      "id": 34,
+      "text": "El costo por unidad incluye el costo de la presentaci\u00f3n (envase, tapa, etiqueta)."
+    },
+    {
+      "id": 35,
+      "text": "Un lote cancelado no afecta inventario ni Kardex."
+    },
+    {
+      "id": 36,
+      "text": "Solo puede existir un registro de control de calidad por lote."
+    },
+    {
+      "id": 37,
+      "text": "El resultado de control de calidad aprobado o rechazado es obligatorio al guardar."
+    },
+    {
+      "id": 38,
+      "text": "Un lote rechazado en calidad puede registrarse completamente como merma."
+    },
+    {
+      "id": 39,
+      "text": "Toda merma debe tener motivo detallado obligatorio."
+    },
+    {
+      "id": 40,
+      "text": "La merma descuenta del inventario correspondiente y registra en Kardex."
+    },
+    {
+      "id": 41,
+      "text": "El porcentaje de merma se compara contra el umbral del 5% para alertas en dashboard."
+    },
+    {
+      "id": 42,
+      "text": "El nombre de la receta debe ser \u00fanico por empresa."
+    },
+    {
+      "id": 43,
+      "text": "El identificador fiscal del cliente debe ser \u00fanico por empresa."
+    },
+    {
+      "id": 44,
+      "text": "Un cliente inactivo no puede asignarse a una nueva venta."
+    },
+    {
+      "id": 45,
+      "text": "Un cliente con ventas no puede eliminarse f\u00edsicamente."
+    },
+    {
+      "id": 46,
+      "text": "El precio de venta sugerido en la venta se toma seg\u00fan tipo de cliente y lista vigente."
+    },
+    {
+      "id": 47,
+      "text": "El stock disponible para ventas es stock actual menos reservas activas."
+    },
+    {
+      "id": 48,
+      "text": "No se puede vender m\u00e1s que el stock disponible."
+    },
+    {
+      "id": 49,
+      "text": "Una reserva activa no puede usarse en otra venta hasta liberarse o vencerse."
+    },
+    {
+      "id": 50,
+      "text": "El proveedor de una orden de compra debe estar activo."
+    },
+    {
+      "id": 51,
+      "text": "Una orden de compra en borrador puede editarse; una enviada no puede modificarse sin permiso."
+    },
+    {
+      "id": 52,
+      "text": "La recepci\u00f3n de compra no puede superar la cantidad solicitada salvo tolerancia configurada."
+    },
+    {
+      "id": 53,
+      "text": "La recepci\u00f3n total cierra la orden; la recepci\u00f3n parcial la deja en estado parcialmente_recibida."
+    },
+    {
+      "id": 54,
+      "text": "Una orden cancelada no acepta recepci\u00f3n de mercader\u00eda."
+    },
+    {
+      "id": 55,
+      "text": "El c\u00f3digo de equipo debe ser \u00fanico por empresa."
+    },
+    {
+      "id": 56,
+      "text": "Un equipo descartado no acepta nuevos movimientos de mantenimiento."
+    },
+    {
+      "id": 57,
+      "text": "La pr\u00f3xima revisi\u00f3n vencida genera alerta en dashboard y en listado de equipos."
+    },
+    {
+      "id": 58,
+      "text": "Los gastos operativos con documentos asociados no pueden eliminarse."
+    },
+    {
+      "id": 59,
+      "text": "El monto de un gasto operativo debe ser mayor a cero."
     },
     {
       "id": 60,
@@ -167,6 +363,776 @@
       "path": "/api/v1/auth/password-reset/confirm",
       "source": "brewmaster_especificacion_completa.md#K.6",
       "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-010",
+      "description": "listar proveedores.",
+      "handler": "suppliers.list",
+      "method": "GET",
+      "path": "/api/v1/suppliers",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-011",
+      "description": "crear proveedor activo.",
+      "handler": "suppliers.create",
+      "method": "POST",
+      "path": "/api/v1/suppliers",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-012",
+      "description": "actualizar proveedor.",
+      "handler": "suppliers.update",
+      "method": "PUT",
+      "path": "/api/v1/suppliers/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-013",
+      "description": "activar o desactivar proveedor.",
+      "handler": "suppliers.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/suppliers/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-014",
+      "description": "listar insumos con filtros.",
+      "handler": "supplies.list",
+      "method": "GET",
+      "path": "/api/v1/supplies",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-015",
+      "description": "crear insumo maestro.",
+      "handler": "supplies.create",
+      "method": "POST",
+      "path": "/api/v1/supplies",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-016",
+      "description": "obtener insumo.",
+      "handler": "supplies.detail",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-017",
+      "description": "actualizar insumo maestro.",
+      "handler": "supplies.update",
+      "method": "PUT",
+      "path": "/api/v1/supplies/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-018",
+      "description": "activar o desactivar insumo.",
+      "handler": "supplies.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/supplies/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-023",
+      "description": "listar recetas.",
+      "handler": "recipes.list",
+      "method": "GET",
+      "path": "/api/v1/recipes",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-024",
+      "description": "crear receta con ingredientes.",
+      "handler": "recipes.create",
+      "method": "POST",
+      "path": "/api/v1/recipes",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-025",
+      "description": "obtener receta con ingredientes.",
+      "handler": "recipes.detail",
+      "method": "GET",
+      "path": "/api/v1/recipes/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-026",
+      "description": "actualizar receta.",
+      "handler": "recipes.update",
+      "method": "PUT",
+      "path": "/api/v1/recipes/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-027",
+      "description": "clonar receta activa o en prueba.",
+      "handler": "recipes.clone",
+      "method": "POST",
+      "path": "/api/v1/recipes/{id}/clone",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-041",
+      "description": "listar bodegas.",
+      "handler": "warehouses.list",
+      "method": "GET",
+      "path": "/api/v1/warehouses",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-042",
+      "description": "crear bodega.",
+      "handler": "warehouses.create",
+      "method": "POST",
+      "path": "/api/v1/warehouses",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-043",
+      "description": "actualizar bodega.",
+      "handler": "warehouses.update",
+      "method": "PUT",
+      "path": "/api/v1/warehouses/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-044",
+      "description": "listar tipos de presentacion.",
+      "handler": "presentation_types.list",
+      "method": "GET",
+      "path": "/api/v1/presentation-types",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-045",
+      "description": "crear tipo de presentacion.",
+      "handler": "presentation_types.create",
+      "method": "POST",
+      "path": "/api/v1/presentation-types",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-046",
+      "description": "actualizar tipo de presentacion.",
+      "handler": "presentation_types.update",
+      "method": "PUT",
+      "path": "/api/v1/presentation-types/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-019",
+      "description": "consultar Kardex de insumo con filtros operativos.",
+      "handler": "supplies.kardex",
+      "method": "GET",
+      "path": "/api/v1/supplies/{id}/kardex",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-020",
+      "description": "listar insumos bajo stock minimo.",
+      "handler": "supplies.low_stock",
+      "method": "GET",
+      "path": "/api/v1/supplies/low-stock",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-021",
+      "description": "registrar entrada de insumo, actualizar stock y Kardex.",
+      "handler": "supply_entries.create",
+      "method": "POST",
+      "path": "/api/v1/supply-entries",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-022",
+      "description": "listar entradas de insumos con filtros.",
+      "handler": "supply_entries.list",
+      "method": "GET",
+      "path": "/api/v1/supply-entries",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-077",
+      "description": "obtener configuracion SMTP sanitizada.",
+      "handler": "settings.smtp",
+      "method": "GET",
+      "path": "/api/v1/settings/smtp",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-078",
+      "description": "guardar configuracion SMTP con secreto cifrado localmente.",
+      "handler": "settings.smtp_update",
+      "method": "PUT",
+      "path": "/api/v1/settings/smtp",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-079",
+      "description": "registrar prueba SMTP local sin enviar correo real.",
+      "handler": "settings.smtp_test",
+      "method": "POST",
+      "path": "/api/v1/settings/smtp/test",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-083",
+      "description": "listar cola de notificaciones de stock bajo y SMTP.",
+      "handler": "notifications.list",
+      "method": "GET",
+      "path": "/api/v1/notifications",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-028",
+      "description": "listar lotes de produccion con filtros.",
+      "handler": "batches.list",
+      "method": "GET",
+      "path": "/api/v1/batches",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-029",
+      "description": "crear lote en elaboracion desde receta y presentacion activas.",
+      "handler": "batches.create",
+      "method": "POST",
+      "path": "/api/v1/batches",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-030",
+      "description": "obtener lote con detalle de insumos y costos.",
+      "handler": "batches.detail",
+      "method": "GET",
+      "path": "/api/v1/batches/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-031",
+      "description": "editar lote solo mientras esta en elaboracion.",
+      "handler": "batches.update",
+      "method": "PUT",
+      "path": "/api/v1/batches/{id}",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-032",
+      "description": "completar lote descontando insumos, creando producto y calculando costos.",
+      "handler": "batches.complete",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/complete",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-033",
+      "description": "cancelar lote sin afectar inventario ni Kardex.",
+      "handler": "batches.cancel",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/cancel",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-034",
+      "description": "registrar control de calidad unico para el lote completado.",
+      "handler": "batches.quality_check",
+      "method": "POST",
+      "path": "/api/v1/batches/{id}/quality-check",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-035",
+      "description": "listar inventario de productos terminados.",
+      "handler": "products.list",
+      "method": "GET",
+      "path": "/api/v1/products",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-036",
+      "description": "actualizar precio de venta base sin permitir valores negativos.",
+      "handler": "products.update_price",
+      "method": "PUT",
+      "path": "/api/v1/products/{id}/price",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-047",
+      "description": "consultar Kardex de producto terminado.",
+      "handler": "products.kardex",
+      "method": "GET",
+      "path": "/api/v1/products/{id}/kardex",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-062",
+      "description": "listar mermas registradas.",
+      "handler": "waste_records.list",
+      "method": "GET",
+      "path": "/api/v1/waste-records",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-063",
+      "description": "registrar merma descontando inventario y escribiendo Kardex.",
+      "handler": "waste_records.create",
+      "method": "POST",
+      "path": "/api/v1/waste-records",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-037",
+      "description": "registrar venta con stock libre, ganancia y Kardex.",
+      "handler": "sales.create",
+      "method": "POST",
+      "path": "/api/v1/sales",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-038",
+      "description": "listar ventas con filtros.",
+      "handler": "sales.list",
+      "method": "GET",
+      "path": "/api/v1/sales",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-039",
+      "description": "listar clientes con filtros comerciales.",
+      "handler": "customers.list",
+      "method": "GET",
+      "path": "/api/v1/customers",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-040",
+      "description": "crear cliente activo con identificador fiscal unico.",
+      "handler": "customers.create",
+      "method": "POST",
+      "path": "/api/v1/customers",
+      "source": "brewmaster_especificacion_completa.md#F.40-endpoints",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-048",
+      "description": "obtener cliente con historial comercial.",
+      "handler": "customers.detail",
+      "method": "GET",
+      "path": "/api/v1/customers/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-049",
+      "description": "editar cliente sin romper historial de ventas.",
+      "handler": "customers.update",
+      "method": "PUT",
+      "path": "/api/v1/customers/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-050",
+      "description": "activar o inactivar cliente mediante eliminacion logica.",
+      "handler": "customers.toggle_status",
+      "method": "PATCH",
+      "path": "/api/v1/customers/{id}/toggle-status",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-051",
+      "description": "listar reservas de stock activas, liberadas o consumidas.",
+      "handler": "reservations.list",
+      "method": "GET",
+      "path": "/api/v1/reservations",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-052",
+      "description": "crear reserva sobre stock libre de producto terminado.",
+      "handler": "reservations.create",
+      "method": "POST",
+      "path": "/api/v1/reservations",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-053",
+      "description": "convertir reserva activa en venta.",
+      "handler": "reservations.consume",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/consume",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-054",
+      "description": "liberar reserva activa sin afectar inventario.",
+      "handler": "reservations.release",
+      "method": "POST",
+      "path": "/api/v1/reservations/{id}/release",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-055",
+      "description": "listar ordenes de compra.",
+      "handler": "purchase_orders.list",
+      "method": "GET",
+      "path": "/api/v1/purchase-orders",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-056",
+      "description": "crear orden de compra en borrador con proveedor activo.",
+      "handler": "purchase_orders.create",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-057",
+      "description": "obtener orden de compra con lineas.",
+      "handler": "purchase_orders.detail",
+      "method": "GET",
+      "path": "/api/v1/purchase-orders/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-058",
+      "description": "editar orden solo en estado borrador.",
+      "handler": "purchase_orders.update",
+      "method": "PUT",
+      "path": "/api/v1/purchase-orders/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-059",
+      "description": "enviar orden de compra borrador.",
+      "handler": "purchase_orders.send",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/send",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-060",
+      "description": "recepcionar compra parcial o total y generar Kardex de insumos.",
+      "handler": "purchase_orders.receive",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/receive",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-061",
+      "description": "cancelar orden no recibida.",
+      "handler": "purchase_orders.cancel",
+      "method": "POST",
+      "path": "/api/v1/purchase-orders/{id}/cancel",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-087",
+      "description": "anular venta, revertir stock y registrar Kardex DEVOLUCION.",
+      "handler": "sales.void",
+      "method": "POST",
+      "path": "/api/v1/sales/{id}/void",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-074",
+      "description": "obtener KPIs reales, graficos y alertas operacionales.",
+      "handler": "dashboard.summary",
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-075",
+      "description": "listar reportes operacionales disponibles y exportaciones locales.",
+      "handler": "reports.list",
+      "method": "GET",
+      "path": "/api/v1/reports",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-076",
+      "description": "exportar reporte operacional en CSV, XLSX o PDF y auditar la accion.",
+      "handler": "reports.export",
+      "method": "POST",
+      "path": "/api/v1/reports/export",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-064",
+      "description": "listar equipos, estado operativo y proxima revision.",
+      "handler": "equipment.list",
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-065",
+      "description": "crear equipo con codigo unico y calendario de revision.",
+      "handler": "equipment.create",
+      "method": "POST",
+      "path": "/api/v1/equipment",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-066",
+      "description": "obtener equipo con historial de movimientos.",
+      "handler": "equipment.detail",
+      "method": "GET",
+      "path": "/api/v1/equipment/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-067",
+      "description": "actualizar datos y estado de equipo sin perder auditoria.",
+      "handler": "equipment.update",
+      "method": "PUT",
+      "path": "/api/v1/equipment/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-068",
+      "description": "registrar mantencion, traslado o descarte de equipo.",
+      "handler": "equipment.movements_create",
+      "method": "POST",
+      "path": "/api/v1/equipment/{id}/movements",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": true,
+      "api_id": "API-069",
+      "description": "listar historial de movimientos de equipo.",
+      "handler": "equipment.movements",
+      "method": "GET",
+      "path": "/api/v1/equipment/{id}/movements",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-070",
+      "description": "listar gastos operativos con filtros financieros basicos.",
+      "handler": "expenses.list",
+      "method": "GET",
+      "path": "/api/v1/expenses",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-071",
+      "description": "registrar gasto operativo con monto positivo y auditoria.",
+      "handler": "expenses.create",
+      "method": "POST",
+      "path": "/api/v1/expenses",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-072",
+      "description": "actualizar gasto operativo no bloqueado por documento.",
+      "handler": "expenses.update",
+      "method": "PUT",
+      "path": "/api/v1/expenses/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-073",
+      "description": "eliminar logicamente gasto operativo sin documento asociado.",
+      "handler": "expenses.delete",
+      "method": "DELETE",
+      "path": "/api/v1/expenses/{id}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-080",
+      "description": "listar metas mensuales y avance contra dashboard.",
+      "handler": "monthly_goals.list",
+      "method": "GET",
+      "path": "/api/v1/monthly-goals",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-081",
+      "description": "crear o actualizar metas mensuales operativas.",
+      "handler": "monthly_goals.upsert",
+      "method": "PUT",
+      "path": "/api/v1/monthly-goals/{month}",
+      "source": "brewmaster_especificacion_completa.md#K.6",
+      "transactional": true
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-088",
+      "description": "listar politica local de scheduler, incluyendo backup automatico.",
+      "handler": "jobs.list",
+      "method": "GET",
+      "path": "/api/v1/jobs",
+      "source": "brewmaster_especificacion_completa.md#J.16",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-089",
+      "description": "listar respaldos automaticos locales simulados.",
+      "handler": "backups.list",
+      "method": "GET",
+      "path": "/api/v1/backups",
+      "source": "brewmaster_especificacion_completa.md#J.16",
+      "transactional": false
+    },
+    {
+      "action_endpoint": false,
+      "api_id": "API-090",
+      "description": "registrar respaldo local simulado sin escribir fuera del sandbox.",
+      "handler": "backups.create",
+      "method": "POST",
+      "path": "/api/v1/backups",
+      "source": "brewmaster_especificacion_completa.md#J.16",
+      "transactional": true
     }
   ],
   "entities": [
@@ -176,7 +1142,39 @@
     "role_permissions",
     "audit_logs",
     "settings",
-    "password_reset_tokens"
+    "suppliers",
+    "warehouses",
+    "supply_categories",
+    "supplies",
+    "supply_movements",
+    "supply_entries",
+    "notification_queue",
+    "presentation_types",
+    "recipes",
+    "recipe_ingredients",
+    "production_batches",
+    "batch_quality_checks",
+    "waste_records",
+    "finished_products",
+    "product_movements",
+    "customer_types",
+    "customers",
+    "product_prices",
+    "sales",
+    "sale_items",
+    "stock_reservations",
+    "purchase_orders",
+    "purchase_order_items",
+    "equipment_types",
+    "equipment",
+    "equipment_movements",
+    "expense_categories",
+    "operational_expenses",
+    "monthly_goals",
+    "password_reset_tokens",
+    "export_jobs",
+    "smtp_config",
+    "batch_supply_snapshots"
   ],
   "entity_models": [
     {
@@ -257,6 +1255,465 @@
     {
       "fields": [
         "id",
+        "codigo",
+        "nombre",
+        "email",
+        "telefono",
+        "contacto",
+        "condicion_pago",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "suppliers",
+      "purpose": "proveedores"
+    },
+    {
+      "fields": [
+        "id",
+        "codigo",
+        "nombre",
+        "tipo",
+        "responsable",
+        "capacidad",
+        "temperatura_controlada",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "warehouses",
+      "purpose": "bodegas"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "descripcion",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "supply_categories",
+      "purpose": "categor\u00edas de insumos"
+    },
+    {
+      "fields": [
+        "id",
+        "codigo",
+        "nombre",
+        "tipo",
+        "unidad_medida",
+        "proveedor_id",
+        "bodega_id",
+        "costo_unitario",
+        "stock_minimo",
+        "stock_actual",
+        "enable_email_alerts",
+        "alert_emails",
+        "last_alert_sent_at",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "supplies",
+      "purpose": "insumos"
+    },
+    {
+      "fields": [
+        "id",
+        "supply_id",
+        "tipo_movimiento",
+        "cantidad",
+        "costo_unitario",
+        "saldo_resultante",
+        "referencia",
+        "user_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "supply_movements",
+      "purpose": "Kardex de insumos"
+    },
+    {
+      "fields": [
+        "id",
+        "supply_id",
+        "cantidad",
+        "costo_unitario",
+        "proveedor_id",
+        "referencia",
+        "user_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "supply_entries",
+      "purpose": "entradas de insumos"
+    },
+    {
+      "fields": [
+        "id",
+        "supply_id",
+        "recipients",
+        "subject",
+        "body_html",
+        "status",
+        "attempts",
+        "sent_at",
+        "error_message",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "notification_queue",
+      "purpose": "cola de correos"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "volumen",
+        "unidad",
+        "costo_presentacion",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "presentation_types",
+      "purpose": "tipos de presentaci\u00f3n"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "tipo",
+        "abv_estimado",
+        "volumen_por_lote",
+        "pasos_elaboracion",
+        "costo_estimado",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "recipes",
+      "purpose": "recetas de cerveza"
+    },
+    {
+      "fields": [
+        "id",
+        "recipe_id",
+        "supply_id",
+        "cantidad",
+        "unidad",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "recipe_ingredients",
+      "purpose": "ingredientes de receta"
+    },
+    {
+      "fields": [
+        "id",
+        "numero_lote",
+        "recipe_id",
+        "presentation_type_id",
+        "cantidad_producida",
+        "fecha_produccion",
+        "responsable_id",
+        "estado",
+        "horas_mano_obra",
+        "kwh_consumidos",
+        "litros_agua",
+        "porcentaje_merma",
+        "costo_total",
+        "costo_por_litro",
+        "costo_por_unidad",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "production_batches",
+      "purpose": "lotes de producci\u00f3n"
+    },
+    {
+      "fields": [
+        "id",
+        "batch_id",
+        "og",
+        "fg",
+        "abv_calculado",
+        "ph",
+        "temp_fermentacion",
+        "nota_aroma",
+        "nota_sabor",
+        "resultado",
+        "motivo_rechazo",
+        "responsable_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "batch_quality_checks",
+      "purpose": "control de calidad"
+    },
+    {
+      "fields": [
+        "id",
+        "tipo_entidad",
+        "entidad_id",
+        "cantidad_perdida",
+        "costo_unitario",
+        "costo_total",
+        "tipo_merma",
+        "motivo_detallado",
+        "responsable_id",
+        "fecha",
+        "batch_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "waste_records",
+      "purpose": "mermas"
+    },
+    {
+      "fields": [
+        "id",
+        "recipe_id",
+        "presentation_type_id",
+        "cantidad_stock",
+        "costo_unitario",
+        "precio_venta",
+        "fecha_vencimiento_aprox",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "finished_products",
+      "purpose": "inventario productos terminados"
+    },
+    {
+      "fields": [
+        "id",
+        "product_id",
+        "tipo_movimiento",
+        "cantidad",
+        "costo_unitario",
+        "saldo_resultante",
+        "referencia",
+        "user_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "product_movements",
+      "purpose": "Kardex de productos"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "descripcion",
+        "descuento_pct_base",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "customer_types",
+      "purpose": "tipos de cliente"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "identificador_fiscal",
+        "email",
+        "telefono",
+        "tipo_cliente",
+        "forma_pago",
+        "limite_credito",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "customers",
+      "purpose": "clientes"
+    },
+    {
+      "fields": [
+        "id",
+        "product_id",
+        "tipo_cliente",
+        "precio_unitario",
+        "precio_por_docena",
+        "descuento_pct",
+        "vigente_desde",
+        "vigente_hasta",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "product_prices",
+      "purpose": "precios por tipo de cliente"
+    },
+    {
+      "fields": [
+        "id",
+        "numero_documento",
+        "cliente_id",
+        "fecha_venta",
+        "responsable_id",
+        "total",
+        "ganancia_total",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "sales",
+      "purpose": "ventas"
+    },
+    {
+      "fields": [
+        "id",
+        "sale_id",
+        "product_id",
+        "cantidad",
+        "precio_unitario",
+        "costo_unitario",
+        "ganancia_unitaria",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "sale_items",
+      "purpose": "l\u00edneas de venta"
+    },
+    {
+      "fields": [
+        "id",
+        "cliente_id",
+        "product_id",
+        "cantidad_reservada",
+        "fecha_entrega_prometida",
+        "precio",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "stock_reservations",
+      "purpose": "reservas de stock"
+    },
+    {
+      "fields": [
+        "id",
+        "numero_orden",
+        "proveedor_id",
+        "fecha_emision",
+        "fecha_esperada_recepcion",
+        "total_estimado",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "purchase_orders",
+      "purpose": "\u00f3rdenes de compra"
+    },
+    {
+      "fields": [
+        "id",
+        "order_id",
+        "supply_id",
+        "cantidad_solicitada",
+        "precio_unitario",
+        "cantidad_recibida",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "purchase_order_items",
+      "purpose": "l\u00edneas de orden de compra"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "descripcion",
+        "intervalo_revision_dias",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "equipment_types",
+      "purpose": "tipos de equipo"
+    },
+    {
+      "fields": [
+        "id",
+        "codigo",
+        "nombre",
+        "tipo",
+        "marca",
+        "modelo",
+        "serie",
+        "fecha_compra",
+        "costo_adquisicion",
+        "estado",
+        "ultima_mantencion",
+        "proxima_revision",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "equipment",
+      "purpose": "equipos"
+    },
+    {
+      "fields": [
+        "id",
+        "equipment_id",
+        "tipo_movimiento",
+        "descripcion",
+        "costo",
+        "fecha",
+        "responsable_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "equipment_movements",
+      "purpose": "historial de equipos"
+    },
+    {
+      "fields": [
+        "id",
+        "nombre",
+        "descripcion",
+        "estado",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "expense_categories",
+      "purpose": "categor\u00edas de gastos"
+    },
+    {
+      "fields": [
+        "id",
+        "concepto",
+        "categoria",
+        "monto",
+        "fecha",
+        "proveedor",
+        "documento_referencia",
+        "responsable_id",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "operational_expenses",
+      "purpose": "gastos operativos"
+    },
+    {
+      "fields": [
+        "id",
+        "mes",
+        "litros_produccion",
+        "monto_ventas",
+        "num_clientes",
+        "margen_promedio_pct",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "monthly_goals",
+      "purpose": "metas mensuales"
+    },
+    {
+      "fields": [
+        "id",
         "user_id",
         "token_hash",
         "expires_at",
@@ -266,12 +1723,61 @@
       ],
       "name": "password_reset_tokens",
       "purpose": "tokens de recuperaci\u00f3n de contrase\u00f1a"
+    },
+    {
+      "fields": [
+        "id",
+        "user_id",
+        "tipo_reporte",
+        "filtros",
+        "estado",
+        "archivo_url",
+        "created_at",
+        "completed_at",
+        "updated_at"
+      ],
+      "name": "export_jobs",
+      "purpose": "trabajos de exportaci\u00f3n diferidos"
+    },
+    {
+      "fields": [
+        "id",
+        "host",
+        "port",
+        "username",
+        "password_encrypted",
+        "from_email",
+        "use_tls",
+        "updated_by",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "smtp_config",
+      "purpose": "configuraci\u00f3n de servidor de correo"
+    },
+    {
+      "fields": [
+        "id",
+        "batch_id",
+        "supply_id",
+        "cantidad_usada",
+        "costo_unitario_momento",
+        "nombre_insumo",
+        "created_at",
+        "updated_at"
+      ],
+      "name": "batch_supply_snapshots",
+      "purpose": "snapshot de insumos al completar lote"
     }
   ],
   "factory_controls": {
     "context": "authorized specification and architecture sources only",
     "determinism": "local deterministic generation, no external cost",
     "entrypoint": "harness.run_agent(agent_id, state)",
+    "external_backups": "denied; backup artifacts are local sandbox metadata only",
+    "external_email": "denied; SMTP test uses local queue evidence only",
+    "external_sales_or_purchasing_integrations": "denied; all sales and purchasing flows are local MVP logic",
+    "frontend_contract": "React + Bootstrap with Vite entrypoints frontend/index.html and frontend/src/main.jsx",
     "gates": [
       "schema",
       "budget",
@@ -282,14 +1788,16 @@
       "security",
       "coverage"
     ],
+    "hito8_backend_changes": "denied; frontend consumes approved HITO-007 /api/v1 contract only",
     "memory": "project scoped propose-only memory",
+    "production_deploy": "denied; HITO-007 prepares EC2/proxy/TLS only",
     "side_effects": "all generated implementation files pass through DEV sandbox materializer"
   },
-  "milestone_id": "HITO-001",
-  "milestone_name": "Fundamentos",
+  "milestone_id": "HITO-008",
+  "milestone_name": "Pantallas interactivas",
   "modules": [
     {
-      "acceptance": "login JWT, recuperacion de contrasena, CRUD usuarios, RBAC y auditoria funcional",
+      "acceptance": "HITO-001 conserva login JWT, usuarios, RBAC y auditoria funcional.",
       "entities": [
         "audit_logs",
         "password_reset_tokens",
@@ -310,24 +1818,282 @@
         "CU-001",
         "CU-031"
       ]
+    },
+    {
+      "acceptance": "HITO-002 conserva proveedores con codigo unico, correo valido, estado y auditoria.",
+      "entities": [
+        "suppliers"
+      ],
+      "id": "MOD-002",
+      "name": "Proveedores",
+      "screens": [
+        "P-08",
+        "P-09"
+      ],
+      "use_cases": [
+        "CU-006"
+      ]
+    },
+    {
+      "acceptance": "Entrada valida incrementa stock, registra Kardex y encola alerta de stock bajo sin bloquear la operacion.",
+      "entities": [
+        "warehouses",
+        "supply_categories",
+        "supplies",
+        "supply_entries",
+        "supply_movements",
+        "notification_queue"
+      ],
+      "id": "MOD-003",
+      "name": "Insumos, bodegas y Kardex",
+      "screens": [
+        "P-04",
+        "P-05",
+        "P-06",
+        "P-07",
+        "P-12"
+      ],
+      "use_cases": [
+        "CU-002",
+        "CU-003",
+        "CU-004",
+        "CU-005"
+      ]
+    },
+    {
+      "acceptance": "HITO-002 conserva recetas con ingredientes activos, costo estimado y clonado controlado.",
+      "entities": [
+        "presentation_types",
+        "recipes",
+        "recipe_ingredients"
+      ],
+      "id": "MOD-004",
+      "name": "Recetas y presentaciones",
+      "screens": [
+        "P-10",
+        "P-11",
+        "P-13"
+      ],
+      "use_cases": [
+        "CU-007",
+        "CU-008"
+      ]
+    },
+    {
+      "acceptance": "SMTP se guarda sanitizado, la prueba es local y la cola registra intentos sin enviar correos reales.",
+      "entities": [
+        "settings",
+        "smtp_config",
+        "notification_queue"
+      ],
+      "id": "MOD-013",
+      "name": "Configuracion y alertas",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-004",
+        "CU-029"
+      ]
+    },
+    {
+      "acceptance": "Lotes se crean en elaboracion, se completan descontando insumos y registran control de calidad unico.",
+      "entities": [
+        "production_batches",
+        "batch_quality_checks",
+        "batch_supply_snapshots"
+      ],
+      "id": "MOD-005",
+      "name": "Produccion y calidad",
+      "screens": [
+        "P-14",
+        "P-15",
+        "P-16",
+        "P-17"
+      ],
+      "use_cases": [
+        "CU-009",
+        "CU-010",
+        "CU-011"
+      ]
+    },
+    {
+      "acceptance": "Merma valida exige motivo, descuenta inventario de insumo o producto y deja Kardex trazable.",
+      "entities": [
+        "waste_records",
+        "supply_movements",
+        "product_movements"
+      ],
+      "id": "MOD-006",
+      "name": "Mermas",
+      "screens": [
+        "P-19"
+      ],
+      "use_cases": [
+        "CU-012"
+      ]
+    },
+    {
+      "acceptance": "Completar lote crea o incrementa producto terminado y permite precio base no negativo.",
+      "entities": [
+        "finished_products",
+        "product_movements"
+      ],
+      "id": "MOD-007",
+      "name": "Inventario de productos terminados",
+      "screens": [
+        "P-18"
+      ],
+      "use_cases": [
+        "CU-013",
+        "CU-014"
+      ]
+    },
+    {
+      "acceptance": "Clientes, ventas, reservas y precios por tipo de cliente validan stock libre y registran Kardex.",
+      "entities": [
+        "customer_types",
+        "customers",
+        "product_prices",
+        "sales",
+        "sale_items",
+        "stock_reservations"
+      ],
+      "id": "MOD-008",
+      "name": "Ventas, clientes y reservas",
+      "screens": [
+        "P-20",
+        "P-21",
+        "P-22",
+        "P-23"
+      ],
+      "use_cases": [
+        "CU-015",
+        "CU-016",
+        "CU-017",
+        "CU-018",
+        "CU-019"
+      ]
+    },
+    {
+      "acceptance": "Ordenes con proveedor activo pasan por borrador, enviada, recepcion parcial o total y Kardex de insumos.",
+      "entities": [
+        "purchase_orders",
+        "purchase_order_items",
+        "suppliers",
+        "supplies"
+      ],
+      "id": "MOD-009",
+      "name": "Compras y ordenes de compra",
+      "screens": [
+        "P-24",
+        "P-25",
+        "P-26"
+      ],
+      "use_cases": [
+        "CU-020",
+        "CU-021"
+      ]
+    },
+    {
+      "acceptance": "Dashboard con KPIs reales, graficos, alertas operacionales y reportes exportables sin finanzas HITO-007.",
+      "entities": [
+        "audit_logs",
+        "export_jobs"
+      ],
+      "id": "MOD-012",
+      "name": "Dashboard y reportes operacionales",
+      "screens": [
+        "P-03",
+        "P-29"
+      ],
+      "use_cases": [
+        "CU-027",
+        "CU-028"
+      ]
+    },
+    {
+      "acceptance": "Equipos con codigo unico, historial de movimientos y alerta de revision vencida.",
+      "entities": [
+        "equipment_types",
+        "equipment",
+        "equipment_movements"
+      ],
+      "id": "MOD-010",
+      "name": "Equipos",
+      "screens": [
+        "P-27"
+      ],
+      "use_cases": [
+        "CU-022",
+        "CU-023"
+      ]
+    },
+    {
+      "acceptance": "Gastos operativos, reportes financieros basicos y metas mensuales.",
+      "entities": [
+        "expense_categories",
+        "operational_expenses",
+        "monthly_goals"
+      ],
+      "id": "MOD-011",
+      "name": "Finanzas operativas",
+      "screens": [
+        "P-28",
+        "P-29",
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-024",
+        "CU-025",
+        "CU-026"
+      ]
+    },
+    {
+      "acceptance": "Backups automaticos locales, Docker Compose, proxy/TLS documentado y runbook EC2 sin deploy real.",
+      "entities": [
+        "monthly_goals",
+        "export_jobs"
+      ],
+      "id": "MOD-013",
+      "name": "Cierre operacional y despliegue preparado",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-029",
+        "CU-030"
+      ]
     }
   ],
   "non_functional": {
-    "audit": "critical Hito 1 writes include actor, date, entity, action and IP",
-    "observability": [
-      "request_id",
-      "user_id",
-      "module",
-      "structured audit events"
+    "deployment": [
+      "docker compose",
+      "aws ec2 runbook",
+      "nginx reverse proxy",
+      "tls placeholders",
+      "backup restore",
+      "rollback"
     ],
-    "privacy": [
-      "password hashes only",
-      "reset token stored hashed"
+    "frontend": [
+      "Vite build required",
+      "responsive Bootstrap layout",
+      "hash navigation for all P-01..P-30 routes",
+      "no generic placeholder screens"
+    ],
+    "operations": [
+      "no external integrations",
+      "no production deploy",
+      "local backup evidence only"
+    ],
+    "performance": [
+      "dashboard aggregations over local stores",
+      "deferred export policy for broad reports"
     ],
     "security": [
       "password hash",
       "expiring JWT",
-      "RBAC on protected Hito 1 endpoints"
+      "RBAC on protected Hito 1-7 endpoints"
     ],
     "source_requirements": [
       {
@@ -379,44 +2145,78 @@
         "category": "Mantenibilidad",
         "criterion": "Swagger/OpenAPI activo, migraciones versionadas con Alembic, tests por m\u00f3dulo",
         "id": "RNF-10"
+      },
+      {
+        "category": "Contenedores",
+        "criterion": "backend, frontend, base de datos y proxy reverso deben ejecutarse mediante Docker Compose reproducible",
+        "id": "RNF-11"
+      },
+      {
+        "category": "Despliegue",
+        "criterion": "el despliegue productivo aprobado se realiza en una VM EC2 de AWS que contiene el sistema completo",
+        "id": "RNF-12"
       }
     ]
   },
   "permissions": [
+    "supplies.read",
+    "supplies.create",
+    "supplies.update",
+    "supplies.toggle-status",
+    "supply-entries.create",
+    "recipes.read",
+    "recipes.create",
+    "recipes.update",
+    "recipes.clone",
+    "batches.read",
+    "batches.create",
+    "batches.complete",
+    "batches.cancel",
+    "batches.quality-check",
+    "waste.create",
+    "waste.read",
+    "products.read",
+    "products.update-price",
+    "sales.read",
+    "sales.create",
+    "customers.read",
+    "customers.create",
+    "customers.update",
+    "reservations.create",
+    "reservations.manage",
+    "purchase-orders.read",
+    "purchase-orders.create",
+    "purchase-orders.receive",
+    "purchase-orders.cancel",
+    "suppliers.read",
+    "suppliers.create",
+    "suppliers.update",
+    "equipment.read",
+    "equipment.create",
+    "equipment.movement",
+    "expenses.read",
+    "expenses.create",
+    "reports.read",
+    "reports.export",
     "admin.users",
+    "admin.settings",
     "audit.read"
   ],
   "scope": {
-    "deferred_milestones": [
-      "HITO-002",
-      "HITO-003",
-      "HITO-004",
-      "HITO-005",
-      "HITO-006",
-      "HITO-007"
-    ],
-    "deferred_modules": [
-      "proveedores",
-      "insumos",
-      "bodegas",
-      "recetas",
-      "inventario",
-      "produccion",
-      "ventas",
-      "compras",
-      "dashboard",
-      "finanzas",
-      "alertas SMTP"
-    ],
+    "deferred_milestones": [],
+    "explicitly_excluded_paths": [],
     "includes": [
-      "Auth JWT",
-      "usuarios",
-      "roles",
-      "permisos",
-      "auditoria",
-      "estructura base del proyecto"
+      "HITO-001 a HITO-007 conservados sin degradacion",
+      "30 pantallas React + Bootstrap separadas y navegables",
+      "estados de carga, error y vacio por pantalla",
+      "validacion cliente en formularios operativos",
+      "navegacion entre pantallas relacionadas",
+      "cliente frontend local conectado a endpoints /api/v1 aprobados",
+      "sin endpoints backend nuevos",
+      "sin deploy real",
+      "sin secretos reales ni integraciones externas nuevas"
     ],
-    "source": "J.12 Hito 1"
+    "source": "J.12 Hito 8"
   },
   "screens": [
     {
@@ -432,35 +2232,234 @@
       "route": "/password/recover"
     },
     {
+      "id": "P-03",
+      "module": "Dashboard",
+      "name": "Dashboard general",
+      "route": "/"
+    },
+    {
+      "id": "P-04",
+      "module": "Insumos",
+      "name": "Listado de insumos",
+      "route": "/supplies"
+    },
+    {
+      "id": "P-05",
+      "module": "Insumos",
+      "name": "Formulario de insumo",
+      "route": "/supplies/:id"
+    },
+    {
+      "id": "P-06",
+      "module": "Insumos",
+      "name": "Kardex de insumo",
+      "route": "/supplies/:id/kardex"
+    },
+    {
+      "id": "P-07",
+      "module": "Insumos",
+      "name": "Entrada de insumos",
+      "route": "/supply-entries/new"
+    },
+    {
+      "id": "P-08",
+      "module": "Proveedores",
+      "name": "Listado de proveedores",
+      "route": "/suppliers"
+    },
+    {
+      "id": "P-09",
+      "module": "Proveedores",
+      "name": "Formulario de proveedor",
+      "route": "/suppliers/:id"
+    },
+    {
+      "id": "P-10",
+      "module": "Recetas",
+      "name": "Listado de recetas",
+      "route": "/recipes"
+    },
+    {
+      "id": "P-11",
+      "module": "Recetas",
+      "name": "Formulario de receta",
+      "route": "/recipes/:id"
+    },
+    {
+      "id": "P-12",
+      "module": "Maestros",
+      "name": "Listado de bodegas",
+      "route": "/warehouses"
+    },
+    {
+      "id": "P-13",
+      "module": "Maestros",
+      "name": "Tipos de presentaci\u00f3n",
+      "route": "/presentation-types"
+    },
+    {
+      "id": "P-14",
+      "module": "Produccion",
+      "name": "Listado de lotes de producci\u00f3n",
+      "route": "/batches"
+    },
+    {
+      "id": "P-15",
+      "module": "Produccion",
+      "name": "Formulario de lote de producci\u00f3n",
+      "route": "/batches/:id"
+    },
+    {
+      "id": "P-16",
+      "module": "Produccion",
+      "name": "Detalle de lote",
+      "route": "/batches/:id/detail"
+    },
+    {
+      "id": "P-17",
+      "module": "Produccion",
+      "name": "Control de calidad de lote",
+      "route": "/batches/:id/quality"
+    },
+    {
+      "id": "P-18",
+      "module": "Inventario productos",
+      "name": "Inventario de productos terminados",
+      "route": "/finished-products"
+    },
+    {
+      "id": "P-19",
+      "module": "Mermas",
+      "name": "Registro de mermas",
+      "route": "/waste-records/new"
+    },
+    {
+      "id": "P-20",
+      "module": "Ventas",
+      "name": "Listado de clientes",
+      "route": "/customers"
+    },
+    {
+      "id": "P-21",
+      "module": "Ventas",
+      "name": "Formulario de cliente",
+      "route": "/customers/:id"
+    },
+    {
+      "id": "P-22",
+      "module": "Ventas",
+      "name": "Formulario de venta",
+      "route": "/sales/new"
+    },
+    {
+      "id": "P-23",
+      "module": "Ventas",
+      "name": "Reservas de stock",
+      "route": "/reservations"
+    },
+    {
+      "id": "P-24",
+      "module": "Compras",
+      "name": "\u00d3rdenes de compra",
+      "route": "/purchase-orders"
+    },
+    {
+      "id": "P-25",
+      "module": "Compras",
+      "name": "Formulario de orden de compra",
+      "route": "/purchase-orders/:id"
+    },
+    {
+      "id": "P-26",
+      "module": "Compras",
+      "name": "Recepci\u00f3n de compra",
+      "route": "/purchase-orders/:id/receive"
+    },
+    {
+      "id": "P-27",
+      "module": "Equipos",
+      "name": "Gesti\u00f3n de equipos",
+      "route": "/equipment"
+    },
+    {
+      "id": "P-28",
+      "module": "Finanzas",
+      "name": "Gastos operativos",
+      "route": "/expenses"
+    },
+    {
+      "id": "P-29",
+      "module": "Reportes",
+      "name": "Reportes",
+      "route": "/reports"
+    },
+    {
       "id": "P-30",
       "module": "Configuracion",
-      "name": "Configuracion de usuarios, roles y auditoria",
-      "route": "/settings/security"
+      "name": "Configuraci\u00f3n y alertas",
+      "route": "/settings"
     }
   ],
   "source_spec": "C:\\Users\\Fabian Matus\\OneDrive\\Escritorio\\Nueva Fabrica Software Web\\projects\\BrewMaster\\brewmaster_especificacion_completa.md",
   "spec_model": {
-    "business_rule_count": 10,
-    "non_functional_count": 10,
+    "business_rule_count": 60,
+    "non_functional_count": 12,
     "parsed": true,
-    "permission_count": 2,
-    "use_case_count": 2,
-    "validation_count": 24
+    "permission_count": 42,
+    "use_case_count": 31,
+    "validation_count": 100
   },
   "stack": {
-    "auth": "JWT with expiring local HS256 tokens",
+    "auth": "JWT with expiring local HS256 tokens from HITO-001",
     "backend": "Python 3 + FastAPI",
     "database": "MySQL or MariaDB",
+    "deployment": "Docker Compose, Nginx proxy, EC2 runbook and TLS placeholders only",
+    "email": "local mocked SMTP adapter from HITO-003, no external delivery",
     "frontend": "React + Bootstrap",
-    "orm": "SQLAlchemy + Alembic contract"
+    "orm": "SQLAlchemy + Alembic contract",
+    "reports": "local in-memory CSV XLSX PDF export payloads with audit evidence",
+    "scheduler": "APScheduler policy with low_activity_backup job"
   },
   "transactional_rules": [
-    "login_success_returns_expiring_jwt_and_failed_login_is_audited",
-    "protected_endpoint_requires_active_user_and_role_permission",
-    "user_create_update_toggle_are_admin_only_and_audited",
-    "password_change_requires_current_password_and_stores_hash",
-    "password_reset_token_is_single_use_expiring_and_audited",
-    "audit_log_read_is_limited_to_admin_or_auditor"
+    "hito1_auth_user_rbac_audit_regression_remains_active",
+    "hito2_master_catalogs_remain_active_and_unchanged",
+    "supply_entry_updates_stock_and_kardex_atomically",
+    "inactive_supply_cannot_receive_inventory_entries",
+    "low_stock_query_uses_current_stock_and_minimum_threshold",
+    "stock_alert_queue_respects_enabled_recipients_interval_and_zero_stock_priority",
+    "stock_recovery_resets_last_alert_sent_at",
+    "smtp_configuration_is_sanitized_and_local_test_never_sends_external_email",
+    "email_retry_policy_marks_final_failure_after_five_attempts",
+    "batch_creation_requires_active_recipe_presentation_and_responsible",
+    "complete_batch_validates_stock_consumes_supplies_creates_finished_product_and_calculates_cost_atomically",
+    "completed_or_cancelled_batch_cannot_be_edited_or_completed_again",
+    "cancelled_batch_has_no_inventory_or_kardex_effects",
+    "quality_check_is_unique_and_rejection_requires_reason",
+    "waste_record_decrements_supply_or_product_inventory_and_writes_kardex_atomically",
+    "finished_product_price_update_rejects_negative_values_and_warns_below_cost",
+    "customer_fiscal_identifier_is_unique_and_locked_after_sales",
+    "sale_validates_customer_active_status_product_stock_and_price_policy",
+    "sale_decrements_finished_product_stock_and_writes_product_kardex",
+    "sale_void_requires_reason_reverts_stock_and_writes_dev_kardex",
+    "reservation_uses_current_stock_minus_active_reservations",
+    "reservation_release_or_consume_is_single_transition",
+    "purchase_order_requires_active_supplier_and_positive_lines",
+    "purchase_order_sent_is_not_editable_without_explicit_permission",
+    "purchase_order_receive_generates_supply_entry_kardex_and_updates_state_atomically",
+    "cancelled_purchase_order_cannot_receive_inventory",
+    "dashboard_aggregates_real_operational_stores_without_financial_targets",
+    "waste_over_five_percent_creates_dashboard_alert_without_equipment_scope",
+    "report_export_validates_type_format_permission_and_records_audit",
+    "report_catalog_excludes_financial_monthly_goal_and_equipment_outputs_until_hito7",
+    "scheduler_policy_runs_operational_alerts_retries_reservations_and_exports_without_backups",
+    "equipment_code_is_unique_and_discarded_equipment_rejects_movements",
+    "equipment_next_revision_overdue_creates_dashboard_alert",
+    "operational_expense_requires_positive_amount_and_blocks_delete_with_document",
+    "monthly_goals_are_upserted_by_month_and_compared_with_dashboard_actuals",
+    "low_activity_backup_is_registered_locally_without_external_writes",
+    "docker_ec2_proxy_tls_assets_are_prepared_but_not_deployed",
+    "frontend_actions_use_existing_api_v1_endpoints_only",
+    "all_declared_screens_render_loading_error_empty_and_data_states"
   ],
   "validations": [
     {
@@ -558,6 +2557,310 @@
     {
       "id": "V024",
       "text": "Cambio de contrase\u00f1a exige contrase\u00f1a actual correcta."
+    },
+    {
+      "id": "V025",
+      "text": "C\u00f3digo de insumo obligatorio."
+    },
+    {
+      "id": "V026",
+      "text": "C\u00f3digo de insumo \u00fanico por empresa."
+    },
+    {
+      "id": "V027",
+      "text": "Nombre de insumo obligatorio."
+    },
+    {
+      "id": "V028",
+      "text": "Tipo de insumo obligatorio (lista cerrada)."
+    },
+    {
+      "id": "V029",
+      "text": "Unidad de medida de insumo obligatoria."
+    },
+    {
+      "id": "V030",
+      "text": "Costo unitario de insumo mayor o igual a cero."
+    },
+    {
+      "id": "V031",
+      "text": "Stock m\u00ednimo mayor o igual a cero."
+    },
+    {
+      "id": "V032",
+      "text": "Stock m\u00e1ximo mayor o igual a stock m\u00ednimo si ambos definidos."
+    },
+    {
+      "id": "V033",
+      "text": "Stock actual mayor o igual a cero salvo configuraci\u00f3n expl\u00edcita."
+    },
+    {
+      "id": "V034",
+      "text": "Insumo inactivo no puede recibir entradas de inventario."
+    },
+    {
+      "id": "V035",
+      "text": "Insumo inactivo no puede incluirse en receta."
+    },
+    {
+      "id": "V036",
+      "text": "Alerta de insumo requiere al menos un correo destinatario v\u00e1lido."
+    },
+    {
+      "id": "V037",
+      "text": "Umbral personalizado de alerta mayor a cero si definido."
+    },
+    {
+      "id": "V038",
+      "text": "Intervalo m\u00ednimo entre alertas mayor a cero horas."
+    },
+    {
+      "id": "V039",
+      "text": "M\u00e1ximo de reintentos de correo mayor a cero."
+    },
+    {
+      "id": "V040",
+      "text": "C\u00f3digo de proveedor \u00fanico por empresa."
+    },
+    {
+      "id": "V041",
+      "text": "Raz\u00f3n social de proveedor obligatoria."
+    },
+    {
+      "id": "V042",
+      "text": "Correo de proveedor debe ser v\u00e1lido si se ingresa."
+    },
+    {
+      "id": "V043",
+      "text": "Proveedor con \u00f3rdenes de compra no puede eliminarse f\u00edsicamente."
+    },
+    {
+      "id": "V044",
+      "text": "Proveedor inactivo no puede asignarse a nueva orden de compra."
+    },
+    {
+      "id": "V045",
+      "text": "Nombre de receta obligatorio."
+    },
+    {
+      "id": "V046",
+      "text": "Nombre de receta \u00fanico por empresa."
+    },
+    {
+      "id": "V047",
+      "text": "Tipo de cerveza obligatorio en receta."
+    },
+    {
+      "id": "V048",
+      "text": "Volumen por lote mayor a cero."
+    },
+    {
+      "id": "V049",
+      "text": "ABV estimado mayor o igual a cero."
+    },
+    {
+      "id": "V050",
+      "text": "Receta debe tener al menos un ingrediente."
+    },
+    {
+      "id": "V051",
+      "text": "Cantidad de ingrediente en receta mayor a cero."
+    },
+    {
+      "id": "V052",
+      "text": "Unidad de ingrediente de receta obligatoria."
+    },
+    {
+      "id": "V053",
+      "text": "Receta con lotes activos no puede editarse."
+    },
+    {
+      "id": "V054",
+      "text": "Receta inactiva no puede asignarse a nuevo lote."
+    },
+    {
+      "id": "V055",
+      "text": "N\u00famero de lote \u00fanico por empresa."
+    },
+    {
+      "id": "V056",
+      "text": "Receta de lote obligatoria."
+    },
+    {
+      "id": "V057",
+      "text": "Tipo de presentaci\u00f3n de lote obligatorio."
+    },
+    {
+      "id": "V058",
+      "text": "Cantidad producida en lote mayor a cero."
+    },
+    {
+      "id": "V059",
+      "text": "Fecha de producci\u00f3n de lote obligatoria."
+    },
+    {
+      "id": "V060",
+      "text": "Responsable de lote obligatorio."
+    },
+    {
+      "id": "V061",
+      "text": "Horas de mano de obra mayor o igual a cero."
+    },
+    {
+      "id": "V062",
+      "text": "kWh consumidos mayor o igual a cero."
+    },
+    {
+      "id": "V063",
+      "text": "Litros de agua mayor o igual a cero."
+    },
+    {
+      "id": "V064",
+      "text": "Porcentaje de merma entre 0 y 100."
+    },
+    {
+      "id": "V065",
+      "text": "Costo total de lote mayor o igual a cero."
+    },
+    {
+      "id": "V066",
+      "text": "Lote no puede completarse sin stock suficiente de insumos."
+    },
+    {
+      "id": "V067",
+      "text": "Lote en estado completado no puede editarse."
+    },
+    {
+      "id": "V068",
+      "text": "Lote cancelado no puede completarse."
+    },
+    {
+      "id": "V069",
+      "text": "Control de calidad requiere resultado aprobado o rechazado."
+    },
+    {
+      "id": "V070",
+      "text": "Motivo de rechazo en calidad obligatorio si resultado es rechazado."
+    },
+    {
+      "id": "V071",
+      "text": "Notas organol\u00e9pticas entre 1 y 10."
+    },
+    {
+      "id": "V072",
+      "text": "OG mayor a cero."
+    },
+    {
+      "id": "V073",
+      "text": "FG mayor a cero y menor a OG."
+    },
+    {
+      "id": "V074",
+      "text": "pH entre 0 y 14."
+    },
+    {
+      "id": "V075",
+      "text": "Tipo de merma obligatorio (lista cerrada)."
+    },
+    {
+      "id": "V076",
+      "text": "Motivo detallado de merma obligatorio."
+    },
+    {
+      "id": "V077",
+      "text": "Cantidad de merma mayor a cero."
+    },
+    {
+      "id": "V078",
+      "text": "Cantidad de merma no puede superar stock disponible de la entidad."
+    },
+    {
+      "id": "V079",
+      "text": "Identificador fiscal de cliente \u00fanico por empresa."
+    },
+    {
+      "id": "V080",
+      "text": "Nombre de cliente obligatorio."
+    },
+    {
+      "id": "V081",
+      "text": "Tipo de cliente obligatorio (lista cerrada)."
+    },
+    {
+      "id": "V082",
+      "text": "L\u00edmite de cr\u00e9dito mayor o igual a cero."
+    },
+    {
+      "id": "V083",
+      "text": "Cliente inactivo no puede asignarse a venta."
+    },
+    {
+      "id": "V084",
+      "text": "Venta debe tener al menos una l\u00ednea."
+    },
+    {
+      "id": "V085",
+      "text": "L\u00ednea de venta requiere producto activo."
+    },
+    {
+      "id": "V086",
+      "text": "Cantidad en l\u00ednea de venta mayor a cero."
+    },
+    {
+      "id": "V087",
+      "text": "Precio en l\u00ednea de venta mayor o igual a cero."
+    },
+    {
+      "id": "V088",
+      "text": "Cantidad vendida no puede superar stock disponible."
+    },
+    {
+      "id": "V089",
+      "text": "Ganancia por l\u00ednea calculada autom\u00e1ticamente."
+    },
+    {
+      "id": "V090",
+      "text": "Reserva requiere cliente, producto, cantidad y fecha de entrega."
+    },
+    {
+      "id": "V091",
+      "text": "Cantidad de reserva mayor a cero."
+    },
+    {
+      "id": "V092",
+      "text": "Cantidad de reserva no puede superar stock disponible libre."
+    },
+    {
+      "id": "V093",
+      "text": "N\u00famero de orden de compra \u00fanico por empresa."
+    },
+    {
+      "id": "V094",
+      "text": "Orden de compra requiere proveedor activo."
+    },
+    {
+      "id": "V095",
+      "text": "Orden de compra requiere al menos una l\u00ednea."
+    },
+    {
+      "id": "V096",
+      "text": "Cantidad solicitada en orden mayor a cero."
+    },
+    {
+      "id": "V097",
+      "text": "Precio unitario en orden mayor o igual a cero."
+    },
+    {
+      "id": "V098",
+      "text": "Cantidad recibida no puede superar solicitada m\u00e1s tolerancia."
+    },
+    {
+      "id": "V099",
+      "text": "C\u00f3digo de equipo \u00fanico por empresa."
+    },
+    {
+      "id": "V100",
+      "text": "Monto de gasto operativo mayor a cero."
     }
   ]
 }

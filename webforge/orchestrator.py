@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from .context import ContextManager, EvidenceRegistry, MemoryGate
+from .domain_adapter import load_project_adapter
 from .factory_phases import FactoryPhaseHandlersMixin
 from .factory_support import FactorySupportMixin
 from .harness import HarnessRunner
@@ -34,11 +35,12 @@ class WebForgeFactory(FactoryPhaseHandlersMixin, FactorySupportMixin):
         self.source_root = self.project_root
 
         work_order = WorkOrder.from_dict(work_order_data)
-        self.project_workspace = ProjectWorkspace(self.project_root, work_order)
+        self.project_adapter = load_project_adapter(self.project_root, work_order)
+        self.project_workspace = ProjectWorkspace(self.project_root, work_order, self.project_adapter)
         work_order.project_id = self.project_workspace.project_id
         work_order.project_version = self.project_workspace.version
         self.project_policy = self.project_workspace.prepare(self.output_dir)
-        self.milestones = MilestoneManager(self.project_workspace, work_order)
+        self.milestones = MilestoneManager(self.project_workspace, work_order, self.project_adapter)
         self.milestone_policy = self.milestones.prepare(self.output_dir)
         self.artifacts.update(
             {

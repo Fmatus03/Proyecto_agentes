@@ -1,0 +1,172 @@
+name: BrewMaster EC2 CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/brewmaster-ec2.yml"
+      - "project/brewmaster/**"
+      - "projects/BrewMaster/deployment/**"
+      - "projects/BrewMaster/webforge_pack/**"
+
+concurrency:
+  group: brewmaster-ec2-production
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "22"
+  WORKSPACE_DIR: project/brewmaster/sandboxes/QA/workspace
+  FRONTEND_DIR: project/brewmaster/sandboxes/QA/workspace/frontend
+  DEPLOY_COMPOSE_DIR: projects/BrewMaster/deployment
+  REMOTE_ROOT: /opt/brewmaster
+
+jobs:
+  validate:
+    name: Validate BrewMaster
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install backend test dependencies
+        working-directory: ${{ env.WORKSPACE_DIR }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install fastapi uvicorn sqlalchemy alembic pymysql python-jose "passlib[bcrypt]" pytest httpx
+
+      - name: Run backend and contract tests
+        working-directory: ${{ env.WORKSPACE_DIR }}
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONPATH: backend
+        run: python -B -m pytest -q -p no:cacheprovider
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build frontend
+        working-directory: ${{ env.FRONTEND_DIR }}
+        run: |
+          corepack enable
+          pnpm install --no-frozen-lockfile
+          pnpm build
+
+      - name: Validate compose syntax
+        working-directory: ${{ env.DEPLOY_COMPOSE_DIR }}
+        env:
+          DB_NAME: brewmaster
+          DB_USER: brewmaster
+          DB_PASSWORD: ci-placeholder
+          DB_ROOT_PASSWORD: ci-placeholder-root
+        run: |
+          cat > .env <<'EOF'
+          APP_ENV=ci
+          DB_NAME=brewmaster
+          DB_USER=brewmaster
+          DB_PASSWORD=ci-placeholder
+          DB_ROOT_PASSWORD=ci-placeholder-root
+          EOF
+          docker compose --env-file .env -f docker-compose.ec2.yml config >/tmp/brewmaster-compose.yml
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify required secrets
+        env:
+          BREWMASTER_ENV_PRODUCTION: ${{ secrets.BREWMASTER_ENV_PRODUCTION }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          test -n "$BREWMASTER_ENV_PRODUCTION"
+          test -n "$EC2_HOST"
+          test -n "$EC2_USER"
+          test -n "$EC2_PORT"
+          test -n "$EC2_SSH_KEY"
+
+      - name: Prepare SSH
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/brewmaster_ec2.pem
+          chmod 600 ~/.ssh/brewmaster_ec2.pem
+          ssh-keyscan -p "$EC2_PORT" "$EC2_HOST" >> ~/.ssh/known_hosts
+
+      - name: Package release
+        run: |
+          tar \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='**/node_modules' \
+            --exclude='**/dist' \
+            --exclude='runs' \
+            --exclude='*.pyc' \
+            -czf /tmp/brewmaster-release.tar.gz .
+          printf '%s\n' "${{ secrets.BREWMASTER_ENV_PRODUCTION }}" > /tmp/brewmaster.env
+          chmod 600 /tmp/brewmaster.env
+
+      - name: Upload release to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+        run: |
+          ssh -i ~/.ssh/brewmaster_ec2.pem -p "$EC2_PORT" "$EC2_USER@$EC2_HOST" "mkdir -p /tmp/brewmaster-deploy"
+          scp -i ~/.ssh/brewmaster_ec2.pem -P "$EC2_PORT" /tmp/brewmaster-release.tar.gz "$EC2_USER@$EC2_HOST:/tmp/brewmaster-deploy/release.tar.gz"
+          scp -i ~/.ssh/brewmaster_ec2.pem -P "$EC2_PORT" /tmp/brewmaster.env "$EC2_USER@$EC2_HOST:/tmp/brewmaster-deploy/.env"
+
+      - name: Activate release and restart compose
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          ssh -i ~/.ssh/brewmaster_ec2.pem -p "$EC2_PORT" "$EC2_USER@$EC2_HOST" "GIT_SHA='$GIT_SHA' REMOTE_ROOT='${{ env.REMOTE_ROOT }}' bash -s" <<'REMOTE'
+          set -euo pipefail
+
+          release_dir="$REMOTE_ROOT/releases/$GIT_SHA"
+          current_link="$REMOTE_ROOT/current"
+
+          sudo mkdir -p "$release_dir"
+          sudo tar -xzf /tmp/brewmaster-deploy/release.tar.gz -C "$release_dir"
+          sudo mkdir -p "$release_dir/projects/BrewMaster/deployment/certs"
+          sudo mv /tmp/brewmaster-deploy/.env "$release_dir/projects/BrewMaster/deployment/.env"
+          sudo chmod 600 "$release_dir/projects/BrewMaster/deployment/.env"
+          sudo ln -sfn "$release_dir" "$current_link"
+
+          cd "$current_link/projects/BrewMaster/deployment"
+
+          if docker info >/dev/null 2>&1; then
+            compose_cmd="docker compose"
+          else
+            compose_cmd="sudo docker compose"
+          fi
+
+          $compose_cmd --env-file .env -f docker-compose.ec2.yml config >/tmp/brewmaster-compose-config.yml
+          $compose_cmd --env-file .env -f docker-compose.ec2.yml up -d --build
+          $compose_cmd --env-file .env -f docker-compose.ec2.yml ps
+
+          rm -rf /tmp/brewmaster-deploy
+          REMOTE

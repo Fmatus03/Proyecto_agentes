@@ -5,15 +5,15 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from .brewmaster_catalog import (
+from .catalog import (
     ACTION_ENDPOINTS,
     BREWMASTER_MODULES,
     BREWMASTER_SCREENS,
     CRUD_RESOURCES,
     TRANSACTIONAL_RESOURCES,
 )
-from .models import WorkOrder
-from .utils import read_text
+from webforge.models import WorkOrder
+from webforge.utils import read_text
 
 @dataclass(frozen=True)
 class BrewMasterSpecModel:
@@ -57,7 +57,7 @@ def load_brewmaster_spec(spec_path: Path | None = None) -> BrewMasterSpecModel:
 
 
 def _default_brewmaster_spec_path() -> Path:
-    return Path(__file__).resolve().parents[1] / "projects" / "BrewMaster" / "brewmaster_especificacion_completa.md"
+    return Path(__file__).resolve().parents[1] / "brewmaster_especificacion_completa.md"
 
 
 def _fallback_brewmaster_spec(path: Path, parsed: bool) -> BrewMasterSpecModel:

@@ -4,7 +4,6 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from .brewmaster import brewmaster_blueprint, brewmaster_coverage
 from .capabilities import validate_skill_package
 from .isolation import DevSandboxMaterializer
 from .sandbox_promotion import SandboxPromoter
@@ -13,9 +12,7 @@ from .principles import PRINCIPLES, ordered_principles, validate_principle_catal
 from .tools import artifact_check, dependency_scan, generate_sbom, secret_scan, static_policy_scan
 from .utils import read_text, sha256_text
 from .validators import (
-    ValidationOutcome,
     artifacts_exist,
-    brewmaster_acceptance_gate,
     json_artifact_has_keys,
     markdown_table_status,
     mcp_policy_default_deny,
@@ -375,16 +372,21 @@ class FactoryPhaseHandlersMixin:
 
     def _phase_implement(self, _: dict[str, Any]) -> PhaseResult:
         bundle = self._implementation_bundle()
-        if self._is_brewmaster():
-            self._write_json_artifact("brewmaster-blueprint.json", brewmaster_blueprint(self.work_order.milestone_id))
-            self._write_json_artifact("brewmaster-coverage.json", brewmaster_coverage(self.work_order.milestone_id))
+        adapter_artifacts = self.project_adapter.implementation_artifacts(self.work_order.milestone_id)
+        for artifact_name, artifact_content in adapter_artifacts.items():
+            self._write_json_artifact(artifact_name, artifact_content)
+        if adapter_artifacts:
+            claim_artifact = next(
+                (name for name in adapter_artifacts if "coverage" in name),
+                next(iter(adapter_artifacts)),
+            )
             self._add_claim(
-                "BrewMaster MVP blueprint covers modules, screens, entities, API v1 endpoints and critical transactional rules.",
+                self.project_adapter.implementation_claim(),
                 ["EV-SRC-001"],
-                "brewmaster-coverage.json",
+                claim_artifact,
             )
         materializer = DevSandboxMaterializer(self.project_root, self.project_workspace)
-        prune_dev_workspace = self._is_brewmaster() and self.work_order.milestone_id.upper().startswith("HITO-")
+        prune_dev_workspace = self.project_adapter.prune_unlisted_for_milestone(self.work_order.milestone_id)
         materialize_result = self.tools.run(
             "tool.sandbox.dev_materialize",
             lambda: materializer.materialize_bundle(
@@ -409,7 +411,7 @@ class FactoryPhaseHandlersMixin:
                     "- DEV and QA sandboxes are autonomous local clones.",
                     f"- Frontend contract is mandatory and bound to all sandboxes: {self.project_workspace.frontend_template_name}.",
                     "- WEBFORGE Skill and tools are active as the factory interface.",
-                    "- BrewMaster blueprint active." if self._is_brewmaster() else "- Generic implementation bundle active.",
+                    f"- {self.project_adapter.implementation_active_message()}" if adapter_artifacts else "- Generic implementation bundle active.",
                     f"- DEV materializer API: {materialize_result.output.get('api', 'unknown')}.",
                     f"- DEV materializer status: {materialize_result.status}.",
                     f"- DEV materialized files: {materialize_result.output.get('bundle', {}).get('file_count', 0)}.",
@@ -430,7 +432,10 @@ class FactoryPhaseHandlersMixin:
                     "api": materialize_result.output.get("api"),
                     "writes": writes,
                 },
-                "brewmaster": brewmaster_coverage(self.work_order.milestone_id) if self._is_brewmaster() else None,
+                "project_adapter": {
+                    "adapter_id": self.project_adapter.adapter_id,
+                    "coverage": self.project_adapter.coverage(self.work_order.milestone_id) if adapter_artifacts else None,
+                },
             },
         )
         self._add_claim(
@@ -444,14 +449,10 @@ class FactoryPhaseHandlersMixin:
                 "implementation-report.md": "Runtime controls active.",
                 "diff-report.json": "Diff scoped.",
                 "dev-materialization-manifest.json": "DEV bundle materialized through isolation API.",
-                **(
-                    {
-                        "brewmaster-blueprint.json": "Canonical BrewMaster architecture and functional blueprint.",
-                        "brewmaster-coverage.json": "BrewMaster coverage gates.",
-                    }
-                    if self._is_brewmaster()
-                    else {}
-                ),
+                **{
+                    name: self.project_adapter.implementation_output_descriptions().get(name, "Project adapter artifact.")
+                    for name in adapter_artifacts
+                },
             },
             [
                 self._gate(
@@ -519,8 +520,8 @@ class FactoryPhaseHandlersMixin:
             "incremental-traceability.md",
             "dev-materialization-manifest.json",
         ]
-        if self._is_brewmaster():
-            required_artifacts.extend(["brewmaster-blueprint.json", "brewmaster-coverage.json"])
+        adapter_artifacts = self.project_adapter.implementation_artifacts(self.work_order.milestone_id)
+        required_artifacts.extend(adapter_artifacts.keys())
         static_result = self.tools.run("tool.policy.static", lambda: static_policy_scan(self.project_root))
         artifact_result = self.tools.run(
             "tool.validation.artifacts",
@@ -530,39 +531,33 @@ class FactoryPhaseHandlersMixin:
         skill_errors = validate_skill_package(self.project_root)
         materialization_manifest = self._read_json_artifact("dev-materialization-manifest.json", {})
         materialization_status = materialization_manifest.get("status", "missing")
-        brewmaster_coverage_report = brewmaster_coverage(self.work_order.milestone_id) if self._is_brewmaster() else {}
-        brewmaster_gate = brewmaster_coverage_report.get("acceptance_gate", {}) if self._is_brewmaster() else {}
-        brewmaster_frontend_missing: list[str] = []
-        brewmaster_workspace: Path | None = None
-        if self._is_brewmaster():
+        adapter_coverage_report = self.project_adapter.coverage(self.work_order.milestone_id)
+        adapter_gate = adapter_coverage_report.get("acceptance_gate", {}) if adapter_coverage_report else {}
+        adapter_frontend_missing: list[str] = []
+        adapter_workspace: Path | None = None
+        if self._project_adapter_active():
             dev_sandbox = next(sandbox for sandbox in self.project_workspace.sandboxes if sandbox.name == "DEV")
-            brewmaster_workspace = dev_sandbox.path / "workspace"
+            adapter_workspace = dev_sandbox.path / "workspace"
             written_paths = {str(item.get("path", "")) for item in materialization_manifest.get("writes", [])}
-            brewmaster_frontend_missing = [
+            adapter_frontend_missing = [
                 path for path in self.project_workspace.frontend_template_required_files if path not in written_paths
             ]
-            brewmaster_gate = {
-                **brewmaster_gate,
-                "uses_react_bootstrap_contract": self.project_workspace.frontend_template_name == "BREWMASTER_REACT_BOOTSTRAP",
+            adapter_gate = {
+                **adapter_gate,
+                "uses_declared_frontend_contract": bool(self.project_workspace.frontend_template_name),
                 "does_not_force_plantilla_frontend": self.project_workspace.frontend_template_name != "PLANTILLA_FRONTEND",
-                "materialized_react_bootstrap_files": not brewmaster_frontend_missing,
+                "materialized_declared_frontend_files": not adapter_frontend_missing,
             }
-            brewmaster_validation = brewmaster_acceptance_gate(
-                brewmaster_gate,
-                int(brewmaster_coverage_report.get("endpoint_count", 40)),
-                brewmaster_workspace,
-            )
-        else:
-            brewmaster_validation = ValidationOutcome(
-                "brewmaster.not_applicable",
-                True,
-                "not a BrewMaster run",
-                {},
-            )
-        brewmaster_ok = brewmaster_validation.passed
+        adapter_validation = self.project_adapter.acceptance_validation(
+            adapter_gate,
+            adapter_coverage_report,
+            adapter_workspace,
+        )
+        adapter_ok = adapter_validation.passed
+        adapter_report_key = self.project_adapter.validation_report_key
         report = {
             "status": "pass"
-            if static_result.status == artifact_result.status == "pass" and project_ok and not skill_errors and materialization_status == "pass" and brewmaster_ok
+            if static_result.status == artifact_result.status == "pass" and project_ok and not skill_errors and materialization_status == "pass" and adapter_ok
             else "error",
             "static_policy": static_result.output,
             "artifact_check": artifact_result.output,
@@ -570,12 +565,13 @@ class FactoryPhaseHandlersMixin:
             "frontend_template": {"status": "pass" if project_ok else "error", "errors": project_errors},
             "factory_skills": {"status": "pass" if not skill_errors else "error", "errors": skill_errors},
             "dev_materialization": {"status": materialization_status, "manifest": "dev-materialization-manifest.json"},
-            "brewmaster": {
-                "status": "pass" if brewmaster_ok else "error",
-                "acceptance_gate": brewmaster_gate,
-                "validator": brewmaster_validation.to_dict(),
-                "missing_frontend_files": brewmaster_frontend_missing,
-                "coverage_artifact": "brewmaster-coverage.json" if self._is_brewmaster() else None,
+            adapter_report_key: {
+                "adapter_id": self.project_adapter.adapter_id,
+                "status": "pass" if adapter_ok else "error",
+                "acceptance_gate": adapter_gate,
+                "validator": adapter_validation.to_dict(),
+                "missing_frontend_files": adapter_frontend_missing,
+                "coverage_artifacts": list(adapter_artifacts.keys()),
             },
             "tests": "see pytest/unittest evidence from repository run",
             "coverage_gate": "principle_coverage_100_percent",
@@ -663,14 +659,14 @@ class FactoryPhaseHandlersMixin:
                     "; ".join(skill_errors) or "WEBFORGE Skill and tool registry validation pass",
                 ),
                 self._gate(
-                    "brewmaster_functional_coverage",
+                    self.project_adapter.coverage_gate_name,
                     "validate",
-                    brewmaster_validation.passed if self._is_brewmaster() else True,
+                    adapter_validation.passed,
                     ["P02", "P08", "P10"],
-                    ["brewmaster-blueprint.json", "brewmaster-coverage.json"] if self._is_brewmaster() else ["validation-report.json"],
-                    brewmaster_validation.message if self._is_brewmaster() else "not a BrewMaster run",
-                    brewmaster_validation.validator_id if self._is_brewmaster() else "manual",
-                    brewmaster_validation.observed if self._is_brewmaster() else {},
+                    list(adapter_artifacts.keys()) or ["validation-report.json"],
+                    adapter_validation.message,
+                    adapter_validation.validator_id,
+                    adapter_validation.observed,
                 ),
                 self._gate(
                     "milestone_validation",

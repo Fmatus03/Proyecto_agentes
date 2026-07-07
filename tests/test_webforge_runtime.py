@@ -8,10 +8,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from projects.BrewMaster.webforge_pack import brewmaster_bundle, brewmaster_coverage, load_brewmaster_spec
 from webforge import PRINCIPLES, WORKFLOW_PHASES, WebForgeFactory
-from webforge.brewmaster import brewmaster_bundle, brewmaster_coverage, load_brewmaster_spec
 from webforge.capabilities import FACTORY_SKILLS, validate_skill_package
 from webforge.context import ContextManager, EvidenceRegistry, MemoryGate
+from webforge.domain_adapter import load_project_adapter
 from webforge.harness import AgentSpec, HarnessRunner
 from webforge.milestones import default_milestones
 from webforge.models import PhaseResult, WorkOrder
@@ -420,9 +421,9 @@ class WebForgeRuntimeTests(unittest.TestCase):
             self.assertTrue(all(coverage["acceptance_gate"].values()))
             validation = json.loads((Path(tmp) / "run" / "validation-report.json").read_text(encoding="utf-8"))
             self.assertEqual("pass", validation["brewmaster"]["status"])
-            self.assertTrue(validation["brewmaster"]["acceptance_gate"]["uses_react_bootstrap_contract"])
+            self.assertTrue(validation["brewmaster"]["acceptance_gate"]["uses_declared_frontend_contract"])
             self.assertTrue(validation["brewmaster"]["acceptance_gate"]["does_not_force_plantilla_frontend"])
-            self.assertTrue(validation["brewmaster"]["acceptance_gate"]["materialized_react_bootstrap_files"])
+            self.assertTrue(validation["brewmaster"]["acceptance_gate"]["materialized_declared_frontend_files"])
             dev = next(item for item in report["project_sandboxes"]["sandboxes"] if item["name"] == "DEV")
             self.assertEqual("BREWMASTER_REACT_BOOTSTRAP", dev["frontend_template"])
             workspace = tmp_root / dev["path"] / "workspace"
@@ -508,7 +509,8 @@ class WebForgeRuntimeTests(unittest.TestCase):
         wo["objective"] = "Implementar BrewMaster por hitos J.12."
         wo["project_id"] = "BrewMaster"
         wo["type"] = "brewmaster_mvp"
-        milestones = default_milestones(WorkOrder.from_dict(wo))
+        work_order_model = WorkOrder.from_dict(wo)
+        milestones = default_milestones(work_order_model, load_project_adapter(ROOT, work_order_model))
         self.assertEqual(
             [
                 "Fundamentos",
@@ -518,13 +520,14 @@ class WebForgeRuntimeTests(unittest.TestCase):
                 "Ventas",
                 "Dashboard",
                 "Cierre",
+                "Pantallas interactivas",
             ],
             [milestone.name for milestone in milestones],
         )
-        self.assertEqual([f"HITO-{index:03d}" for index in range(1, 8)], [milestone.milestone_id for milestone in milestones])
+        self.assertEqual([f"HITO-{index:03d}" for index in range(1, 9)], [milestone.milestone_id for milestone in milestones])
         self.assertEqual([], milestones[0].dependencies)
         for index, milestone in enumerate(milestones[1:], start=1):
-            self.assertEqual([milestones[index - 1].milestone_id], milestone.dependencies)
+            self.assertIn(milestones[index - 1].milestone_id, milestone.dependencies)
             self.assertIn(f"J.12 Hito {index + 1}", milestone.inputs)
 
     def test_brewmaster_spec_model_matches_official_contract(self) -> None:

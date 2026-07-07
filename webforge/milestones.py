@@ -5,7 +5,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .brewmaster import is_brewmaster_work_order
+from .domain_adapter import GenericProjectAdapter, ProjectAdapter
 from .models import WorkOrder
 from .project_workspace import ProjectWorkspace
 from .utils import ensure_dir, read_text, sha256_text, stable_json, write_json, write_text
@@ -104,115 +104,11 @@ def _spec(
     )
 
 
-def default_milestones(work_order: WorkOrder) -> list[MilestoneSpec]:
-    if is_brewmaster_work_order(work_order):
-        return [
-            _spec(
-                "HITO-001",
-                "Fundamentos",
-                "Establecer Auth JWT, usuarios, roles, permisos, auditoria y estructura base del proyecto.",
-                "J.12 Fundamentos",
-                [
-                    "contracts/permissions.json",
-                    "backend/app/core/security.py",
-                    "backend/app/main.py",
-                    "frontend/src/App.jsx",
-                    "tests/test_contracts.py",
-                ],
-                inputs=["J.12 Hito 1", "H", "J.4", "J.7", "J.8 RNF-01/RNF-02"],
-            ),
-            _spec(
-                "HITO-002",
-                "Maestros",
-                "Implementar proveedores, insumos, bodegas, recetas y tipos de presentacion como maestros operativos.",
-                "J.12 Maestros",
-                [
-                    "backend/app/domain/catalog.py",
-                    "backend/app/services/inventory.py",
-                    "contracts/domain-model.json",
-                    "frontend/src/screens/catalog.js",
-                    "docs/architecture.md",
-                ],
-                dependencies=["HITO-001"],
-                inputs=["J.12 Hito 2", "UC-INS-*", "UC-REC-*", "P-04..P-13", "J.5"],
-            ),
-            _spec(
-                "HITO-003",
-                "Inventario",
-                "Implementar entradas de insumos, Kardex, notificaciones por email y configuracion SMTP.",
-                "J.12 Inventario",
-                [
-                    "backend/app/services/inventory.py",
-                    "backend/app/services/notifications.py",
-                    "backend/app/domain/rules.py",
-                    "contracts/permissions.json",
-                    "tests/test_domain_rules.py",
-                ],
-                dependencies=["HITO-002"],
-                inputs=["J.12 Hito 3", "UC-INS-02", "UC-INS-03", "UC-ALT-01", "J.6", "J.13"],
-            ),
-            _spec(
-                "HITO-004",
-                "Produccion",
-                "Construir lotes, control de calidad, mermas e inventario de productos terminados.",
-                "J.12 Produccion",
-                [
-                    "backend/app/services/production.py",
-                    "backend/app/domain/rules.py",
-                    "contracts/coverage.json",
-                    "docs/api-contract.md",
-                    "tests/test_domain_rules.py",
-                ],
-                dependencies=["HITO-003"],
-                inputs=["J.12 Hito 4", "UC-PROD-*", "UC-PRO-*", "P-14..P-19", "J.6"],
-            ),
-            _spec(
-                "HITO-005",
-                "Ventas",
-                "Cerrar clientes, ventas, reservas de stock, precios por tipo de cliente y ordenes de compra.",
-                "J.12 Ventas",
-                [
-                    "backend/app/services/sales.py",
-                    "backend/app/services/purchasing.py",
-                    "backend/app/services/inventory.py",
-                    "docs/traceability.md",
-                    "tests/test_domain_rules.py",
-                ],
-                dependencies=["HITO-004"],
-                inputs=["J.12 Hito 5", "UC-VTA-*", "UC-COM-*", "P-20..P-25", "J.6", "J.14"],
-            ),
-            _spec(
-                "HITO-006",
-                "Dashboard",
-                "Implementar KPIs reales, graficos, alertas operacionales y reportes exportables.",
-                "J.12 Dashboard",
-                [
-                    "frontend/src/App.jsx",
-                    "frontend/src/screens/catalog.js",
-                    "backend/app/jobs/scheduler.py",
-                    "docs/api-contract.md",
-                    "tests/test_domain_rules.py",
-                ],
-                dependencies=["HITO-005"],
-                inputs=["J.12 Hito 6", "UC-REP-*", "P-03", "P-29", "J.13"],
-            ),
-            _spec(
-                "HITO-007",
-                "Cierre",
-                "Completar equipos, finanzas, metas, respaldos automaticos, documentacion y pruebas.",
-                "J.12 Cierre",
-                [
-                    "backend/app/services/purchasing.py",
-                    "backend/app/jobs/scheduler.py",
-                    "docs/architecture.md",
-                    "docs/traceability.md",
-                    "docs/test-strategy.md",
-                    "tests/test_contracts.py",
-                ],
-                dependencies=["HITO-006"],
-                inputs=["J.12 Hito 7", "UC-EQU-*", "UC-FIN-*", "UC-ALT-*", "J.10", "J.15"],
-            ),
-        ]
+def default_milestones(work_order: WorkOrder, adapter: ProjectAdapter | None = None) -> list[MilestoneSpec]:
+    project_adapter = adapter or GenericProjectAdapter()
+    adapter_milestones = project_adapter.default_milestones(work_order)
+    if adapter_milestones:
+        return [MilestoneSpec(**item) for item in adapter_milestones]
     return [
         _spec(
             "HITO-001",
@@ -232,14 +128,14 @@ def default_milestones(work_order: WorkOrder) -> list[MilestoneSpec]:
     ]
 
 
-def synthetic_full_run_milestone(work_order: WorkOrder) -> MilestoneSpec:
+def synthetic_full_run_milestone(work_order: WorkOrder, adapter: ProjectAdapter | None = None) -> MilestoneSpec:
     expected = [
         "implementation-report.md",
         "validation-report.json",
         "dev-materialization-manifest.json",
     ]
-    if is_brewmaster_work_order(work_order):
-        expected.extend(["brewmaster-blueprint.json", "brewmaster-coverage.json"])
+    project_adapter = adapter or GenericProjectAdapter()
+    expected.extend(project_adapter.synthetic_full_run_expected_artifacts(work_order))
     return _spec(
         "FULL-RUN",
         "Corrida completa compatible",
@@ -251,19 +147,20 @@ def synthetic_full_run_milestone(work_order: WorkOrder) -> MilestoneSpec:
 
 
 class MilestoneManager:
-    def __init__(self, project_workspace: ProjectWorkspace, work_order: WorkOrder) -> None:
+    def __init__(self, project_workspace: ProjectWorkspace, work_order: WorkOrder, adapter: ProjectAdapter | None = None) -> None:
         self.project_workspace = project_workspace
         self.work_order = work_order
+        self.project_adapter = adapter or GenericProjectAdapter()
         self.project_root = project_workspace.root
         self.milestones_root = self.project_root / "milestones"
         self.roadmap_json_path = self.project_root / "roadmap.json"
         self.roadmap_md_path = self.project_root / "ROADMAP.md"
         self.milestones = self._load_or_default()
         requested = work_order.milestone_id.strip()
-        self.selected = self._milestone_by_id(requested) if requested else synthetic_full_run_milestone(work_order)
+        self.selected = self._milestone_by_id(requested) if requested else synthetic_full_run_milestone(work_order, self.project_adapter)
         self.validation_errors = [] if self.selected else [f"unknown milestone {requested}"]
         if self.selected is None:
-            self.selected = synthetic_full_run_milestone(work_order)
+            self.selected = synthetic_full_run_milestone(work_order, self.project_adapter)
 
     @property
     def selected_id(self) -> str:
@@ -399,8 +296,8 @@ class MilestoneManager:
                 data = json.loads(read_text(self.roadmap_json_path))
                 return [MilestoneSpec(**item) for item in data.get("milestones", [])]
             except Exception:
-                return default_milestones(self.work_order)
-        return default_milestones(self.work_order)
+                return default_milestones(self.work_order, self.project_adapter)
+        return default_milestones(self.work_order, self.project_adapter)
 
     def _milestone_by_id(self, milestone_id: str) -> MilestoneSpec | None:
         for milestone in self.milestones:

@@ -1,0 +1,7 @@
+{
+  "adapter_id": "brewmaster",
+  "project_id": "brewmaster",
+  "project_names": ["BrewMaster", "brewmaster"],
+  "specification": "brewmaster_especificacion_completa.md",
+  "version": "webforge.project_pack.v1"
+}

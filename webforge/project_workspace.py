@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .domain_adapter import GenericProjectAdapter, ProjectAdapter
 from .models import WorkOrder
 from .utils import ensure_dir, sha256_text, stable_json, write_json, write_text
 
@@ -13,29 +14,10 @@ PROJECT_ROOT_NAME = "project"
 SANDBOXES = ("DEV", "QA")
 FRONTEND_TEMPLATE_NAME = "WEBFORGE_FRONTEND_CONTRACT"
 FRONTEND_TEMPLATE_REQUIRED_FILES = ("FRONTEND_CONTRACT.md",)
-BREWMASTER_FRONTEND_TEMPLATE_NAME = "BREWMASTER_REACT_BOOTSTRAP"
-BREWMASTER_FRONTEND_REQUIRED_FILES = (
-    "frontend/package.json",
-    "frontend/src/App.jsx",
-    "frontend/src/routes.js",
-    "frontend/src/screens/catalog.js",
-)
 
 
 def _rel_posix(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
-
-
-def _is_brewmaster_work_order(work_order: WorkOrder) -> bool:
-    haystack = " ".join(
-        [
-            work_order.objective,
-            work_order.project_id,
-            work_order.type,
-            str(work_order.metadata.get("blueprint", "")),
-        ]
-    ).lower()
-    return "brewmaster" in haystack
 
 
 def sanitize_project_id(value: str) -> str:
@@ -91,22 +73,17 @@ class SandboxInfo:
 
 
 class ProjectWorkspace:
-    def __init__(self, factory_root: Path, work_order: WorkOrder) -> None:
+    def __init__(self, factory_root: Path, work_order: WorkOrder, adapter: ProjectAdapter | None = None) -> None:
         self.factory_root = factory_root.resolve()
         objective_slug = sanitize_project_id(work_order.objective.split(".")[0])
         self.project_id = sanitize_project_id(work_order.project_id or objective_slug)
         self.version = normalize_version(work_order.project_version)
-        self.is_brewmaster = _is_brewmaster_work_order(work_order)
-        self.frontend_template_name = BREWMASTER_FRONTEND_TEMPLATE_NAME if self.is_brewmaster else FRONTEND_TEMPLATE_NAME
-        self.frontend_template_source = (
-            "projects/BrewMaster/brewmaster_especificacion_completa.md#J.4"
-            if self.is_brewmaster
-            else "work_order.frontend_contract"
-        )
-        self.frontend_template_required_files = (
-            BREWMASTER_FRONTEND_REQUIRED_FILES if self.is_brewmaster else FRONTEND_TEMPLATE_REQUIRED_FILES
-        )
-        self.frontend_contract_filename = "FRONTEND_CONTRACT.md"
+        self.project_adapter = adapter or GenericProjectAdapter()
+        contract = self.project_adapter.frontend_contract(work_order)
+        self.frontend_template_name = contract.template_name or FRONTEND_TEMPLATE_NAME
+        self.frontend_template_source = contract.source or "work_order.frontend_contract"
+        self.frontend_template_required_files = contract.required_files or FRONTEND_TEMPLATE_REQUIRED_FILES
+        self.frontend_contract_filename = contract.contract_file or "FRONTEND_CONTRACT.md"
         self.frontend_template_hash = self._frontend_template_hash()
         self.root = self.factory_root / PROJECT_ROOT_NAME / self.project_id
         self.version_root = self.root / "versions" / self.version

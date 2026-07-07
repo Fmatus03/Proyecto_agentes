@@ -1327,6 +1327,8 @@ Códigos mínimos:
 | RNF-08 | Observabilidad | logs estructurados con request_id, user_id, módulo y latencia |
 | RNF-09 | Privacidad | costos y datos financieros ocultos sin permiso explícito |
 | RNF-10 | Mantenibilidad | Swagger/OpenAPI activo, migraciones versionadas con Alembic, tests por módulo |
+| RNF-11 | Contenedores | backend, frontend, base de datos y proxy reverso deben ejecutarse mediante Docker Compose reproducible |
+| RNF-12 | Despliegue | el despliegue productivo aprobado se realiza en una VM EC2 de AWS que contiene el sistema completo |
 
 ## J.9 Criterios de aceptación por módulo
 
@@ -1375,6 +1377,8 @@ Pruebas E2E:
 3. Registrar venta, verificar stock descontado y Kardex de producto.
 4. Crear orden de compra, recepcionar, verificar stock de insumo.
 5. Reporte de producción exportado a XLSX con filtros de fecha.
+6. Smoke test del stack Docker: frontend, API, base de datos, migraciones, healthcheck y proxy reverso.
+7. Ensayo de rollback documentado para la VM EC2 sin perdida de datos persistidos.
 
 ## J.11 Trazabilidad macro
 
@@ -1390,6 +1394,7 @@ Pruebas E2E:
 | REQ-FIN | UC-FIN-01..03 | integración finanzas | gastos, reportes, metas |
 | REQ-REP | UC-REP-01..02 | E2E reportes | exportación, filtros, permisos |
 | REQ-ALT | UC-ALT-01..03 | integración alertas | SMTP, cola, reintentos, metas |
+| REQ-DEP | J.16 | smoke + validacion operativa | Docker Compose, EC2, TLS/proxy, backup, rollback |
 
 ## J.12 Ciclo de desarrollo por hitos
 
@@ -1401,7 +1406,8 @@ Pruebas E2E:
 | 4 | Producción | Lotes, control de calidad, mermas, inventario de productos terminados |
 | 5 | Ventas | Clientes, ventas, reservas de stock, precios por tipo de cliente, órdenes de compra |
 | 6 | Dashboard | KPIs reales, gráficos, alertas operacionales, reportes exportables |
-| 7 | Cierre | Equipos, finanzas, metas, respaldos automáticos, documentación y pruebas |
+| 7 | Cierre | Equipos, finanzas, metas, respaldos automáticos, dockerización, deploy EC2, documentación y pruebas |
+| 8 | Pantallas interactivas | Completar las 30 pantallas como vistas React + Bootstrap separadas, navegables, visualmente pulidas y conectadas al backend aprobado |
 
 ## J.13 Registro de consumo y optimización
 
@@ -1432,6 +1438,10 @@ Optimizaciones obligatorias:
 | Receta modificada post-lote | inconsistencia histórica | bloquear edición si hay lotes activos; guardar snapshot en lote |
 | Reportes de alto volumen | latencia alta | jobs diferidos con archivo exportado; límite de rango de fechas |
 | Backups fallidos | pérdida de datos | registrar fallo en auditoría y notificar a admin por correo |
+| VM EC2 como punto unico de falla | indisponibilidad total del sistema | documentar recovery, snapshots, backups externos y procedimiento de restauracion |
+| Secretos productivos filtrados | compromiso de datos y credenciales | usar `.env` fuera de git, permisos de archivo restrictivos y rotacion ante incidente |
+| Volumen Docker sin respaldo | perdida de base de datos o archivos | montar volumen persistente, probar backup/restore y registrar evidencia en cierre |
+| TLS o proxy mal configurado | exposicion insegura del sistema | validar HTTPS, cabeceras, puertos cerrados y healthchecks antes de aprobar deploy |
 
 ## J.15 Gate de cierre de especificación
 
@@ -1442,7 +1452,25 @@ La especificación queda lista cuando:
 3. Cada requisito macro tiene prueba requerida y evidencia esperada.
 4. El plan de hitos de desarrollo está definido y es incremental.
 5. Los riesgos principales están identificados con su mitigación.
-6. No hay deploy, secretos, correo real ni integraciones externas ejecutadas sin aprobación.
+6. El deploy productivo, secretos, correo real e integraciones externas solo se ejecutan con aprobacion explicita, rollback y evidencia.
+7. El objetivo de despliegue aprobado para BrewMaster es una VM EC2 de AWS con Docker Compose y todos los servicios del sistema contenidos en la VM.
+
+## J.16 Infraestructura y despliegue AWS EC2
+
+El sistema BrewMaster se debe preparar para despliegue productivo en una unica VM EC2 de AWS que contenga el sistema completo mediante Docker Compose.
+
+Alcance obligatorio del despliegue:
+
+1. `docker-compose.yml` versionado para levantar frontend, backend, base de datos, proxy reverso y servicios operativos requeridos.
+2. `backend/Dockerfile` para ejecutar FastAPI con migraciones Alembic controladas.
+3. `frontend/Dockerfile` para compilar React y servir los assets estaticos.
+4. Proxy reverso Nginx o equivalente con terminacion TLS o integracion clara con certificado gestionado.
+5. `.env.example` sin secretos reales y documentacion de variables obligatorias.
+6. Volumen persistente para base de datos y estrategia documentada de backup/restore.
+7. Healthchecks para API, frontend y base de datos.
+8. Runbook de provisionamiento EC2: puertos, usuario operativo, instalacion de Docker, despliegue, logs, backup, restore y rollback.
+9. Deploy productivo bloqueado por defecto hasta aprobacion humana, evidencia de pruebas y plan de reversa.
+10. La VM no debe contener secretos versionados en git; las credenciales productivas se cargan por variables de entorno o archivo `.env` protegido.
 
 ---
 
@@ -1806,9 +1834,10 @@ La especificación debe ser consumida por una fábrica bajo las siguientes regla
 2. Contexto/RAG: indexar por IDs `MOD`, `CU`, `FUN`, `RN`, `SCR`, `API`, `ENT` y conservar procedencia de sección.
 3. Planificación: descomponer trabajo por `FUN-###` y por hito J.12.
 4. Implementación: ningún agente debe implementar una funcionalidad si no puede citar su CU, RN, API, pantalla y entidad asociada.
-5. Validación: todo gate de cierre debe comprobar K.8, K.9, D, J.6, J.8, J.9 y J.15.
+5. Validación: todo gate de cierre debe comprobar K.8, K.9, D, J.6, J.8, J.9, J.15 y J.16.
 6. Seguridad: aplicar RBAC según H, ACT-001..ACT-008, RN-008..RN-010 y FUN-038.
 7. Reproducibilidad: registrar versión de especificación, hash del documento, IDs implementados y evidencia de pruebas.
+8. Despliegue: generar artefactos Docker/EC2 solo en el hito de cierre o cuando el WorkOrder tenga deploy aprobado.
 
 ## K.12 Gate ampliado de cierre de especificación
 
@@ -1821,3 +1850,4 @@ Además del gate J.15, la especificación se considera lista para implementació
 5. Toda API `API-###` tiene propósito funcional y pantalla o CU relacionado.
 6. Las funcionalidades con efectos de inventario, ventas, compras, producción y mermas citan una regla transaccional J.6.
 7. Los criterios CA-001..CA-038 pueden convertirse en pruebas unitarias, integración o E2E.
+8. La infraestructura de despliegue J.16 tiene Docker Compose, runbook EC2, healthchecks, backup/restore, rollback y manejo de secretos sin valores reales.

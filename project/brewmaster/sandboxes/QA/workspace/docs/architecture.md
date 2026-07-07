@@ -1,15 +1,16 @@
-# Arquitectura BrewMaster HITO-001
+# Arquitectura BrewMaster HITO-008
 
 Capas:
 
-- Frontend React + Bootstrap limitado a login, recuperacion de contrasena y panel de usuarios/auditoria.
-- API REST FastAPI bajo `/api/v1` con respuesta JSON uniforme y `request_id`.
-- Seguridad local con hash PBKDF2, JWT HS256 expirable y RBAC por rol.
-- Persistencia contractual SQLAlchemy/Alembic acotada a usuarios, roles, permisos, auditoria y tokens de restablecimiento.
-- Auditoria funcional en memoria para el MVP local del hito, sin datos reales ni escrituras externas.
+- FastAPI conserva exactamente el contrato acumulado HITO-007: rutas `/api/v1`, stores locales, reglas y pruebas.
+- React + Bootstrap usa Vite (`frontend/index.html`, `frontend/src/main.jsx`) y un shell con navegacion hash para P-01..P-30.
+- `frontend/src/api/client.js` encapsula fetch local, token JWT de sesion y errores normalizados sin inventar endpoints.
+- `frontend/src/screens/ScreenViews.jsx` declara un componente por pantalla, con loading, error, vacio, datos y formularios validados.
+- `frontend/src/routes.js` resuelve rutas estaticas y dinamicas declaradas en `frontend/src/screens/catalog.js`.
 
-Controles de fabrica:
+Controles:
 
-- El bundle se materializa solo por el arnes P12/INV en el sandbox DEV.
-- La promocion a QA ocurre despues de validadores y gate incremental.
-- Los modulos de hitos posteriores quedan explicitamente diferidos y no exponen endpoints ejecutables.
+- HITO-008 no cambia reglas de negocio ni entidades backend.
+- Acciones de UI consumen solamente endpoints aprobados bajo `/api/v1`.
+- Las pantallas mantienen datos de respaldo visual para no quedar vacias cuando el backend local no esta levantado, mostrando el error observado.
+- DEV se promueve a QA solo despues de validadores, gate, build frontend y regresion HITO-001..HITO-007.

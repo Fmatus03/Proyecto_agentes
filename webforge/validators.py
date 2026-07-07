@@ -133,26 +133,49 @@ def alembic_has_operations(path: Path) -> ValidationOutcome:
     )
 
 
-def brewmaster_acceptance_gate(
+def alembic_versions_have_operations(versions_dir: Path) -> ValidationOutcome:
+    if not versions_dir.exists():
+        return ValidationOutcome(
+            "alembic.versions_operations",
+            False,
+            "missing Alembic versions directory",
+            {"path": str(versions_dir)},
+        )
+    outcomes = [
+        alembic_has_operations(path)
+        for path in sorted(versions_dir.glob("*.py"))
+        if path.name != "__init__.py"
+    ]
+    passed = any(outcome.passed for outcome in outcomes)
+    return ValidationOutcome(
+        "alembic.versions_operations",
+        passed,
+        "Alembic versions include a materialized migration" if passed else "No materialized Alembic migration found",
+        {"path": str(versions_dir), "migrations": [outcome.to_dict() for outcome in outcomes]},
+    )
+
+
+def project_acceptance_gate(
     gate: dict[str, Any],
     expected_endpoint_count: int,
     generated_workspace: Path | None = None,
+    validator_id: str = "project.acceptance_gate",
+    success_message: str = "Project adapter acceptance gate passed",
+    failure_message: str = "Project adapter acceptance gate failed",
 ) -> ValidationOutcome:
     observed = dict(gate)
     observed["expected_endpoint_count"] = expected_endpoint_count
     passed = all(bool(value) for value in gate.values())
     if generated_workspace is not None:
         main_outcome = no_catch_all_routes(generated_workspace / "backend" / "app" / "main.py")
-        migration_outcome = alembic_has_operations(
-            generated_workspace / "backend" / "alembic" / "versions" / "0001_brewmaster_schema.py"
-        )
+        migration_outcome = alembic_versions_have_operations(generated_workspace / "backend" / "alembic" / "versions")
         observed["no_catch_all_routes"] = main_outcome.to_dict()
         observed["alembic_has_operations"] = migration_outcome.to_dict()
         passed = passed and main_outcome.passed and migration_outcome.passed
     return ValidationOutcome(
-        "brewmaster.acceptance_gate",
+        validator_id,
         passed,
-        "BrewMaster acceptance gate passed" if passed else "BrewMaster acceptance gate failed",
+        success_message if passed else failure_message,
         observed,
     )
 

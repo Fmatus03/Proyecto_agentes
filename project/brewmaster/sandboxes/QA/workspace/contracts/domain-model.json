@@ -6,11 +6,43 @@
     "role_permissions",
     "audit_logs",
     "settings",
-    "password_reset_tokens"
+    "suppliers",
+    "warehouses",
+    "supply_categories",
+    "supplies",
+    "supply_movements",
+    "supply_entries",
+    "notification_queue",
+    "presentation_types",
+    "recipes",
+    "recipe_ingredients",
+    "production_batches",
+    "batch_quality_checks",
+    "waste_records",
+    "finished_products",
+    "product_movements",
+    "customer_types",
+    "customers",
+    "product_prices",
+    "sales",
+    "sale_items",
+    "stock_reservations",
+    "purchase_orders",
+    "purchase_order_items",
+    "equipment_types",
+    "equipment",
+    "equipment_movements",
+    "expense_categories",
+    "operational_expenses",
+    "monthly_goals",
+    "password_reset_tokens",
+    "export_jobs",
+    "smtp_config",
+    "batch_supply_snapshots"
   ],
   "modules": [
     {
-      "acceptance": "login JWT, recuperacion de contrasena, CRUD usuarios, RBAC y auditoria funcional",
+      "acceptance": "HITO-001 conserva login JWT, usuarios, RBAC y auditoria funcional.",
       "entities": [
         "audit_logs",
         "password_reset_tokens",
@@ -30,6 +62,252 @@
       "use_cases": [
         "CU-001",
         "CU-031"
+      ]
+    },
+    {
+      "acceptance": "HITO-002 conserva proveedores con codigo unico, correo valido, estado y auditoria.",
+      "entities": [
+        "suppliers"
+      ],
+      "id": "MOD-002",
+      "name": "Proveedores",
+      "screens": [
+        "P-08",
+        "P-09"
+      ],
+      "use_cases": [
+        "CU-006"
+      ]
+    },
+    {
+      "acceptance": "Entrada valida incrementa stock, registra Kardex y encola alerta de stock bajo sin bloquear la operacion.",
+      "entities": [
+        "warehouses",
+        "supply_categories",
+        "supplies",
+        "supply_entries",
+        "supply_movements",
+        "notification_queue"
+      ],
+      "id": "MOD-003",
+      "name": "Insumos, bodegas y Kardex",
+      "screens": [
+        "P-04",
+        "P-05",
+        "P-06",
+        "P-07",
+        "P-12"
+      ],
+      "use_cases": [
+        "CU-002",
+        "CU-003",
+        "CU-004",
+        "CU-005"
+      ]
+    },
+    {
+      "acceptance": "HITO-002 conserva recetas con ingredientes activos, costo estimado y clonado controlado.",
+      "entities": [
+        "presentation_types",
+        "recipes",
+        "recipe_ingredients"
+      ],
+      "id": "MOD-004",
+      "name": "Recetas y presentaciones",
+      "screens": [
+        "P-10",
+        "P-11",
+        "P-13"
+      ],
+      "use_cases": [
+        "CU-007",
+        "CU-008"
+      ]
+    },
+    {
+      "acceptance": "SMTP se guarda sanitizado, la prueba es local y la cola registra intentos sin enviar correos reales.",
+      "entities": [
+        "settings",
+        "smtp_config",
+        "notification_queue"
+      ],
+      "id": "MOD-013",
+      "name": "Configuracion y alertas",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-004",
+        "CU-029"
+      ]
+    },
+    {
+      "acceptance": "Lotes se crean en elaboracion, se completan descontando insumos y registran control de calidad unico.",
+      "entities": [
+        "production_batches",
+        "batch_quality_checks",
+        "batch_supply_snapshots"
+      ],
+      "id": "MOD-005",
+      "name": "Produccion y calidad",
+      "screens": [
+        "P-14",
+        "P-15",
+        "P-16",
+        "P-17"
+      ],
+      "use_cases": [
+        "CU-009",
+        "CU-010",
+        "CU-011"
+      ]
+    },
+    {
+      "acceptance": "Merma valida exige motivo, descuenta inventario de insumo o producto y deja Kardex trazable.",
+      "entities": [
+        "waste_records",
+        "supply_movements",
+        "product_movements"
+      ],
+      "id": "MOD-006",
+      "name": "Mermas",
+      "screens": [
+        "P-19"
+      ],
+      "use_cases": [
+        "CU-012"
+      ]
+    },
+    {
+      "acceptance": "Completar lote crea o incrementa producto terminado y permite precio base no negativo.",
+      "entities": [
+        "finished_products",
+        "product_movements"
+      ],
+      "id": "MOD-007",
+      "name": "Inventario de productos terminados",
+      "screens": [
+        "P-18"
+      ],
+      "use_cases": [
+        "CU-013",
+        "CU-014"
+      ]
+    },
+    {
+      "acceptance": "Clientes, ventas, reservas y precios por tipo de cliente validan stock libre y registran Kardex.",
+      "entities": [
+        "customer_types",
+        "customers",
+        "product_prices",
+        "sales",
+        "sale_items",
+        "stock_reservations"
+      ],
+      "id": "MOD-008",
+      "name": "Ventas, clientes y reservas",
+      "screens": [
+        "P-20",
+        "P-21",
+        "P-22",
+        "P-23"
+      ],
+      "use_cases": [
+        "CU-015",
+        "CU-016",
+        "CU-017",
+        "CU-018",
+        "CU-019"
+      ]
+    },
+    {
+      "acceptance": "Ordenes con proveedor activo pasan por borrador, enviada, recepcion parcial o total y Kardex de insumos.",
+      "entities": [
+        "purchase_orders",
+        "purchase_order_items",
+        "suppliers",
+        "supplies"
+      ],
+      "id": "MOD-009",
+      "name": "Compras y ordenes de compra",
+      "screens": [
+        "P-24",
+        "P-25",
+        "P-26"
+      ],
+      "use_cases": [
+        "CU-020",
+        "CU-021"
+      ]
+    },
+    {
+      "acceptance": "Dashboard con KPIs reales, graficos, alertas operacionales y reportes exportables sin finanzas HITO-007.",
+      "entities": [
+        "audit_logs",
+        "export_jobs"
+      ],
+      "id": "MOD-012",
+      "name": "Dashboard y reportes operacionales",
+      "screens": [
+        "P-03",
+        "P-29"
+      ],
+      "use_cases": [
+        "CU-027",
+        "CU-028"
+      ]
+    },
+    {
+      "acceptance": "Equipos con codigo unico, historial de movimientos y alerta de revision vencida.",
+      "entities": [
+        "equipment_types",
+        "equipment",
+        "equipment_movements"
+      ],
+      "id": "MOD-010",
+      "name": "Equipos",
+      "screens": [
+        "P-27"
+      ],
+      "use_cases": [
+        "CU-022",
+        "CU-023"
+      ]
+    },
+    {
+      "acceptance": "Gastos operativos, reportes financieros basicos y metas mensuales.",
+      "entities": [
+        "expense_categories",
+        "operational_expenses",
+        "monthly_goals"
+      ],
+      "id": "MOD-011",
+      "name": "Finanzas operativas",
+      "screens": [
+        "P-28",
+        "P-29",
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-024",
+        "CU-025",
+        "CU-026"
+      ]
+    },
+    {
+      "acceptance": "Backups automaticos locales, Docker Compose, proxy/TLS documentado y runbook EC2 sin deploy real.",
+      "entities": [
+        "monthly_goals",
+        "export_jobs"
+      ],
+      "id": "MOD-013",
+      "name": "Cierre operacional y despliegue preparado",
+      "screens": [
+        "P-30"
+      ],
+      "use_cases": [
+        "CU-029",
+        "CU-030"
       ]
     }
   ]

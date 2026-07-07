@@ -1,0 +1,23 @@
+{
+  "dependencies": [
+    "HITO-002"
+  ],
+  "evidence": [
+    "milestone-validation-report.json",
+    "qa-promotion-report.json",
+    "regression-report.json"
+  ],
+  "expected_artifacts": [
+    "backend/app/services/inventory.py",
+    "backend/app/services/notifications.py",
+    "backend/app/domain/rules.py",
+    "contracts/permissions.json",
+    "tests/test_domain_rules.py"
+  ],
+  "milestone_id": "HITO-003",
+  "persistent_state": "project\\brewmaster\\milestones\\HITO-003\\milestone-state.json",
+  "project_id": "brewmaster",
+  "reason": "milestone gate pass",
+  "status": "approved",
+  "version": "v0001"
+}

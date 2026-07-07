@@ -5,7 +5,6 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from .brewmaster import brewmaster_bundle, is_brewmaster_work_order
 from .capabilities import skill_manifest
 from .models import GateResult, PhaseResult
 from .principles import PRINCIPLES
@@ -274,8 +273,9 @@ class FactorySupportMixin:
             return default
 
     def _implementation_bundle(self) -> list[dict[str, Any]]:
-        if self._is_brewmaster():
-            return brewmaster_bundle(self.work_order.milestone_id)
+        adapter_bundle = self.project_adapter.build_bundle(self.work_order.milestone_id)
+        if adapter_bundle:
+            return adapter_bundle
         raw_bundle = self.work_order.metadata.get("implementation_bundle")
         if isinstance(raw_bundle, dict):
             files = raw_bundle.get("files", [])
@@ -299,5 +299,5 @@ class FactorySupportMixin:
             }
         ]
 
-    def _is_brewmaster(self) -> bool:
-        return is_brewmaster_work_order(self.work_order)
+    def _project_adapter_active(self) -> bool:
+        return getattr(self.project_adapter, "adapter_id", "generic") != "generic"

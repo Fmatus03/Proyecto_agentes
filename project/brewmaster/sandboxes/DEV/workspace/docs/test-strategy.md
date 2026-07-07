@@ -1,16 +1,23 @@
-# Estrategia de pruebas HITO-001
+# Estrategia de pruebas HITO-008
 
-Unitarias:
+Regresion HITO-001..HITO-007:
 
-- Hash de contrasena PBKDF2 no almacena texto plano.
-- JWT HS256 expirable rechaza firma alterada o vencida.
-- `require_permission` acepta comodin admin y bloquea permiso ausente.
+- Hash de contrasena, JWT, RBAC, usuarios, permisos y auditoria siguen activos.
+- Maestros, inventario, Kardex, SMTP local, produccion, calidad, mermas y productos terminados siguen activos.
+- Clientes, ventas, anulaciones, reservas, precios por tipo, compras, dashboard, reportes, scheduler, equipos y finanzas siguen activos.
+- Respaldos automaticos locales y artefactos Docker/proxy/TLS siguen presentes sin deploy real.
 
-Integracion local:
+Contratos HITO-008:
 
-- Login exitoso retorna JWT y `auth/me` responde con usuario activo.
-- Credenciales invalidas o usuario inactivo retornan HTTP 401 y generan auditoria.
-- Usuario no admin recibe HTTP 403 al listar usuarios.
-- Admin crea usuario con correo unico y rol activo; duplicado se rechaza.
-- Cambio y restablecimiento de contrasena actualizan hash y auditan.
-- Auditor o admin consulta `/api/v1/audit-logs`; otros roles no reciben datos parciales.
+- ROUTE_CATALOG conserva el acumulado HITO-007 sin endpoints backend nuevos.
+- SCREEN_CATALOG declara P-01..P-30 y cada pantalla tiene componente especifico en `ScreenViews.jsx`.
+- `App.jsx` usa navegacion hash sobre `routes.js`; rutas dinamicas se materializan con IDs locales de ejemplo.
+- `api/client.js` usa exclusivamente `/api/v1`, token local y errores normalizados.
+- No existe `GenericScreen` ni fallback placeholder para pantallas declaradas.
+
+Frontend:
+
+- `pnpm build` debe compilar Vite.
+- Las 30 pantallas renderizan cabecera, estado de endpoint, datos o vacio profesional y acciones relacionadas.
+- Formularios validan campos requeridos y numeros positivos antes de llamar a endpoints aprobados.
+- Los errores de backend se muestran sin dejar la pantalla vacia.

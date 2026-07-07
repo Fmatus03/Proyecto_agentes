@@ -8,6 +8,7 @@ from .utils import ensure_dir, sha256_file, write_json
 
 
 RESERVED_ROOT_FILES = {"FRONTEND_CONTRACT.md", "PLANTILLA_FRONTEND.md"}
+IGNORED_PROMOTION_DIRS = {"node_modules", ".pnpm", "dist", ".vite", "__pycache__", ".pytest_cache"}
 
 
 class SandboxPromoter:
@@ -39,11 +40,13 @@ class SandboxPromoter:
         dev_files = {
             source.relative_to(self.dev_workspace).as_posix()
             for source in self.dev_workspace.rglob("*")
-            if source.is_file()
+            if source.is_file() and not self._is_ignored_path(source.relative_to(self.dev_workspace))
         }
         for target_file in sorted(path for path in self.qa_workspace.rglob("*") if path.is_file()):
             rel = target_file.relative_to(self.qa_workspace)
             rel_path = rel.as_posix()
+            if self._is_ignored_path(rel):
+                continue
             if len(rel.parts) == 1 and rel.parts[0] in RESERVED_ROOT_FILES:
                 continue
             if rel_path not in dev_files:
@@ -53,6 +56,8 @@ class SandboxPromoter:
 
         for source in sorted(path for path in self.dev_workspace.rglob("*") if path.is_file()):
             rel = source.relative_to(self.dev_workspace)
+            if self._is_ignored_path(rel):
+                continue
             if len(rel.parts) == 1 and rel.parts[0] in RESERVED_ROOT_FILES:
                 continue
             target = self.qa_workspace / rel
@@ -77,6 +82,9 @@ class SandboxPromoter:
         ):
             if directory == self.qa_workspace:
                 continue
+            rel = directory.relative_to(self.qa_workspace)
+            if self._is_ignored_path(rel):
+                continue
             if any(directory.iterdir()):
                 continue
             rel_path = directory.relative_to(self.qa_workspace).as_posix()
@@ -86,6 +94,9 @@ class SandboxPromoter:
         report = self._report("pass", writes, deletions, [])
         write_json(manifest_path, report)
         return report
+
+    def _is_ignored_path(self, relative_path: Path) -> bool:
+        return any(part in IGNORED_PROMOTION_DIRS for part in relative_path.parts)
 
     def _sandbox(self, name: str) -> SandboxInfo:
         for sandbox in self.project_workspace.sandboxes:
@@ -108,6 +119,7 @@ class SandboxPromoter:
             "policy": {
                 "promote_only_after_validation": True,
                 "reserved_root_files_skipped": sorted(RESERVED_ROOT_FILES),
+                "ignored_generated_dirs": sorted(IGNORED_PROMOTION_DIRS),
                 "external_writes": 0,
             },
             "writes": writes,
