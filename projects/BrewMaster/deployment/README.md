@@ -37,7 +37,7 @@ Workflow: `.github/workflows/brewmaster-ec2.yml`.
 
 Required repository secrets:
 
-- `BREWMASTER_ENV_PRODUCTION`: complete production `.env` content.
+- `ENV_FILE`: complete production `.env` content.
 - `EC2_HOST`: EC2 public IP or DNS name.
 - `EC2_USER`: SSH user, usually `ubuntu`.
 - `EC2_PORT`: SSH port, usually `22`.
@@ -46,7 +46,7 @@ Required repository secrets:
 Pipeline behavior:
 
 - `validate` installs backend dependencies, runs pytest, builds the React frontend with pnpm, and validates Docker Compose syntax.
-- `deploy` runs after validation, uploads a release tarball to `/opt/brewmaster/releases/<git-sha>`, writes `.env` from `BREWMASTER_ENV_PRODUCTION`, updates `/opt/brewmaster/current`, and runs `docker compose --env-file .env -f docker-compose.ec2.yml up -d --build`.
+- `deploy` runs after validation, uploads a release tarball to `/opt/brewmaster/releases/<git-sha>`, writes `.env` from `ENV_FILE`, updates `/opt/brewmaster/current`, and runs `docker compose --env-file .env -f docker-compose.ec2.yml up -d --build`.
 
 Operational notes:
 
